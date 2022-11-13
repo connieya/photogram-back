@@ -1,6 +1,7 @@
 package com.cos.photogramstart.web;
 
 import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.service.AuthService;
 import com.cos.photogramstart.web.dto.auth.SignupDto;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,14 +32,14 @@ public class AuthController {
     }
 
     @PostMapping("/auth/signup")
-    public @ResponseBody String signup(@Valid SignupDto dto, BindingResult bindingResult){ // key=value(x-www-form-urlencoded)
+    public String signup(@Valid SignupDto dto, BindingResult bindingResult){ // key=value(x-www-form-urlencoded)
         if (bindingResult.hasErrors()){
             Map<String,String> errorMap = new HashMap<>();
             for(FieldError error : bindingResult.getFieldErrors()) {
                 errorMap.put(error.getField(),error.getDefaultMessage());
                 System.out.println(error.getDefaultMessage());
             }
-            return "오류남";
+            throw new CustomValidationException("유효성 검사 실패함", errorMap);
         }
         User user = dto.toEntity();
         User userEntity = authService.signup(user);
