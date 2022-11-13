@@ -1,12 +1,14 @@
 package com.cos.photogramstart.domain.user;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -19,6 +21,7 @@ public class User {
     private String username;
     private String password;
     private String name;
+    private String email;
     private String website;
     private String bio;
     private String phone;
