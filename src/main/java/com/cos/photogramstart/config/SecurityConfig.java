@@ -27,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                .and()
                .formLogin() // 인증이 필요한 URL은
                .loginPage("/auth/signin") // 로그인 창으로 리다이렉션 해주고 URL은 다음과 같다.
+               .loginProcessingUrl("/auth/signin")// post
                .defaultSuccessUrl("/"); // 로그인에 성공하면 다음 URL로 이동
     }
 }
