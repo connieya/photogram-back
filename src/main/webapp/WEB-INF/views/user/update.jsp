@@ -9,7 +9,6 @@
 	<section class="setting-container">
 		<!--프로필셋팅 아티클-->
 		<article class="setting__content">
-
 			<!--프로필셋팅 아이디영역-->
 			<div class="content-item__01">
 				<div class="item__img">
@@ -22,12 +21,12 @@
 			<!--프로필셋팅 아이디영역end-->
 
 			<!--프로필 수정-->
-			<form id="profileUpdate">
+			<form id="profileUpdate" onsubmit="update(${principal.user.id})">
 				<div class="content-item__02">
 					<div class="item__title">닉네임</div>
 					<div class="item__input">
 						<input type="text" name="name" placeholder="이름"
-							value="${principal.user.nickname}" />
+							value="${principal.user.nickname}" required />
 					</div>
 				</div>
 				<div class="content-item__03">
@@ -40,7 +39,7 @@
 				<div class="content-item__04">
 					<div class="item__title">패스워드</div>
 					<div class="item__input">
-						<input type="password" name="password" placeholder="패스워드"  />
+						<input type="password" name="password" placeholder="패스워드"  required />
 					</div>
 				</div>
 				<div class="content-item__05">
@@ -88,7 +87,7 @@
 				<div class="content-item__11">
 					<div class="item__title"></div>
 					<div class="item__input">
-						<button type="button" onclick="update(${principal.user.id})">제출</button>
+						<button>제출</button>
 					</div>
 				</div>
 				<!--제출버튼end-->
