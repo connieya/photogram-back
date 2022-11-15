@@ -21,7 +21,7 @@
 			<!--프로필셋팅 아이디영역end-->
 
 			<!--프로필 수정-->
-			<form id="profileUpdate" onsubmit="update(${principal.user.id})">
+			<form id="profileUpdate" onsubmit="update(${principal.user.id},event)">
 				<div class="content-item__02">
 					<div class="item__title">닉네임</div>
 					<div class="item__input">
