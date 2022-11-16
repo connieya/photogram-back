@@ -7,7 +7,6 @@
 <section class="profile">
 	<!--유저정보 컨테이너-->
 	<div class="profileContainer">
-
 		<!--유저이미지-->
 		<div class="profile-left">
 			<div class="profile-img-wrap story-border"
@@ -26,15 +25,13 @@
 		<!--유저정보 및 사진등록 구독하기-->
 		<div class="profile-right">
 			<div class="name-group">
-				<h2>TherePrograming</h2>
-
+				<h2>${user.nickname}</h2>
 				<button class="cta" onclick="location.href='/image/upload'">사진등록</button>
 				<button class="cta" onclick="toggleSubscribe(this)">구독하기</button>
 				<button class="modi" onclick="popup('.modal-info')">
 					<i class="fas fa-cog"></i>
 				</button>
 			</div>
-
 			<div class="subscribe">
 				<ul>
 					<li><a href=""> 게시물<span>3</span>
@@ -44,12 +41,11 @@
 				</ul>
 			</div>
 			<div class="state">
-				<h4>자기 소개입니다.</h4>
-				<h4>https://github.com/conniya</h4>
+				<h4>${user.bio}</h4>
+				<h4>${user.website}</h4>
 			</div>
 		</div>
 		<!--유저정보 및 사진등록 구독하기-->
-
 	</div>
 </section>
 
@@ -61,37 +57,17 @@
 		<div id="tab-1-content" class="tab-content-item show">
 			<!--게시물컨 그리드배열-->
 			<div class="tab-1-content-inner">
-
 				<!--아이템들-->
-
-
-				<div class="img-box">
-					<a href=""> <img src="/images/home.jpg" />
-					</a>
-					<div class="comment">
-						<a href="#" class=""> <i class="fas fa-heart"></i><span>0</span>
+				<c:forEach var="images" items="${user.images}">
+					<div class="img-box">
+						<a href=""> <img src="/upload/${image.postImageUrl}}" />
 						</a>
+						<div class="comment">
+							<a href="#" class=""> <i class="fas fa-heart"></i><span>0</span>
+							</a>
+						</div>
 					</div>
-				</div>
-
-				<div class="img-box">
-					<a href=""> <img src="/images/home.jpg" />
-					</a>
-					<div class="comment">
-						<a href="#" class=""> <i class="fas fa-heart"></i><span>0</span>
-						</a>
-					</div>
-				</div>
-
-				<div class="img-box">
-					<a href=""> <img src="/images/home.jpg" />
-					</a>
-					<div class="comment">
-						<a href="#" class=""> <i class="fas fa-heart"></i><span>0</span>
-						</a>
-					</div>
-				</div>
-
+				</c:forEach>
 				<!--아이템들end-->
 			</div>
 		</div>
@@ -141,8 +117,6 @@
 					<button class="cta blue" onclick="toggleSubscribeModal(this)">구독취소</button>
 				</div>
 			</div>
-
-
 			<div class="subscribe__item" id="subscribeModalItem-2">
 				<div class="subscribe__img">
 					<img src="#" onerror="this.src='/images/person.jpeg'"/>
