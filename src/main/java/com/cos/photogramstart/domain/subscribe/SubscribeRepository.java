@@ -8,9 +8,9 @@ public interface SubscribeRepository extends JpaRepository<Subscribe,Integer> {
 
     @Modifying
     @Query(value = "insert into subscribe(fromUserid ,toUserId , createDate) values(:fromUserId, :toUserId , now())", nativeQuery = true)
-    int mSubscribe(int fromUserId, int toUserId);
+    void mSubscribe(int fromUserId, int toUserId);
 
     @Modifying
     @Query(value = "delete from  subscribe where fromUserId =:fromUserId and toUserId =:toUserId", nativeQuery = true)
-    int mUnSubscribe(int fromUserId , int toUserId);
+    void mUnSubscribe(int fromUserId , int toUserId);
 }
