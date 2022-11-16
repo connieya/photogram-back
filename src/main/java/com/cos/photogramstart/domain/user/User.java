@@ -1,5 +1,6 @@
 package com.cos.photogramstart.domain.user;
 
+import com.cos.photogramstart.domain.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -32,6 +34,10 @@ public class User {
 
     private String profileImageUrl;
     private String role;
+
+    // user를 select 를 할때 해당 userId 로 등록된 image를 가져온다.
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // 연관 관계의 주인이 아니다.
+    private List<Image> images;
 
     private LocalDateTime createDate;
 
