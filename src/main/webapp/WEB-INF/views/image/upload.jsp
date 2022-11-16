@@ -7,7 +7,6 @@
         <main class="uploadContainer">
            <!--사진업로드 박스-->
             <section class="upload">
-               
                <!--사진업로드 로고-->
                 <div class="upload-top">
                     <a href="home.html" class="">
@@ -16,7 +15,6 @@
                     <p>사진 업로드</p>
                 </div>
                 <!--사진업로드 로고 end-->
-                
                 <!--사진업로드 Form-->
                 <form class="upload-form" >
                     <input  type="file" name="file"  onchange="imageChoose(this)"/>
