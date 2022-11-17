@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserProfileDto {
-    private int isPageOwner;
+    private boolean pageOwner;
+    private int imageCount;
     private User user;
 }

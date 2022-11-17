@@ -24,9 +24,9 @@
 		<!--유저정보 및 사진등록 구독하기-->
 		<div class="profile-right">
 			<div class="name-group">
-				<h2>${user.nickname}</h2>
+				<h2>${dto.user.nickname}</h2>
 				<c:choose>
-					<c:when test="${principal.user.id == user.id}">
+					<c:when test="${dto.pageOwner}">
 						<button class="cta" onclick="location.href='/image/upload'">사진등록</button>
 					</c:when>
 					<c:otherwise>
@@ -39,15 +39,15 @@
 			</div>
 			<div class="subscribe">
 				<ul>
-					<li><a href=""> 게시물<span>${user.images.size()}</span>
+					<li><a href=""> 게시물<span>${dto.imageCount}</span>
 					</a></li>
 					<li><a href="javascript:subscribeInfoModalOpen();"> 구독정보<span>2</span>
 					</a></li>
 				</ul>
 			</div>
 			<div class="state">
-				<h4>${user.bio}</h4>
-				<h4>${user.website}</h4>
+				<h4>${dto.user.bio}</h4>
+				<h4>${dto.user.website}</h4>
 			</div>
 		</div>
 		<!--유저정보 및 사진등록 구독하기-->
@@ -63,9 +63,9 @@
 			<!--게시물컨 그리드배열-->
 			<div class="tab-1-content-inner">
 				<!--아이템들-->
-				<c:forEach var="images" items="${user.images}">
+				<c:forEach var="images" items="${dto.user.images}">
 					<div class="img-box">
-						<a href=""> <img src="/upload/${image.postImageUrl}}" />
+						<a href=""> <img src="/upload/${images.postImageUrl}}" />
 						</a>
 						<div class="comment">
 							<a href="#" class=""> <i class="fas fa-heart"></i><span>0</span>

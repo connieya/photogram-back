@@ -24,7 +24,9 @@ public class UserService {
             throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
         });
         dto.setUser(userEntity);
-        dto.setIsPageOwner(pageUserId == principalId ? 1 : -1); // 1 : 로그인 유저 , -1 : 다른 유저
+        dto.setPageOwner(pageUserId == principalId);
+        dto.setImageCount(userEntity.getImages().size());
+        System.out.println("userEntity.getImages().size() = " + userEntity.getImages().size());
         return dto;
     }
 
