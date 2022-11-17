@@ -28,12 +28,12 @@ public class UserController {
 
     @GetMapping("/user/{id}/update")
     public String update(@PathVariable int id , @AuthenticationPrincipal PrincipalDetails details){
-        User user = details.getUser();
-        System.out.println("세션 정보 : "+user );
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principal = (PrincipalDetails) auth.getPrincipal();
-        System.out.println("직접 찾은 세션 정보 = "+ principal.getUser());
+//        User user = details.getUser();
+//        System.out.println("세션 정보 : "+user );
+//
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        PrincipalDetails principal = (PrincipalDetails) auth.getPrincipal();
+//        System.out.println("직접 찾은 세션 정보 = "+ principal.getUser());
         return "user/update";
     }
 }

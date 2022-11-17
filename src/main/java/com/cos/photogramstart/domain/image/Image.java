@@ -22,7 +22,7 @@ public class Image { // N : 1
     private String postImageUrl; // 사진을 전송받아서 사진을 서버에 특정 폴더에 저장
 
     @JoinColumn(name = "userId")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     private LocalDateTime createDate;
@@ -31,4 +31,5 @@ public class Image { // N : 1
     public void createDate() {
         this.createDate = LocalDateTime.now();
     }
+
 }

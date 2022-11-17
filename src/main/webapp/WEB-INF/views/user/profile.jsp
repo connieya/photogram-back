@@ -21,7 +21,6 @@
 			</div>
 		</div>
 		<!--유저이미지end-->
-
 		<!--유저정보 및 사진등록 구독하기-->
 		<div class="profile-right">
 			<div class="name-group">
