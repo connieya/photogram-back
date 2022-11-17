@@ -18,14 +18,14 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
-    public User select(int userId){
+    public UserProfileDto select(int pageUserId, int principalId){
         UserProfileDto dto = new UserProfileDto();
-
-
-        User user = userRepository.findById(userId).orElseThrow(() -> {
+        User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
             throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
         });
-        return user;
+        dto.setUser(userEntity);
+        dto.setIsPageOwner(pageUserId == principalId ? 1 : -1); // 1 : 로그인 유저 , -1 : 다른 유저
+        return dto;
     }
 
     @Transactional
