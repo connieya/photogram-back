@@ -18,13 +18,13 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
-
-		<!-- qlrm -->
+		<!-- https://mvnrepository.com/artifact/org.qlrm/qlrm -->
 		<dependency>
 			<groupId>org.qlrm</groupId>
 			<artifactId>qlrm</artifactId>
-			<version>2.1.1</version>
+			<version>3.0.4</version>
 		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
 		<dependency>

@@ -1,14 +1,15 @@
 package com.cos.photogramstart.service;
 
-import com.cos.photogramstart.domain.subscribe.Subscribe;
 import com.cos.photogramstart.domain.subscribe.SubscribeRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.web.dto.subscribe.SubscribeDto;
 import lombok.RequiredArgsConstructor;
+import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 @Service
@@ -27,7 +28,15 @@ public class SubscribeService {
         sb.append("FROM user u INNER JOIN subscribe s ");
         sb.append("ON u.id = s.toUserId ");
         sb.append("WHERE s.fromUserId = ? ");
-        return  null;
+
+        Query query = em.createNativeQuery(sb.toString())
+                .setParameter(1, principalId)
+                .setParameter(2, principalId)
+                .setParameter(3, pageUserId);
+
+        JpaResultMapper result = new JpaResultMapper();
+        List<SubscribeDto> subscribeDtos = result.list(query, SubscribeDto.class);
+        return  subscribeDtos;
     }
 
 
