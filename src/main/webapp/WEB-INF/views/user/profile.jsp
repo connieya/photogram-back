@@ -63,9 +63,9 @@
 			<!--게시물컨 그리드배열-->
 			<div class="tab-1-content-inner">
 				<!--아이템들-->
-				<c:forEach var="images" items="${dto.user.images}">
+				<c:forEach var="image" items="${dto.user.images}">
 					<div class="img-box">
-						<a href=""> <img src="/upload/${images.postImageUrl}}" />
+						<a href=""> <img src="/upload/${image.postImageUrl}}" />
 						</a>
 						<div class="comment">
 							<a href="#" class=""> <i class="fas fa-heart"></i><span>0</span>
@@ -82,7 +82,7 @@
 <!--로그아웃, 회원정보변경 모달-->
 <div class="modal-info" onclick="modalInfo()">
 	<div class="modal">
-		<button onclick="location.href='/user/${principal.user.id}/update'">회원정보 변경</button>
+		<button onclick="location.href='/user/${dto.user.id}/update'">회원정보 변경</button>
 		<button onclick="location.href='/logout'">로그아웃</button>
 		<button onclick="closePopup('.modal-info')">취소</button>
 	</div>
