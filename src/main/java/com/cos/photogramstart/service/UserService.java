@@ -31,9 +31,11 @@ public class UserService {
 
         int subscribeState = subscribeRepository.mSubscribeState(principalId, pageUserId);
         int subscribeCount = subscribeRepository.mSubscribeCount(pageUserId);
+        int subscribedCount = subscribeRepository.mSubscribedCount(pageUserId);
 
         dto.setSubscribeState(subscribeState == 1);
         dto.setSubscribeCount(subscribeCount);
+        dto.setSubscribedCount(subscribedCount);
         return dto;
     }
 

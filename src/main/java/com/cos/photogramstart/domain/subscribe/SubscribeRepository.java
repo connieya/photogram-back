@@ -20,4 +20,7 @@ public interface SubscribeRepository extends JpaRepository<Subscribe,Integer> {
     @Query(value = "SELECT count(*) FROM subscribe WHERE fromUserId =:pageUserId" , nativeQuery = true)
     int mSubscribeCount(int pageUserId);
 
+    @Query(value = "SELECT count(*) FROM subscribe WHERE toUserId =:pageUserId" , nativeQuery = true)
+    int mSubscribedCount(int pageUserId);
+
 }
