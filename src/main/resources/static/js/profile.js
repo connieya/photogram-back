@@ -15,7 +15,7 @@ function toggleSubscribe(toUserId , obj) {
 	if ($(obj).text() === "팔로우 취소") {
 		$.ajax({
 			type:"delete",
-			url: `/api/subsribe/${toUserId}`,
+			url: `/api/subscribe/${toUserId}`,
 			dataType : "json"
 		}).done(res => {
 			$(obj).text("팔로우 하기");
@@ -28,7 +28,7 @@ function toggleSubscribe(toUserId , obj) {
 	} else {
 		$.ajax({
 			type:"post",
-			url: `/api/subsribe/${toUserId}`,
+			url: `/api/subscribe/${toUserId}`,
 			dataType : "json"
 		}).done(res => {
 			$(obj).text("팔로우 취소");

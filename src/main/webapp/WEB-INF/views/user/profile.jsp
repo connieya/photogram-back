@@ -112,7 +112,7 @@
 <div class="modal-subscribe">
 	<div class="subscribe">
 		<div class="subscribe-header">
-			<span>구독정보</span>
+			<span>팔로잉</span>
 			<button onclick="modalClose()">
 				<i class="fas fa-times"></i>
 			</button>

@@ -22,12 +22,12 @@ public class SubscribeApiController {
     @PostMapping("/api/subscribe/{toUserId}")
     public ResponseEntity<?> subscribe(@AuthenticationPrincipal PrincipalDetails principalDetails , @PathVariable int toUserId){
         subscribeService.subscribe(principalDetails.getUser().getId() , toUserId);
-        return new ResponseEntity<>(new RespDto<>(1, "구독 성공",null), HttpStatus.OK);
+        return new ResponseEntity<>(new RespDto<>(1, "팔로우 성공",null), HttpStatus.OK);
     }
 
     @DeleteMapping("/api/subscribe/{toUserId}")
     public ResponseEntity<?> unSubscribe(@AuthenticationPrincipal PrincipalDetails principalDetails , @PathVariable int toUserId) {
         subscribeService.unSubscribe(principalDetails.getUser().getId() , toUserId);
-        return new ResponseEntity<>(new RespDto<>(1, "구독 취소 성공",null), HttpStatus.OK);
+        return new ResponseEntity<>(new RespDto<>(1, "팔로우 취소 성공",null), HttpStatus.OK);
     }
 }
