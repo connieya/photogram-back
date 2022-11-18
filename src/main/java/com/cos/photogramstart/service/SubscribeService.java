@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
@@ -15,9 +16,17 @@ import java.util.List;
 public class SubscribeService {
 
     private final SubscribeRepository subscribeRepository;
+    private final EntityManager em;
 
     @Transactional(readOnly = true)
     public List<SubscribeDto> select(int principalId, int pageUserId) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SELECT u.id , u.username , u.profileImageUrl , ");
+        sb.append("if ((SELECT 1 FROM subscribe WHERE fromUserId = ? AND toUserId = u.id),1 ,0) subscribeState , ");
+        sb.append("if ((? =u.id) ,1,0) equalUserState ");
+        sb.append("FROM user u INNER JOIN subscribe s ");
+        sb.append("ON u.id = s.toUserId ");
+        sb.append("WHERE s.fromUserId = ? ");
         return  null;
     }
 
