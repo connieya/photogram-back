@@ -1,16 +1,4 @@
-/**
- 1. 유저 프로파일 페이지
- (1) 유저 프로파일 페이지 팔로우하기, 팔로우취소
- (2) 팔로우 정보 모달 보기
- (3) 팔로우 정보 모달에서 구독하기, 팔로우취소
- (4) 유저 프로필 사진 변경
- (5) 사용자 정보 메뉴 열기 닫기
- (6) 사용자 정보(회원정보, 로그아웃, 닫기) 모달
- (7) 사용자 프로파일 이미지 메뉴(사진업로드, 취소) 모달
- (8) 팔로우 정보 모달 닫기
- */
-
-// (1) 유저 프로파일 페이지 구독하기, 구독취소
+//  유저 프로파일 페이지 팔로우, 팔로우 취소
 function toggleSubscribe(toUserId, obj) {
     if ($(obj).text() === "팔로우 취소") {
         $.ajax({
@@ -40,7 +28,6 @@ function toggleSubscribe(toUserId, obj) {
     }
 }
 
-// (2) 팔로우 정보  모달 보기
 function subscribeInfoModalOpen(pageUserId) {
     $(".modal-subscribe").css("display", "flex");
 
@@ -71,9 +58,9 @@ function getSubscribeModalItem(user) {
 
     if(!user.eqaulUserState){
         if(user.subscribeState){
-            item += `<button className="cta blue" onClick="toggleSubscribeModal(this)">팔로우 취소</button>`;
+            item += `<button className="cta blue" onClick="toggleSubscribe(${user.id},this)">팔로우 취소</button>`;
         }else {
-            item += `<button className="cta" onClick="toggleSubscribeModal(this)">팔로우 하기</button>`;
+            item += `<button className="cta" onClick="toggleSubscribe(${user.id},this)">팔로우 하기</button>`;
         }
     }
        item +=`
@@ -83,16 +70,6 @@ function getSubscribeModalItem(user) {
 }
 
 
-// (3) 팔로우 정보 모달에서 팔로우 하기, 팔로우 취소
-function toggleSubscribeModal(obj) {
-    if ($(obj).text() === "팔로우 취소") {
-        $(obj).text("팔로우 하기");
-        $(obj).toggleClass("blue");
-    } else {
-        $(obj).text("팔로우 취소");
-        $(obj).toggleClass("blue");
-    }
-}
 
 // (4) 유저 프로파일 사진 변경 (완)
 function profileImageUpload() {
