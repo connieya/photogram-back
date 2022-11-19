@@ -379,6 +379,78 @@
   align-items: center;
 }
 
+
+.modal-subscribed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal-subscribed .subscribed {
+  width: 600px;
+  height: 500px;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.modal-subscribed .subscribed .subscribed-header {
+  text-align: center;
+  line-height: 50px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+}
+.modal-subscribed .subscribed .subscribed-header button {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background-color: transparent;
+  border: 0;
+}
+.modal-subscribed .subscribed .subscribed-header button i {
+  font-size: 20px;
+}
+.modal-subscribed .subscribed .subscribed-list {
+  overflow: hidden;
+  overflow-y: auto;
+}
+.modal-subscribed .subscribed .subscribed-list .subscribed__item {
+  display: flex;
+  height: 70px;
+  padding: 10px;
+}
+.modal-subscribed .subscribed .subscribed-list .subscribed__item .subscribed__img {
+  width: 80px;
+  text-align: center;
+}
+.modal-subscribed .subscribed .subscribed-list .subscribed__item .subscribed__img {
+  width: 80px;
+  text-align: center;
+}
+.modal-subscribed .subscribed .subscribed-list .subscribed__item .subscribed__img img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.modal-subscribed .subscribed .subscribed-list .subscribed__item .subscribed__text {
+  padding-top: 5px;
+}
+.modal-subscribed .subscribed .subscribed-list .subscribed__item .subscribed__text h2 {
+  font-size: 16px;
+  line-height: 50px;
+}
+.modal-subscribed .subscribed .subscribed-list .subscribed__item .subscribed__btn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
 .cta {
   margin-right: 10px;
   padding: 10px 10px;

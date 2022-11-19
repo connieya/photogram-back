@@ -37,7 +37,7 @@ function subscribedInfoModalOpen(pageUserId) {
     }).done(res => {
         console.log(res)
         res.data.forEach((user) =>{
-            let item = getSubscribeModalItem(user)
+            let item = getSubscribedModalItem(user)
             $("#subscribedModalList").append(item)
         });
     }).fail(error => {
@@ -63,6 +63,30 @@ function subscribeInfoModalOpen(pageUserId) {
         console.log(error)
     });
 }
+function getSubscribedModalItem(user) {
+    let item =
+        `<div class="subscribed__item" id="subscribedModalItem-${user.id}">
+         <div class="subscribed__img">
+            <img src="/upload/${user.profileImageUrl}" onerror="this.src='/images/person.jpeg'"/>
+           </div>
+           <div class="subscribed__text">
+            <h2>${user.username}</h2>
+            </div>
+        <div class="subscribed__btn">`;
+
+    if(!user.eqaulUserState){
+        if(user.subscribeState){
+            item += `<button className="cta blue" onClick="toggleSubscribe(${user.id},this)">팔로우 취소</button>`;
+        }else {
+            item += `<button className="cta" onClick="toggleSubscribe(${user.id},this)">팔로우 하기</button>`;
+        }
+    }
+    item +=`
+        </div>
+        </div>`;
+    return item;
+}
+
 
 function getSubscribeModalItem(user) {
     let item =

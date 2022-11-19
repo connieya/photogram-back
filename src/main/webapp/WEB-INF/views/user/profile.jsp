@@ -107,7 +107,7 @@
 	</div>
 </div>
 
-<!--프로필사진 바꾸기 모달end-->
+
 <div class="modal-subscribe">
 	<div class="subscribe">
 		<div class="subscribe-header">
@@ -123,8 +123,8 @@
 </div>
 
 <div class="modal-subscribed">
-	<div class="subscribe">
-		<div class="subscribe-header">
+	<div class="subscribed">
+		<div class="subscribed-header">
 			<span>팔로워</span>
 			<button onclick="modalClose()">
 				<i class="fas fa-times"></i>
