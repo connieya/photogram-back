@@ -32,7 +32,7 @@ function subscribedInfoModalOpen(pageUserId) {
     $(".modal-subscribed").css("display", "flex");
 
     $.ajax({
-        url: `/api/user/${pageUserId}/subscribe`,
+        url: `/api/user/${pageUserId}/subscribed`,
         dataType: "json"
     }).done(res => {
         console.log(res)

@@ -35,9 +35,16 @@ public class UserApiController {
 
     @GetMapping("/api/user/{pageUserId}/subscribe")
     public ResponseEntity<?> subscribeList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<SubscribeDto> subscribeDto = subscribeService.select(principalDetails.getUser().getId(),pageUserId);
+        List<SubscribeDto> subscribeDto = subscribeService.selectSubscribe(principalDetails.getUser().getId(),pageUserId);
 
         return new ResponseEntity<>(new RespDto<>(1,"팔로잉 리스트 불러오기 성공",subscribeDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/user/{pageUserId}/subscribed")
+    public ResponseEntity<?> subscribedList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        List<SubscribeDto> subscribeDto = subscribeService.selectSubscribed(principalDetails.getUser().getId(),pageUserId);
+
+        return new ResponseEntity<>(new RespDto<>(1,"팔로워 리스트 불러오기 성공",subscribeDto), HttpStatus.OK);
     }
 
     @PutMapping("/api/user/{id}")
