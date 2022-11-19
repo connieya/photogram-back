@@ -14,7 +14,7 @@ function storyLoad() {
 		dataType : "json"
 	}).done(res => {
 		console.log("스토리 가져오기" ,res);
-		res.data.forEach(image => {
+		res.data.content.forEach(image => {
 			let storyItem = getStoryItem(image);
 			$("#storyList").append(storyItem);
 		});
@@ -67,7 +67,7 @@ function getStoryItem(image) {
 
 // (2) 스토리 스크롤 페이징하기
 $(window).scroll(() => {
-
+	console.log("스크롤중...")
 });
 
 
