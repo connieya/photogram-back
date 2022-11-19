@@ -27,7 +27,26 @@ function toggleSubscribe(toUserId, obj) {
 
     }
 }
+// 팔로워 모달
+function subscribedInfoModalOpen(pageUserId) {
+    $(".modal-subscribed").css("display", "flex");
 
+    $.ajax({
+        url: `/api/user/${pageUserId}/subscribe`,
+        dataType: "json"
+    }).done(res => {
+        console.log(res)
+        res.data.forEach((user) =>{
+            let item = getSubscribeModalItem(user)
+            $("#subscribedModalList").append(item)
+        });
+    }).fail(error => {
+        console.log(error)
+    });
+}
+
+
+// 팔로잉 모달
 function subscribeInfoModalOpen(pageUserId) {
     $(".modal-subscribe").css("display", "flex");
 
@@ -70,8 +89,6 @@ function getSubscribeModalItem(user) {
 }
 
 
-
-// (4) 유저 프로파일 사진 변경 (완)
 function profileImageUpload() {
     $("#userProfileImageInput").click();
 

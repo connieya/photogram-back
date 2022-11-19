@@ -48,7 +48,7 @@
 				<ul>
 					<li><a href=""> 게시물<span>${dto.imageCount}</span>
 					</a></li>
-                    <li><a href="javascript:">팔로워<span>${dto.subscribedCount}</span>
+                    <li><a href="javascript:subscribedInfoModalOpen(${dto.user.id})">팔로워<span>${dto.subscribedCount}</span>
                     </a></li>
 					<li><a href="javascript:subscribeInfoModalOpen(${dto.user.id});">팔로잉<span>${dto.subscribeCount}</span>
 					</a></li>
@@ -108,7 +108,6 @@
 </div>
 
 <!--프로필사진 바꾸기 모달end-->
-
 <div class="modal-subscribe">
 	<div class="subscribe">
 		<div class="subscribe-header">
@@ -119,10 +118,21 @@
 		</div>
 
 		<div class="subscribe-list" id="subscribeModalList">
-
 		</div>
 	</div>
+</div>
 
+<div class="modal-subscribed">
+	<div class="subscribe">
+		<div class="subscribe-header">
+			<span>팔로워</span>
+			<button onclick="modalClose()">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+		<div class="subscribed-list" id="subscribedModalList">
+		</div>
+	</div>
 </div>
 
 
