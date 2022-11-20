@@ -84,17 +84,44 @@ $(window).scroll(() => {
 });
 
 
-// (3) 좋아요, 안좋아요
+// (3) 좋아요, 좋아요 취소
 function toggleLike(imageId) {
 	let likeIcon = $(`#storyLikeIcon-${imageId}`);
 	if (likeIcon.hasClass("far")) {
-		likeIcon.addClass("fas");
-		likeIcon.addClass("active");
-		likeIcon.removeClass("far");
+		$.ajax({
+			type: "post",
+			url: `/api/image/${imageId}/likes`,
+			dataType: "json"
+
+		}).done(res=>{
+			let likeCountStr = $(`#storyLikeCount-${imageId}`).text();
+			let likeCount = Number(likeCountStr)+1;
+			$(`#storyLikeCount-${imageId}`).text(likeCount);
+				likeIcon.addClass("fas");
+				likeIcon.addClass("active");
+				likeIcon.removeClass("far");
+		}).fail(error =>{
+			console.log("오류 " , err)
+		});
+
+
 	} else {
-		likeIcon.removeClass("fas");
-		likeIcon.removeClass("active");
-		likeIcon.addClass("far");
+		$.ajax({
+			type: "delete",
+			url: `/api/image/${imageId}/likes`,
+			dataType: "json"
+
+		}).done(res=>{
+			let likeCountStr = $(`#storyLikeCount-${imageId}`).text();
+			let likeCount = Number(likeCountStr)-1;
+			$(`#storyLikeCount-${imageId}`).text(likeCount);
+				likeIcon.removeClass("fas");
+				likeIcon.removeClass("active");
+				likeIcon.addClass("far");
+			}).fail(error =>{
+			console.log("오류 " , err)
+		});
+
 	}
 }
 
