@@ -25,7 +25,7 @@ public class Likes {
     private int id;
 
     @JoinColumn(name = "imageId")
-    @ManyToOne
+    @ManyToOne // 연관관계의 주인
     private Image image;
 
     @JoinColumn(name = "userId")

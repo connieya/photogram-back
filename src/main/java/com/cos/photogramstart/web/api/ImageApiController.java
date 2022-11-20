@@ -32,12 +32,12 @@ public class ImageApiController {
     @PostMapping("/api/image/{imageId}/likes")
     public ResponseEntity<?> like(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){
         likesService.like(imageId , principalDetails.getUser().getId());
-        return null;
+        return new ResponseEntity<>(new RespDto<>(1,"좋아요 성공",null),HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/image/{imageId}/likes")
     public ResponseEntity<?> unLike(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){
         likesService.unLike(imageId,principalDetails.getUser().getId());
-        return null;
+        return new ResponseEntity<>(new RespDto<>(1,"좋아요 취소 성공",null),HttpStatus.OK);
     }
 }

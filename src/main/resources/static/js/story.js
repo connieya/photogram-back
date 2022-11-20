@@ -39,8 +39,14 @@ function getStoryItem(image) {
 </div>
 <div class="sl__item__contents">
 <div class="sl__item__contents__icon">
-<button>
-<i class="fas fa-heart active" id="storyLikeIcon-${image.id}" onclick="toggleLike(${image.id})"></i>
+<button>`;
+if(image.likeState){
+	item += `<i class="fas fa-heart active" id="storyLikeIcon-${image.id}" onclick="toggleLike(${image.id})"></i>`;
+}else {
+	item += `<i class="far fa-heart" id="storyLikeIcon-${image.id}" onclick="toggleLike(${image.id})"></i>`;
+}
+
+	item +=`
 </button>
 </div>
 <span class="like"><b id="storyLikeCount-${image.id}">3 </b>likes</span>
@@ -70,8 +76,8 @@ function getStoryItem(image) {
 // (2) 스토리 스크롤 페이징하기
 $(window).scroll(() => {
 	console.log("스크롤중...")
-	let checkNum = $(window).scrollTop() - $(document).height() - $(window).height();
-	if(checkNum < 1 && checkNum > -1) {
+	let checkNum = $(window).scrollTop() - ($(document).height() - $(window).height());
+	if(checkNum < 10 && checkNum > -10) {
 		page++;
 		storyLoad();
 	}
