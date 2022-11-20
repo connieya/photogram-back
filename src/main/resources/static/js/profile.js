@@ -72,6 +72,7 @@ function getSubscribedModalItem(user) {
            <div class="subscribed__text">
             <h2>${user.username}</h2>
             </div>
+            
         <div class="subscribed__btn">`;
 
     if(!user.eqaulUserState){
