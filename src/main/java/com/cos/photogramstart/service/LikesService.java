@@ -10,10 +10,10 @@ public class LikesService {
     private final LikesRepository likesRepository;
 
     public void like(int imageId , int principalId){
-
+        likesRepository.mLike(imageId,principalId);
     }
 
     public void unLike(int imageId , int principalId){
-
+        likesRepository.mUnLike(imageId,principalId);
     }
 }
