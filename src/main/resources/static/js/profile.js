@@ -11,8 +11,6 @@ function toggleSubscribe(toUserId, obj) {
         }).fail(error => {
             console.log("팔로우 취소 실패");
         });
-
-
     } else {
         $.ajax({
             type: "post",
@@ -63,6 +61,7 @@ function subscribeInfoModalOpen(pageUserId) {
         console.log(error)
     });
 }
+
 function getSubscribedModalItem(user) {
     let item =
         `<div class="subscribed__item" id="subscribedModalItem-${user.id}">
@@ -72,7 +71,6 @@ function getSubscribedModalItem(user) {
            <div class="subscribed__text">
             <h2>${user.username}</h2>
             </div>
-            
         <div class="subscribed__btn">`;
 
     if(!user.eqaulUserState){
@@ -114,23 +112,43 @@ function getSubscribeModalItem(user) {
 }
 
 
-function profileImageUpload() {
+function profileImageUpload(pageUserId , principalId) {
+    if(pageUserId !== principalId) {
+        alert("권한이 없습니다.")
+    }
+
     $("#userProfileImageInput").click();
 
     $("#userProfileImageInput").on("change", (e) => {
         let f = e.target.files[0];
-
         if (!f.type.match("image.*")) {
             alert("이미지를 등록해야 합니다.");
             return;
         }
 
-        // 사진 전송 성공시 이미지 변경
-        let reader = new FileReader();
-        reader.onload = (e) => {
-            $("#userProfileImage").attr("src", e.target.result);
-        }
-        reader.readAsDataURL(f); // 이 코드 실행시 reader.onload 실행됨.
+        let profileImageForm = $("#userProfileImageForm")[0];
+
+        //FormData 객체를 이용하면 form 태그의 필드와
+        // 그 값을 나타내는 일련의 key/value 쌍을 담을 수 있다.
+        let formData = new FormData(profileImageForm);
+        $.ajax({
+            type: "put",
+            url : `/api/user/${principalId}/profileImageUrl`,
+            data : formData,
+            contentType: false,
+            processData : false,
+            enctype : "multipart/form-data",
+            dataType : "json"
+        }).done(res => {
+            // 사진 전송 성공시 이미지 변경
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                $("#userProfileImage").attr("src", e.target.result);
+            }
+            reader.readAsDataURL(f); // 이 코드 실행시 reader.onload 실행됨.
+        }).fail(error =>{
+            console.log("오류 ",error);
+        });
     });
 }
 
