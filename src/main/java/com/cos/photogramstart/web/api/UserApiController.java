@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -32,6 +33,13 @@ public class UserApiController {
 
     private final UserService userService;
     private final SubscribeService subscribeService;
+
+    @PutMapping("/api/user/{principalId}/profileImageUrl")
+    public ResponseEntity<?> profileImageUrlUpdate(@PathVariable int principalId , MultipartFile profileImageFile ,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        User userEntity = userService.updateImage(principalId,profileImageFile);
+        principalDetails.setUser(userEntity);
+        return new ResponseEntity<>(new RespDto<>(1,"프로필 사진 변경",null),HttpStatus.OK);
+    }
 
     @GetMapping("/api/user/{pageUserId}/subscribe")
     public ResponseEntity<?> subscribeList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
