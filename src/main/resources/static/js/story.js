@@ -127,10 +127,8 @@ function toggleLike(imageId) {
 
 // (4) 댓글쓰기
 function addComment() {
-
 	let commentInput = $("#storyCommentInput-1");
 	let commentList = $("#storyCommentList-1");
-
 	let data = {
 		content: commentInput.val()
 	}

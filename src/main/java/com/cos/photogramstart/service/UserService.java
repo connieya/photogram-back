@@ -36,6 +36,11 @@ public class UserService {
         dto.setSubscribeState(subscribeState == 1);
         dto.setSubscribeCount(subscribeCount);
         dto.setSubscribedCount(subscribedCount);
+
+        // 좋아요 개수
+        userEntity.getImages().forEach(image -> {
+            image.setLikeCount(image.getLikes().size());
+        });
         return dto;
     }
 

@@ -15,7 +15,6 @@
 					<input type="file" name="profileImageFile" style="display: none;"
 						id="userProfileImageInput" />
 				</form>
-
 				<img class="profile-image" src="#"
 					onerror="this.src='/images/person.jpeg'" id="userProfileImage" />
 			</div>
@@ -62,7 +61,6 @@
 		<!--유저정보 및 사진등록 구독하기-->
 	</div>
 </section>
-
 <!--게시물컨섹션-->
 <section id="tab-content">
 	<!--게시물컨컨테이너-->
@@ -74,10 +72,10 @@
 				<!--아이템들-->
 				<c:forEach var="image" items="${dto.user.images}">
 					<div class="img-box">
-						<a href=""> <img src="/upload/${image.postImageUrl}}" />
+						<a href=""> <img src="/upload/${image.postImageUrl}" />
 						</a>
 						<div class="comment">
-							<a href="#" class=""> <i class="fas fa-heart"></i><span>0</span>
+							<a href="#" class=""> <i class="fas fa-heart"></i><span>${image.likeCount}</span>
 							</a>
 						</div>
 					</div>
