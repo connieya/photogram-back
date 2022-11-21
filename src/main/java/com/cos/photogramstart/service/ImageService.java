@@ -24,6 +24,12 @@ public class ImageService {
     private final ImageRepository imageRepository;
 
     @Transactional(readOnly = true)
+    public List<Image> popular(){
+        return imageRepository.mPopular();
+    }
+
+
+    @Transactional(readOnly = true)
     public Page<Image> select(int principalId , Pageable pageable ){
         Page<Image> images = imageRepository.mStory(principalId ,pageable);
         images.forEach(image ->{
