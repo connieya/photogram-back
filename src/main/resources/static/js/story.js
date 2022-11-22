@@ -1,12 +1,3 @@
-/**
-	2. 스토리 페이지
-	(1) 스토리 로드하기
-	(2) 스토리 스크롤 페이징하기
-	(3) 좋아요, 안좋아요
-	(4) 댓글쓰기
-	(5) 댓글삭제
- */
-
 // (1) 스토리 로드하기
 let page = 0;
 
@@ -55,7 +46,7 @@ if(image.likeState){
 <div class="sl__item__contents__content">
 <p>${image.caption}</p>
 </div>
-<div id="storyCommentList-1">
+<div id="storyCommentList-${image.id}">
 <div class="sl__item__contents__comment" id="storyCommentItem-1"">
 <p>
 <b>Lovely :</b> 부럽습니다.
@@ -66,16 +57,14 @@ if(image.likeState){
 </div>
 </div>
 <div class="sl__item__input">
-<input type="text" placeholder="댓글 달기..." id="storyCommentInput-1" />
-<button type="button" onClick="addComment()">게시</button>
+<input type="text" placeholder="댓글 달기..." id="storyCommentInput-${image.id}" />
+<button type="button" onClick="addComment(${image.id})">게시</button>
 </div>
-
 </div>
 </div>`;
  return item
 }
-
-// (2) 스토리 스크롤 페이징하기
+// 스토리 스크롤 페이징하기
 $(window).scroll(() => {
 	console.log("스크롤중...")
 	let checkNum = $(window).scrollTop() - ($(document).height() - $(window).height());
@@ -85,8 +74,7 @@ $(window).scroll(() => {
 	}
 });
 
-
-// (3) 좋아요, 좋아요 취소
+// 좋아요, 좋아요 취소
 function toggleLike(imageId) {
 	let likeIcon = $(`#storyLikeIcon-${imageId}`);
 	if (likeIcon.hasClass("far")) {
@@ -127,11 +115,12 @@ function toggleLike(imageId) {
 	}
 }
 
-// (4) 댓글쓰기
-function addComment() {
-	let commentInput = $("#storyCommentInput-1");
-	let commentList = $("#storyCommentList-1");
+//  댓글쓰기
+function addComment(imageId) {
+	let commentInput = $(`#storyCommentInput-${imageId}`);
+	let commentList = $(`#storyCommentList-${imageId}`);
 	let data = {
+		imageId : imageId,
 		content: commentInput.val()
 	}
 
@@ -139,6 +128,18 @@ function addComment() {
 		alert("댓글을 작성해주세요!");
 		return;
 	}
+	$.ajax({
+		type :"post",
+		url : `/api/comment`,
+		data :JSON.stringify(data),
+		contentType : "application/json; charset=utf-8",
+		dataType : "json"
+
+	}).done(res=>{
+		console.log(res)
+	}).fail(error =>{
+		console.log(error)
+	});
 
 	let content = `
 			  <div class="sl__item__contents__comment" id="storyCommentItem-2""> 
