@@ -13,8 +13,9 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public Comment write(){
-        return null;
+    public Comment write(String content , int imageId , int userId)
+    {
+        return commentRepository.mWrite(content,imageId,userId);
     }
 
     @Transactional
