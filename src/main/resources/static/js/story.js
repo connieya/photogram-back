@@ -38,7 +38,6 @@ if(image.likeState){
 }else {
 	item += `<i class="far fa-heart" id="storyLikeIcon-${image.id}" onclick="toggleLike(${image.id})"></i>`;
 }
-
 	item +=`
 </button>
 </div>
@@ -46,15 +45,19 @@ if(image.likeState){
 <div class="sl__item__contents__content">
 <p>${image.caption}</p>
 </div>
-<div id="storyCommentList-${image.id}">
-<div class="sl__item__contents__comment" id="storyCommentItem-1"">
+<div id="storyCommentList-${image.id}">`;
+
+image.comments.forEach(comment => {
+	item += `<div class="sl__item__contents__comment" id="storyCommentItem-${comment.id}">
 <p>
-<b>Lovely :</b> 부럽습니다.
+<b>${comment.user.username} :</b> ${comment.content}
 </p>
 <button>
 <i class="fas fa-times"></i>
 </button>
-</div>
+</div>`;
+});
+item += `
 </div>
 <div class="sl__item__input">
 <input type="text" placeholder="댓글 달기..." id="storyCommentInput-${image.id}" />
@@ -82,7 +85,6 @@ function toggleLike(imageId) {
 			type: "post",
 			url: `/api/image/${imageId}/likes`,
 			dataType: "json"
-
 		}).done(res=>{
 			let likeCountStr = $(`#storyLikeCount-${imageId}`).text();
 			let likeCount = Number(likeCountStr)+1;
@@ -93,8 +95,6 @@ function toggleLike(imageId) {
 		}).fail(error =>{
 			console.log("오류 " , err)
 		});
-
-
 	} else {
 		$.ajax({
 			type: "delete",
@@ -123,7 +123,6 @@ function addComment(imageId) {
 		imageId : imageId,
 		content: commentInput.val()
 	}
-
 	if (data.content === "") {
 		alert("댓글을 작성해주세요!");
 		return;
@@ -136,21 +135,20 @@ function addComment(imageId) {
 		dataType : "json"
 
 	}).done(res=>{
-		console.log(res)
-	}).fail(error =>{
-		console.log(error)
-	});
-
-	let content = `
-			  <div class="sl__item__contents__comment" id="storyCommentItem-2""> 
+		let comment = res.data;
+		let content = `
+			  <div class="sl__item__contents__comment" id="storyCommentItem-${comment.id}"> 
 			    <p>
-			      <b>GilDong :</b>
-			      댓글 샘플입니다.
+			      <b>${comment.user.username} :</b>
+			      ${comment.content}
 			    </p>
 			    <button><i class="fas fa-times"></i></button>
 			  </div>
 	`;
-	commentList.prepend(content);
+		commentList.append(content);
+	}).fail(error =>{
+		console.log(error)
+	});
 	commentInput.val("");
 }
 
