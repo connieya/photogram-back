@@ -55,7 +55,7 @@ image.comments.forEach(comment => {
 <b>${comment.user.username} :</b> ${comment.content}
 </p>`;
 if(principalId == comment.user.id){
-	item += '<button>\n' +
+	item += '<button onclick="deleteComment(${comment.id}})">\n' +
 		'<i class="fas fa-times"></i>\n' +
 		'</button>';
 }
@@ -156,9 +156,17 @@ function addComment(imageId) {
 	commentInput.val("");
 }
 
-// (5) 댓글 삭제
-function deleteComment() {
-
+//  댓글 삭제
+function deleteComment(commentId) {
+	$. ajax({
+		type : "delete",
+		url : `/api/comment/${commentId}`,
+		dataType : 'json'
+	}).done(res =>{
+		console.log('성공',res);
+	}).fail(error =>{
+		console.log("erorr = > " ,error);
+	});
 }
 
 
