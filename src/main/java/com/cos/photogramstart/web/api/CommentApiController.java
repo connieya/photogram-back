@@ -20,12 +20,13 @@ public class CommentApiController {
     @PostMapping("/api/comment")
     public ResponseEntity<?> commentService(@RequestBody CommentDto commentDto , @AuthenticationPrincipal PrincipalDetails principalDetails){
         Comment comment = commentService.write(commentDto.getContent(), commentDto.getImageId(), principalDetails.getUser().getId());
-        return new ResponseEntity<>(new RespDto<>(1,"댓글쓰기 성공",comment), HttpStatus.CREATED);
+        return new ResponseEntity<>(new RespDto<>(1,"댓글 쓰기 성공",comment), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/comment/{id}")
     public ResponseEntity<?> commentDelete(@PathVariable int id){
-        return null;
+        commentService.delete(id);
+        return new ResponseEntity<>(new RespDto<>(1,"댓글 삭제 성공",null), HttpStatus.OK);
     }
 
 }

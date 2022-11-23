@@ -55,11 +55,9 @@ image.comments.forEach(comment => {
 <b>${comment.user.username} :</b> ${comment.content}
 </p>`;
 if(principalId == comment.user.id){
-	item += '<button onclick="deleteComment(${comment.id}})">\n' +
-		'<i class="fas fa-times"></i>\n' +
-		'</button>';
+	item += '<button onclick="deleteComment(${comment.id})">' +
+		'<i class="fas fa-times"></i></button>';
 }
-
 	item +=`
 </div>`;
 });
@@ -146,7 +144,8 @@ function addComment(imageId) {
 			      <b>${comment.user.username} :</b>
 			      ${comment.content}
 			    </p>
-			    <button><i class="fas fa-times"></i></button>
+			    <button onclick="deleteComment(${comment.id})"><i class="fas fa-times"></i></button>
+		
 			  </div>
 	`;
 		commentList.append(content);
@@ -158,14 +157,16 @@ function addComment(imageId) {
 
 //  댓글 삭제
 function deleteComment(commentId) {
-	$. ajax({
+	alert(commentId)
+	$.ajax({
 		type : "delete",
 		url : `/api/comment/${commentId}`,
 		dataType : 'json'
 	}).done(res =>{
 		console.log('성공',res);
+		$(`#storyCommentItem-${commentId}`).remove();
 	}).fail(error =>{
-		console.log("erorr = > " ,error);
+		console.log("erorr => " ,error);
 	});
 }
 
