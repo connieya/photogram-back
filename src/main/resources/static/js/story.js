@@ -1,4 +1,6 @@
-// (1) 스토리 로드하기
+
+let principalId = $("#principalId").val();
+
 let page = 0;
 
 function storyLoad() {
@@ -51,10 +53,14 @@ image.comments.forEach(comment => {
 	item += `<div class="sl__item__contents__comment" id="storyCommentItem-${comment.id}">
 <p>
 <b>${comment.user.username} :</b> ${comment.content}
-</p>
-<button>
-<i class="fas fa-times"></i>
-</button>
+</p>`;
+if(principalId == comment.user.id){
+	item += '<button>\n' +
+		'<i class="fas fa-times"></i>\n' +
+		'</button>';
+}
+
+	item +=`
 </div>`;
 });
 item += `
@@ -100,7 +106,6 @@ function toggleLike(imageId) {
 			type: "delete",
 			url: `/api/image/${imageId}/likes`,
 			dataType: "json"
-
 		}).done(res=>{
 			let likeCountStr = $(`#storyLikeCount-${imageId}`).text();
 			let likeCount = Number(likeCountStr)-1;
@@ -111,7 +116,6 @@ function toggleLike(imageId) {
 			}).fail(error =>{
 			console.log("오류 " , err)
 		});
-
 	}
 }
 
