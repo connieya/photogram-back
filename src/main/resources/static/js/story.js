@@ -54,10 +54,11 @@ image.comments.forEach(comment => {
 <p>
 <b>${comment.user.username} :</b> ${comment.content}
 </p>`;
-if(principalId == comment.user.id){
-	item += '<button onclick="deleteComment(${comment.id})">' +
-		'<i class="fas fa-times"></i></button>';
-}
+	if(principalId == comment.user.id){
+		item += `<button onclick="deleteComment(${comment.id})">
+										<i class="fas fa-times"></i>
+									</button>`;
+	}
 	item +=`
 </div>`;
 });
@@ -151,13 +152,13 @@ function addComment(imageId) {
 		commentList.append(content);
 	}).fail(error =>{
 		console.log(error)
+		alert(error.responseJSON.data.content);
 	});
 	commentInput.val("");
 }
 
 //  댓글 삭제
 function deleteComment(commentId) {
-	alert(commentId)
 	$.ajax({
 		type : "delete",
 		url : `/api/comment/${commentId}`,
