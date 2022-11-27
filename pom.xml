@@ -18,6 +18,14 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>5.3.24</version>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/org.qlrm/qlrm -->
 		<dependency>
 			<groupId>org.qlrm</groupId>
