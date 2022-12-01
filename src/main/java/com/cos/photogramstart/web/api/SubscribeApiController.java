@@ -18,7 +18,6 @@ public class SubscribeApiController {
 
     private final SubscribeService subscribeService;
 
-
     @PostMapping("/api/subscribe/{toUserId}")
     public ResponseEntity<?> subscribe(@AuthenticationPrincipal PrincipalDetails principalDetails , @PathVariable int toUserId){
         subscribeService.subscribe(principalDetails.getUser().getId() , toUserId);
