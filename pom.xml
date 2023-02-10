@@ -8,6 +8,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.4.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
+
 	</parent>
 	<groupId>com.cos</groupId>
 	<artifactId>photogram-start</artifactId>
@@ -18,12 +19,27 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>5.3.6</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>5.3.24</version>
 		</dependency>
+
 
 
 		<!-- https://mvnrepository.com/artifact/org.qlrm/qlrm -->
@@ -38,7 +54,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>2.7.4</version>
 		</dependency>
 
 
@@ -49,11 +64,13 @@
 		</dependency>
 
 		<!-- JSP 템플릿 엔진 -->
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jasper -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jasper</artifactId>
-			<version>9.0.43</version>
+			<version>9.0.70</version>
 		</dependency>
+
 
 		<!-- JSTL -->
 		<dependency>
@@ -114,7 +131,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${parent.version}</version>
 				<configuration>
 					<excludes>
 						<exclude>

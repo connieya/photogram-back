@@ -15,15 +15,12 @@ public class SignupDto {
     private String password;
     @NotBlank
     private String email;
-    @NotBlank
-    private String nickname;
 
     public User toEntity(){
         return User.builder()
                 .username(username)
                 .password(password)
                 .email(email)
-                .nickname(nickname)
                 .build();
     }
 }
