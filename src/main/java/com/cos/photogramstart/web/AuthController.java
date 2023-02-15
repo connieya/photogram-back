@@ -31,7 +31,8 @@ public class AuthController {
         return "auth/signup";
     }
 
-    @PostMapping("/auth/signup")
+
+    @PostMapping("/auth/signup22")
     public String signup(@Valid SignupDto dto, BindingResult bindingResult){ // key=value(x-www-form-urlencoded)
         if (bindingResult.hasErrors()){
             Map<String,String> errorMap = new HashMap<>();

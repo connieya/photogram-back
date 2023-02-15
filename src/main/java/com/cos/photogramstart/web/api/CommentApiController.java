@@ -29,11 +29,11 @@ public class CommentApiController {
             @Valid @RequestBody CommentDto commentDto, BindingResult bindingResult,
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
         if (bindingResult.hasErrors()) {
-            Map<String, String> erroeMap = new HashMap<>();
+            Map<String, String> errorMap = new HashMap<>();
             for (FieldError error : bindingResult.getFieldErrors()) {
-                erroeMap.put(error.getField(), error.getDefaultMessage());
+                errorMap.put(error.getField(), error.getDefaultMessage());
             }
-            throw new CustomValidationApiException("유효성 검사 실패함", erroeMap);
+            throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
         }
         Comment comment = commentService.write(commentDto.getContent(), commentDto.getImageId(), principalDetails.getUser().getId());
 

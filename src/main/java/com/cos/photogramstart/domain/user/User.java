@@ -25,8 +25,9 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
-    private String nickname;
     @Column(nullable = false)
+    private String nickname;
+    @Column(nullable = false , unique = true)
     private String email;
     private String website;
     private String bio;

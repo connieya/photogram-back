@@ -19,7 +19,7 @@ import java.util.Map;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(CustomValidationException.class)
-    public String  validationException(CustomValidationException e) {
+    public String validationException(CustomValidationException e) {
         if (e.getErrorMap() == null){
             return Script.back(e.getMessage());
         }
