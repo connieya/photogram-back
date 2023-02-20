@@ -6,6 +6,7 @@ import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.handler.ex.CustomException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
+import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,9 +59,9 @@ public class UserService {
     @Transactional
     public User update(int id, User user) {
         // 영속화
-        User userEntity = userRepository.findById(id).orElseThrow(()->{
-            return new CustomValidationApiException("찾을 수 없는 id 입니다.");
-        });
+        User userEntity = userRepository.findById(id).orElseThrow(()->
+          new CustomValidationApiException("찾을 수 없는 id 입니다.")
+        );
         userEntity.setNickname(user.getNickname());
         String rawPassword = user.getPassword();
         String encode = bCryptPasswordEncoder.encode(rawPassword);

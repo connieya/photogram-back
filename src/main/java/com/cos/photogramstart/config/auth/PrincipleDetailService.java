@@ -16,9 +16,17 @@ public class PrincipleDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("아이디 => "+ username);
         User userEntity = userRepository.findByUsername(username);
+        System.out.println("로그인 요청 => " +userEntity);
+//        User userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
+//            throw new CustomApiException("해당 아이디를 찾을 수 없습니다.");
+//        });
+
+
         if (userEntity == null){
-            return  null;
+            System.out.println("@@@@@@@@");
+            return null;
         }
         return new PrincipalDetails(userEntity);
     }

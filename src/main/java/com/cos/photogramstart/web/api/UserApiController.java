@@ -8,6 +8,7 @@ import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.service.SubscribeService;
 import com.cos.photogramstart.service.UserService;
 import com.cos.photogramstart.web.dto.RespDto;
+import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.subscribe.SubscribeDto;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
 import lombok.RequiredArgsConstructor;

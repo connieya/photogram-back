@@ -1,6 +1,7 @@
 package com.cos.photogramstart.config.auth;
 
 import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.web.dto.auth.UserInfo;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,9 +21,7 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collector = new ArrayList<>();
-        collector.add(() ->{
-                return user.getRole();
-        });
+        collector.add(() -> user.getRole());
         return collector;
     }
 
