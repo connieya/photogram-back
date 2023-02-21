@@ -2,10 +2,7 @@ package com.cos.photogramstart.domain.user;
 
 import com.cos.photogramstart.domain.image.Image;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@ToString(exclude = "images")
 public class User {
 
     @Id
@@ -48,4 +46,7 @@ public class User {
     public void createDate() {
         this.createDate = LocalDateTime.now();
     }
+
+
+
 }

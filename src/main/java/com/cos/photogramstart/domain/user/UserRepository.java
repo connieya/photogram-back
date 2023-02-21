@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     // jpa query method
 //    @EntityGraph(attributePaths = "images")
 //   Optional<User> findByUsername(String username);
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 //   Optional<UserInfo> findById(int id);
 
     boolean existsByUsername(String username);

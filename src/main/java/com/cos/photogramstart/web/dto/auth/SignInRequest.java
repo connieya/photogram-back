@@ -1,10 +1,34 @@
 package com.cos.photogramstart.web.dto.auth;
 
+import com.cos.photogramstart.domain.user.User;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@Data
+import javax.validation.constraints.NotBlank;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class SignInRequest {
 
+    @NotBlank
     private String username;
+    @NotBlank
     private String password;
+
+    public User toUser(BCryptPasswordEncoder bCryptPasswordEncoder){
+        return User.builder()
+                .username(username)
+                .password(bCryptPasswordEncoder.encode(password))
+                .build();
+    }
+
+    public UsernamePasswordAuthenticationToken toAuthentication(){
+        return new UsernamePasswordAuthenticationToken(username,password);
+    }
+
 }

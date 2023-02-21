@@ -1,9 +1,15 @@
 package com.cos.photogramstart.service;
 
+import com.cos.photogramstart.config.jwt.JWTTokenHelper;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
+import com.cos.photogramstart.web.dto.auth.SignInRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +20,8 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final AuthenticationManagerBuilder authenticationManager;
+    private final JWTTokenHelper tokenHelper;
 
     // 회원가입
     @Transactional // insert , update ,delete 시 사용
@@ -30,5 +38,15 @@ public class AuthService {
         user.setRole("ROLE_USER");
         User userEntity = userRepository.save(user);
         return userEntity;
+    }
+
+    @Transactional
+    public String signin(SignInRequest signInRequest) {
+        UsernamePasswordAuthenticationToken authenticationToken = signInRequest.toAuthentication();
+        Authentication authenticate = authenticationManager.getObject().authenticate(authenticationToken);
+        System.out.println("authenticate = " + authenticate);
+        tokenHelper.generateTokenDto(authenticate);
+
+        return "";
     }
 }

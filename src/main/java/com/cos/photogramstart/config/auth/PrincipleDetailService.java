@@ -2,6 +2,7 @@ package com.cos.photogramstart.config.auth;
 
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
+import com.cos.photogramstart.handler.ex.CustomApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,12 +18,10 @@ public class PrincipleDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("아이디 => "+ username);
-        User userEntity = userRepository.findByUsername(username);
+        User userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
+            throw new CustomApiException("존재하지 않는 아이디 입니다.");
+        });
         System.out.println("로그인 요청 => " +userEntity);
-//        User userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
-//            throw new CustomApiException("해당 아이디를 찾을 수 없습니다.");
-//        });
-
 
         if (userEntity == null){
             System.out.println("@@@@@@@@");
