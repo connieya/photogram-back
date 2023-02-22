@@ -10,11 +10,13 @@ import com.cos.photogramstart.service.UserService;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.subscribe.SubscribeDto;
+import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,12 @@ public class UserApiController {
 
     private final UserService userService;
     private final SubscribeService subscribeService;
+
+    @GetMapping("/api/user/{pageUserId}")
+    public UserProfileDto profile(@PathVariable int pageUserId,  @AuthenticationPrincipal PrincipalDetails details) {
+        UserProfileDto dto = userService.select(pageUserId, details.getUser().getId());
+        return dto;
+    }
 
     @PutMapping("/api/user/{principalId}/profileImageUrl")
     public ResponseEntity<?> profileImageUrlUpdate(@PathVariable int principalId , MultipartFile profileImageFile ,@AuthenticationPrincipal PrincipalDetails principalDetails){
