@@ -1,12 +1,14 @@
 package com.cos.photogramstart.service;
 
 import com.cos.photogramstart.config.jwt.JWTTokenHelper;
+import com.cos.photogramstart.domain.token.RefreshToken;
+import com.cos.photogramstart.domain.token.RefreshTokenRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.web.dto.auth.SignInRequest;
+import com.cos.photogramstart.web.dto.auth.TokenDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -22,6 +24,7 @@ public class AuthService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManager;
     private final JWTTokenHelper tokenHelper;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     // 회원가입
     @Transactional // insert , update ,delete 시 사용
@@ -41,12 +44,20 @@ public class AuthService {
     }
 
     @Transactional
-    public String signin(SignInRequest signInRequest) {
+    public TokenDto signin(SignInRequest signInRequest) {
         UsernamePasswordAuthenticationToken authenticationToken = signInRequest.toAuthentication();
         Authentication authenticate = authenticationManager.getObject().authenticate(authenticationToken);
         System.out.println("authenticate = " + authenticate);
-        tokenHelper.generateTokenDto(authenticate);
+        TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);
 
-        return "";
+        RefreshToken refreshToken = RefreshToken.builder()
+                .key(authenticate.getName())
+                .value(tokenDto.getRefreshToken())
+                .build();
+
+        System.out.println("refreshToken = " + refreshToken);
+        refreshTokenRepository.save(refreshToken);
+
+        return tokenDto;
     }
 }

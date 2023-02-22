@@ -17,7 +17,7 @@ public class PrincipleDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("아이디 => "+ username);
+        System.out.println("loadUser 아이디 => "+ username);
         User userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
             throw new CustomApiException("존재하지 않는 아이디 입니다.");
         });
