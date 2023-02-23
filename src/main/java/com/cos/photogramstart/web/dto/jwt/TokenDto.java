@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.dto.auth;
+package com.cos.photogramstart.web.dto.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
