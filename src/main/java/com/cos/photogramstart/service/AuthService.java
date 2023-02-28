@@ -9,9 +9,11 @@ import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.web.dto.auth.SignInRequest;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ public class AuthService {
     private final AuthenticationManagerBuilder authenticationManager;
     private final JWTTokenHelper tokenHelper;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final AuthenticationManager authentication;
 
     // 회원가입
     @Transactional // insert , update ,delete 시 사용
@@ -44,8 +47,27 @@ public class AuthService {
     }
 
     @Transactional
+    public TokenDto login(SignInRequest signInRequest){
+        Authentication authenticate = authentication.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);
+
+
+        RefreshToken refreshToken = RefreshToken.builder()
+                .key(authenticate.getName())
+                .value(tokenDto.getRefreshToken())
+                .build();
+
+        System.out.println("refreshToken = " + refreshToken);
+        refreshTokenRepository.save(refreshToken);
+        return tokenDto;
+
+    }
+
+    @Transactional
     public TokenDto signin(SignInRequest signInRequest) {
         UsernamePasswordAuthenticationToken authenticationToken = signInRequest.toAuthentication();
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         Authentication authenticate = authenticationManager.getObject().authenticate(authenticationToken);
         System.out.println("authenticate = " + authenticate);
         TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);

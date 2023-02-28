@@ -7,30 +7,36 @@ import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import com.cos.photogramstart.web.dto.jwt.ClaimDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 import java.security.Key;
 import java.util.Date;
 
-@Component
+@Service
 @Slf4j
 public class JWTTokenHelper {
 
+    @Autowired
+    private UserRepository userRepository;
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 *30;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 *7;
 
     private Key key;
-    private UserRepository userRepository;
+
 
     public JWTTokenHelper(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -77,12 +83,14 @@ public class JWTTokenHelper {
         if(claims.get(AUTHORITIES_KEY) == null){
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
-        ClaimDto claimDto =(ClaimDto) claims.get(AUTHORITIES_KEY);
+        ObjectMapper mapper = new ObjectMapper();
+        ClaimDto claimDto = mapper.convertValue(claims.get(AUTHORITIES_KEY), ClaimDto.class);
         System.out.println("claimDto = " + claimDto);
         User user = userRepository.findById(claimDto.getId()).orElseThrow(() -> {
             throw new CustomApiException("존재하지 않는 아이디 입니다.");
         });
         PrincipalDetails principalDetails = new PrincipalDetails(user);
+        System.out.println("principalDetails = " + principalDetails);
         return new UsernamePasswordAuthenticationToken(claims.getSubject(),"",principalDetails.getAuthorities());
     }
 

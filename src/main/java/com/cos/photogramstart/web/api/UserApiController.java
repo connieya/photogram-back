@@ -15,7 +15,9 @@ import com.cos.photogramstart.web.dto.user.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -38,8 +40,10 @@ public class UserApiController {
     private final SubscribeService subscribeService;
 
     @GetMapping("/api/user/{pageUserId}")
-    public UserProfileDto profile(@PathVariable int pageUserId,  @AuthenticationPrincipal PrincipalDetails details) {
-        UserProfileDto dto = userService.select(pageUserId, details.getUser().getId());
+    public UserProfileDto profile(@PathVariable int pageUserId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (String) authentication.getPrincipal();
+        UserProfileDto dto = userService.getUserProfile(pageUserId, username);
         return dto;
     }
 
