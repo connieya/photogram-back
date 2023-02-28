@@ -40,11 +40,11 @@ public class UserApiController {
     private final SubscribeService subscribeService;
 
     @GetMapping("/api/user/{pageUserId}")
-    public UserProfileDto profile(@PathVariable int pageUserId) {
+    public ResponseEntity<?> profile(@PathVariable int pageUserId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (String) authentication.getPrincipal();
         UserProfileDto dto = userService.getUserProfile(pageUserId, username);
-        return dto;
+        return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",dto),HttpStatus.OK);
     }
 
     @PutMapping("/api/user/{principalId}/profileImageUrl")
