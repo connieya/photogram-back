@@ -26,7 +26,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(jwt) & tokenHelper.validateToken(jwt)){
             Authentication authentication = tokenHelper.getAuthentication(jwt);
-            System.out.println("토큰 검증 authentication = " + authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request,response);
@@ -36,7 +35,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         System.out.println("bearerToken = " + bearerToken);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)){
-            System.out.println("토큰 검증하기 = " + bearerToken.substring(7));
             return bearerToken.substring(7);
         }
         return null;

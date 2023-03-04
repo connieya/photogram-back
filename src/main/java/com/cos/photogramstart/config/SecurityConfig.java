@@ -2,6 +2,7 @@ package com.cos.photogramstart.config;
 
 import com.cos.photogramstart.config.jwt.JWTAuthenticationFilter;
 import com.cos.photogramstart.config.jwt.JWTTokenHelper;
+import com.cos.photogramstart.config.jwt.JwtAccessDeniedHandler;
 import com.cos.photogramstart.config.jwt.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTTokenHelper tokenHelper;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CorsConfig corsConfig;
 
     @Override
@@ -36,20 +38,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.
+                formLogin().disable()
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
                 .addFilter(corsConfig.corsFilter())
                 .addFilterBefore(new JWTAuthenticationFilter(tokenHelper) , UsernamePasswordAuthenticationFilter.class)
-                .formLogin().disable()
-                .httpBasic().disable()
+
         .authorizeRequests()
-                .antMatchers("/","/user/**","/image/**","/subscribe/**","/comment/**,/api/**")
+                .antMatchers("/api/user/**","/user/**","/image/**","/subscribe/**","/comment/**,/api/**")
                 .authenticated()
-                .anyRequest()
-                .permitAll();
+                .anyRequest().permitAll();
     }
 }

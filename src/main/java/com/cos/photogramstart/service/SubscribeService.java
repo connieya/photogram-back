@@ -1,6 +1,8 @@
 package com.cos.photogramstart.service;
 
 import com.cos.photogramstart.domain.subscribe.SubscribeRepository;
+import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.web.dto.subscribe.SubscribeDto;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.List;
 public class SubscribeService {
 
     private final SubscribeRepository subscribeRepository;
+    private final UserRepository userRepository;
     private final EntityManager em;
 
     // 팔로잉 리스트

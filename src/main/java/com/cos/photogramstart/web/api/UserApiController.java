@@ -15,16 +15,14 @@ import com.cos.photogramstart.web.dto.user.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -40,12 +38,20 @@ public class UserApiController {
     private final SubscribeService subscribeService;
 
     @GetMapping("/api/user/{pageUserId}")
-    public ResponseEntity<?> profile(@PathVariable int pageUserId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = (String) authentication.getPrincipal();
-        UserProfileDto dto = userService.getUserProfile(pageUserId, username);
+    public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
+        UserProfileDto dto = userService.select(pageUserId, principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",dto),HttpStatus.OK);
     }
+
+    @PutMapping("/api/user/image")
+    public ResponseEntity<?> profileImageUpdate(@RequestParam("file") MultipartFile profileImageFile , @AuthenticationPrincipal PrincipalDetails principalDetails){
+        System.out.println("profileImageFile = " + profileImageFile);
+        User userEntity = userService.updateImage(principalDetails.getUser().getId(),profileImageFile);
+        principalDetails.setUser(userEntity);
+        return new ResponseEntity<>(new RespDto<>(1,"프로필 사진 변경",null),HttpStatus.OK);
+    }
+
+
 
     @PutMapping("/api/user/{principalId}/profileImageUrl")
     public ResponseEntity<?> profileImageUrlUpdate(@PathVariable int principalId , MultipartFile profileImageFile ,@AuthenticationPrincipal PrincipalDetails principalDetails){

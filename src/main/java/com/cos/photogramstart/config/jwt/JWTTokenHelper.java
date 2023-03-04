@@ -11,16 +11,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-
 import java.security.Key;
 import java.util.Date;
 
@@ -43,13 +39,8 @@ public class JWTTokenHelper {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
     public TokenDto generateTokenDto(Authentication authentication) {
-//        String authorities = authentication.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .collect(Collectors.joining(","));
-
         long now = (new Date()).getTime();
-        System.out.println("authentication = " + authentication.getName());
-        System.out.println("authentication 2= " + authentication.getPrincipal());
+        System.out.println("authentication = " + authentication);
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         User userEntity = principalDetails.getUser();
@@ -85,13 +76,12 @@ public class JWTTokenHelper {
         }
         ObjectMapper mapper = new ObjectMapper();
         ClaimDto claimDto = mapper.convertValue(claims.get(AUTHORITIES_KEY), ClaimDto.class);
-        System.out.println("claimDto = " + claimDto);
+        System.out.println("getAuthentication 호출 claimDto = " + claimDto);
         User user = userRepository.findById(claimDto.getId()).orElseThrow(() -> {
             throw new CustomApiException("존재하지 않는 아이디 입니다.");
         });
         PrincipalDetails principalDetails = new PrincipalDetails(user);
-        System.out.println("principalDetails = " + principalDetails);
-        return new UsernamePasswordAuthenticationToken(claims.getSubject(),"",principalDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(principalDetails,principalDetails,principalDetails.getAuthorities());
     }
 
     public boolean validateToken(String token) {
