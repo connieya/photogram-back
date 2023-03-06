@@ -37,7 +37,7 @@ spring:
       password: 1234
 
 file:
-  path: C:/workspace/upload/
+  path: C:/workspace/photogram-front/public/images/
 
 
 jwt:

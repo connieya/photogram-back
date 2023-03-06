@@ -1,5 +1,6 @@
 package com.cos.photogramstart.service;
 
+import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.config.jwt.JWTTokenHelper;
 import com.cos.photogramstart.domain.token.RefreshToken;
 import com.cos.photogramstart.domain.token.RefreshTokenRepository;
@@ -7,6 +8,7 @@ import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.web.dto.auth.SignInRequest;
+import com.cos.photogramstart.web.dto.auth.SignInResponse;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -65,11 +67,14 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenDto signin(SignInRequest signInRequest) {
+    public SignInResponse signin(SignInRequest signInRequest) {
         UsernamePasswordAuthenticationToken authenticationToken = signInRequest.toAuthentication();
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         Authentication authenticate = authenticationManager.getObject().authenticate(authenticationToken);
         System.out.println("authenticate = " + authenticate);
+        PrincipalDetails principal = (PrincipalDetails) authenticate.getPrincipal();
+        System.out.println("principal22 = " + principal);
+        System.out.println("principal33 = " + principal.getUser());
         TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);
 
         RefreshToken refreshToken = RefreshToken.builder()
@@ -80,6 +85,6 @@ public class AuthService {
         System.out.println("refreshToken = " + refreshToken);
         refreshTokenRepository.save(refreshToken);
 
-        return tokenDto;
+        return new SignInResponse(tokenDto,principal.getUser());
     }
 }

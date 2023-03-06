@@ -81,7 +81,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 </details>
 
+![회원가입2](https://user-images.githubusercontent.com/66653324/223017753-c0536161-e25e-4a97-963d-b9fd1b2a0a59.gif)
 <br/>
+
+
+
 
 <details>
 <summary>팔로우 하기/취소</summary>
@@ -188,7 +192,10 @@ public interface SubscribeRepository extends JpaRepository<Subscribe,Integer> {
 
 </details>
 
+![팔로우성공](https://user-images.githubusercontent.com/66653324/223059521-186b42f1-b07f-428d-8fd6-44e9af9a82ec.gif)
+
 <br/>
+
 
 <details>
 <summary>예외 처리하기</summary>
