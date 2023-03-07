@@ -29,8 +29,6 @@ public class User {
     private String email;
     private String website;
     private String bio;
-    private String phone;
-    private String gender;
 
     private String profileImageUrl;
     private String role;

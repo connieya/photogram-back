@@ -32,38 +32,6 @@ public class UserService {
     private String uploadFolder;
 
     @Transactional(readOnly = true)
-    public UserProfileDto getUserProfile(int pageUserId, String username){
-        UserProfileDto dto = new UserProfileDto();
-        User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
-            throw new CustomApiException("해당 프로필 페이지는 없는 페이지입니다.");
-        });
-
-        System.out.println("username = " + username);
-        User loginUser = userRepository.findByUsername(username).orElseThrow(() -> {
-            throw new CustomApiException("로그인이 필요합니다.");
-        });
-        System.out.println("loginUser = " + loginUser);
-
-        dto.setUser(userEntity);
-        dto.setPageOwner(pageUserId == loginUser.getId());
-        dto.setImageCount(userEntity.getImages().size());
-
-        int subscribeState = subscribeRepository.mSubscribeState(loginUser.getId(), pageUserId);
-        int subscribeCount = subscribeRepository.mSubscribeCount(pageUserId);
-        int subscribedCount = subscribeRepository.mSubscribedCount(pageUserId);
-
-        dto.setSubscribeState(subscribeState == 1);
-        dto.setSubscribeCount(subscribeCount);
-        dto.setSubscribedCount(subscribedCount);
-
-        // 좋아요 개수
-        userEntity.getImages().forEach(image -> {
-            image.setLikeCount(image.getLikes().size());
-        });
-        return dto;
-    }
-
-    @Transactional(readOnly = true)
     public UserProfileDto select(int pageUserId, int principalId){
         UserProfileDto dto = new UserProfileDto();
         User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
@@ -95,13 +63,11 @@ public class UserService {
           new CustomValidationApiException("찾을 수 없는 id 입니다.")
         );
         userEntity.setNickname(user.getNickname());
-        String rawPassword = user.getPassword();
-        String encode = bCryptPasswordEncoder.encode(rawPassword);
-        userEntity.setPassword(encode);
+//        String rawPassword = user.getPassword();
+//        String encode = bCryptPasswordEncoder.encode(rawPassword);
+//        userEntity.setPassword(encode);
         userEntity.setBio(user.getBio());
         userEntity.setWebsite(user.getWebsite());
-        userEntity.setPhone(user.getPhone());
-        userEntity.setGender(user.getGender());
         return userEntity;
     }
 

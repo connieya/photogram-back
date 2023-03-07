@@ -3,6 +3,7 @@ package com.cos.photogramstart.web.api;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.subscribe.SubscribeRepository;
 import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.service.SubscribeService;
@@ -11,6 +12,7 @@ import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.subscribe.SubscribeDto;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
+import com.cos.photogramstart.web.dto.user.UserProfileUpdateResponse;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,24 @@ public class UserApiController {
     public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
         UserProfileDto dto = userService.select(pageUserId, principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",dto),HttpStatus.OK);
+    }
+
+    @GetMapping("/api/user/profile")
+    public ResponseEntity<?> update(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if(principalDetails.getUser() == null){
+            throw new CustomApiException("로그인이 필요합니다");
+        }
+        User user = principalDetails.getUser();
+        UserProfileUpdateResponse profileUpdateResponse = UserProfileUpdateResponse.builder()
+                .bio(user.getBio())
+                .username(user.getUsername())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .profileImageUrl(user.getProfileImageUrl())
+                .website(user.getWebsite()).build();
+
+
+        return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",profileUpdateResponse),HttpStatus.OK);
     }
 
     @PutMapping("/api/user/image")
