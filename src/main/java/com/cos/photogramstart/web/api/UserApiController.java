@@ -34,7 +34,7 @@ public class UserApiController {
 
     @GetMapping("/api/user/{pageUserId}")
     public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
-        UserProfileDto dto = userService.select(pageUserId, principalDetails.getUser().getId());
+        UserProfileDto dto = userService.selectUserProfile(pageUserId, principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",dto),HttpStatus.OK);
     }
 
@@ -81,7 +81,7 @@ public class UserApiController {
         return new ResponseEntity<>(new RespDto<>(1,"팔로잉 리스트 불러오기 성공",subscribeDto), HttpStatus.OK);
     }
 
-    @GetMapping("/api/follower/{pageUserId}/")
+    @GetMapping("/api/follower/{pageUserId}")
     public ResponseEntity<?> followerList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
         List<FollowDto> followerDto = followService.followerList(principalDetails.getUser().getId(),pageUserId);
 

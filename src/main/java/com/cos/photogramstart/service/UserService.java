@@ -24,14 +24,14 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final FollowRepository subscribeRepository;
+    private final FollowRepository followRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${file.path}")
     private String uploadFolder;
 
     @Transactional(readOnly = true)
-    public UserProfileDto select(int pageUserId, int principalId){
+    public UserProfileDto selectUserProfile(int pageUserId, int principalId){
         UserProfileDto dto = new UserProfileDto();
         User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
             throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
@@ -40,13 +40,13 @@ public class UserService {
         dto.setPageOwner(pageUserId == principalId);
         dto.setImageCount(userEntity.getImages().size());
 
-        int subscribeState = subscribeRepository.mSubscribeState(principalId, pageUserId);
-        int subscribeCount = subscribeRepository.mSubscribeCount(pageUserId);
-        int subscribedCount = subscribeRepository.mSubscribedCount(pageUserId);
+        int followState = followRepository.mFollowState(principalId, pageUserId);
+        int followingCount = followRepository.mFollowingCount(pageUserId);
+        int followerCount = followRepository.mFollowerCount(pageUserId);
 
-        dto.setSubscribeState(subscribeState == 1);
-        dto.setSubscribeCount(subscribeCount);
-        dto.setSubscribedCount(subscribedCount);
+        dto.setFollowState(followState == 1);
+        dto.setFollowingCount(followingCount);
+        dto.setFollowerCount(followerCount);
 
         // 좋아요 개수
         userEntity.getImages().forEach(image -> {

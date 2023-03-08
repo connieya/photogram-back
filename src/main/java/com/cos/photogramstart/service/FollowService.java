@@ -67,7 +67,7 @@ public class FollowService {
     @Transactional
     public void follow(int fromUserId , int toUserId){
         try {
-            subscribeRepository.mSubscribe(fromUserId,toUserId);
+            subscribeRepository.mFollow(fromUserId,toUserId);
         }catch (Exception e){
             throw new CustomApiException("이미 구독을 하였습니다.");
         }
@@ -76,7 +76,7 @@ public class FollowService {
 
     @Transactional
     public void unfollow(int fromUserId, int toUserId){
-        subscribeRepository.mUnSubscribe(fromUserId,toUserId);
+        subscribeRepository.mUnfollow(fromUserId,toUserId);
     }
 
 }
