@@ -1,12 +1,11 @@
 package com.cos.photogramstart.service;
 
-import com.cos.photogramstart.domain.subscribe.SubscribeRepository;
+import com.cos.photogramstart.domain.folllow.FollowRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.handler.ex.CustomException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
-import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +24,7 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final SubscribeRepository subscribeRepository;
+    private final FollowRepository subscribeRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${file.path}")

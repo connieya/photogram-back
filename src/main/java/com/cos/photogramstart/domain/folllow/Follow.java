@@ -1,4 +1,4 @@
-package com.cos.photogramstart.domain.subscribe;
+package com.cos.photogramstart.domain.folllow;
 
 import com.cos.photogramstart.domain.user.User;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
                 )
         }
 )
-public class Subscribe {
+public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

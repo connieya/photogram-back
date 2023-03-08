@@ -1,10 +1,9 @@
 package com.cos.photogramstart.service;
 
-import com.cos.photogramstart.domain.subscribe.SubscribeRepository;
-import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.domain.folllow.FollowRepository;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
-import com.cos.photogramstart.web.dto.subscribe.SubscribeDto;
+import com.cos.photogramstart.web.dto.follow.FollowDto;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.stereotype.Service;
@@ -16,15 +15,15 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SubscribeService {
+public class FollowService {
 
-    private final SubscribeRepository subscribeRepository;
+    private final FollowRepository subscribeRepository;
     private final UserRepository userRepository;
     private final EntityManager em;
 
     // 팔로잉 리스트
     @Transactional(readOnly = true)
-    public List<SubscribeDto> selectSubscribe(int principalId, int pageUserId) {
+    public List<FollowDto> followingList(int principalId, int pageUserId) {
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT u.id , u.username , u.profileImageUrl , ");
         sb.append("if ((SELECT 1 FROM subscribe WHERE fromUserId = ? AND toUserId = u.id),1 ,0) subscribeState , ");
@@ -39,13 +38,13 @@ public class SubscribeService {
                 .setParameter(3, pageUserId);
 
         JpaResultMapper result = new JpaResultMapper();
-        List<SubscribeDto> subscribeDtos = result.list(query, SubscribeDto.class);
+        List<FollowDto> subscribeDtos = result.list(query, FollowDto.class);
         return  subscribeDtos;
     }
 
     // 팔로워 리스트
     @Transactional(readOnly = true)
-    public List<SubscribeDto> selectSubscribed(int principalId, int pageUserId) {
+    public List<FollowDto> followerList(int principalId, int pageUserId) {
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT u.id , u.username , u.profileImageUrl , ");
         sb.append("if ((SELECT 1 FROM subscribe WHERE fromUserId = ? AND toUserId = u.id),1 ,0) subscribeState , ");
@@ -60,13 +59,13 @@ public class SubscribeService {
                 .setParameter(3, pageUserId);
 
         JpaResultMapper result = new JpaResultMapper();
-        List<SubscribeDto> subscribeDtos = result.list(query, SubscribeDto.class);
+        List<FollowDto> subscribeDtos = result.list(query, FollowDto.class);
         return  subscribeDtos;
     }
 
 
     @Transactional
-    public void subscribe(int fromUserId , int toUserId){
+    public void follow(int fromUserId , int toUserId){
         try {
             subscribeRepository.mSubscribe(fromUserId,toUserId);
         }catch (Exception e){
@@ -76,7 +75,7 @@ public class SubscribeService {
     }
 
     @Transactional
-    public void unSubscribe(int fromUserId, int toUserId){
+    public void unfollow(int fromUserId, int toUserId){
         subscribeRepository.mUnSubscribe(fromUserId,toUserId);
     }
 

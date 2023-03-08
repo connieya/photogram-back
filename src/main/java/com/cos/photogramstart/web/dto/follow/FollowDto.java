@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.dto.subscribe;
+package com.cos.photogramstart.web.dto.follow;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.math.BigInteger;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SubscribeDto {
+public class FollowDto {
     private int id;
     private String username;
     private String profileImageUrl;

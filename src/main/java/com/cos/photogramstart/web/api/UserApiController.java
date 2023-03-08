@@ -1,27 +1,20 @@
 package com.cos.photogramstart.web.api;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
-import com.cos.photogramstart.domain.subscribe.SubscribeRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
-import com.cos.photogramstart.handler.ex.CustomValidationException;
-import com.cos.photogramstart.service.SubscribeService;
+import com.cos.photogramstart.service.FollowService;
 import com.cos.photogramstart.service.UserService;
 import com.cos.photogramstart.web.dto.RespDto;
-import com.cos.photogramstart.web.dto.auth.UserInfo;
-import com.cos.photogramstart.web.dto.subscribe.SubscribeDto;
+import com.cos.photogramstart.web.dto.follow.FollowDto;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import com.cos.photogramstart.web.dto.user.UserProfileUpdateResponse;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +30,7 @@ import java.util.Map;
 public class UserApiController {
 
     private final UserService userService;
-    private final SubscribeService subscribeService;
+    private final FollowService followService;
 
     @GetMapping("/api/user/{pageUserId}")
     public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
@@ -53,6 +46,7 @@ public class UserApiController {
         User user = principalDetails.getUser();
         UserProfileUpdateResponse profileUpdateResponse = UserProfileUpdateResponse.builder()
                 .bio(user.getBio())
+                .id(user.getId())
                 .username(user.getUsername())
                 .nickname(user.getNickname())
                 .email(user.getEmail())
@@ -80,18 +74,18 @@ public class UserApiController {
         return new ResponseEntity<>(new RespDto<>(1,"프로필 사진 변경",null),HttpStatus.OK);
     }
 
-    @GetMapping("/api/user/{pageUserId}/subscribe")
-    public ResponseEntity<?> subscribeList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<SubscribeDto> subscribeDto = subscribeService.selectSubscribe(principalDetails.getUser().getId(),pageUserId);
+    @GetMapping("/api/following/{pageUserId}")
+    public ResponseEntity<?> followingList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        List<FollowDto> subscribeDto = followService.followingList(principalDetails.getUser().getId(),pageUserId);
 
         return new ResponseEntity<>(new RespDto<>(1,"팔로잉 리스트 불러오기 성공",subscribeDto), HttpStatus.OK);
     }
 
-    @GetMapping("/api/user/{pageUserId}/subscribed")
-    public ResponseEntity<?> subscribedList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<SubscribeDto> subscribeDto = subscribeService.selectSubscribed(principalDetails.getUser().getId(),pageUserId);
+    @GetMapping("/api/follower/{pageUserId}/")
+    public ResponseEntity<?> followerList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        List<FollowDto> followerDto = followService.followerList(principalDetails.getUser().getId(),pageUserId);
 
-        return new ResponseEntity<>(new RespDto<>(1,"팔로워 리스트 불러오기 성공",subscribeDto), HttpStatus.OK);
+        return new ResponseEntity<>(new RespDto<>(1,"팔로워 리스트 불러오기 성공",followerDto), HttpStatus.OK);
     }
 
     @PutMapping("/api/user/{id}")
