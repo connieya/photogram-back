@@ -4,7 +4,6 @@ import com.cos.photogramstart.domain.folllow.FollowRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
-import com.cos.photogramstart.handler.ex.CustomException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${file.path}")
     private String uploadFolder;
@@ -40,9 +38,9 @@ public class UserService {
         dto.setPageOwner(pageUserId == principalId);
         dto.setImageCount(userEntity.getImages().size());
 
-        int followState = followRepository.mFollowState(principalId, pageUserId);
-        int followingCount = followRepository.mFollowingCount(pageUserId);
-        int followerCount = followRepository.mFollowerCount(pageUserId);
+        int followState = followRepository.followState(principalId, pageUserId);
+        int followingCount = followRepository.followingCount(pageUserId);
+        int followerCount = followRepository.followerCount(pageUserId);
 
         dto.setFollowState(followState == 1);
         dto.setFollowingCount(followingCount);
