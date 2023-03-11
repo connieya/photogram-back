@@ -8,16 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 
-public interface ImageRepository extends JpaRepository<Image , Integer> {
+public interface ImageRepository extends JpaRepository<Image , Integer> , ImageRepositoryCustom {
 
     @Query(value = "SELECT * FROM image WHERE userId in \n" +
             "(SELECT toUserId FROM follow WHERE fromUserId = :principalId ) ORDER BY id DESC" , nativeQuery = true)
     Page<Image> mStory(int principalId, Pageable pageable);
-
-    @Query(value = "SELECT * FROM image WHERE userId in \n" +
-            "(SELECT toUserId FROM follow WHERE fromUserId = :principalId ) ORDER BY id DESC" , nativeQuery = true)
-    List<Image> mStorys(int principalId);
-
 
     @Query(value = "select i.* from image i inner join\n" +
             "(select imageId , count(imageId) likeCount from likes group by imageId) c\n" +

@@ -45,7 +45,7 @@ public class ImageService {
 
     @Transactional(readOnly = true)
     public List<Image> selectImages(int principalId ){
-        List<Image> images = imageRepository.mStorys(principalId);
+        List<Image> images = imageRepository.getStory(principalId);
         images.forEach(image ->{
             image.setLikeCount(image.getLikes().size());
             image.getLikes().forEach(like->{
