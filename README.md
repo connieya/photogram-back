@@ -197,6 +197,35 @@ public interface SubscribeRepository extends JpaRepository<Subscribe,Integer> {
 
 <br/>
 
+<details>
+<summary>팔로우한 유저 게시물 보기</summary>
+
+### Querydsl 사용 - 서브쿼리 
+
+- 팔로우 한 유저 아이디 가져오기 (Follow 테이블)
+```java
+queryFactory
+.select(follow.toUser.id)
+.from(follow)
+.where(follow.fromUser.id.eq(principalId))
+.fetch();
+```
+- Image 테이블에서 userId 가 팔로우 한 유저 아이디에 해당하는 정보 가져오기
+  - 서브 쿼리 사용
+  - 게시물 업로드 최신 순으로 가져오기
+```java
+queryFactory
+.selectFrom(image)
+.where(image.user.id.in(JPAExpressions.select(follow.toUser.id).from(follow)
+.where(follow.fromUser.id.eq(principalId)))).orderBy(image.createDate.desc()).fetch();
+```
+
+
+</details>
+
+![게시물보기](https://user-images.githubusercontent.com/66653324/224479239-59bb7d32-d4c9-4b48-ae15-74cbce1b69f9.gif)
+
+<br/>
 
 <details>
 <summary>예외 처리하기</summary>

@@ -62,9 +62,6 @@ public class UserService {
           new CustomValidationApiException("찾을 수 없는 id 입니다.")
         );
         userEntity.setNickname(user.getNickname());
-//        String rawPassword = user.getPassword();
-//        String encode = bCryptPasswordEncoder.encode(rawPassword);
-//        userEntity.setPassword(encode);
         userEntity.setBio(user.getBio());
         userEntity.setWebsite(user.getWebsite());
         return userEntity;

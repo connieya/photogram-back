@@ -12,8 +12,19 @@ public class FollowRepositoryImpl implements FollowRepositoryCustom{
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    @Override
-    public void Follow(int fromUserId, int toUserId) {
 
+    @Override
+    public int followState(int principalId, int pageUserId) {
+        return 0;
+    }
+
+    @Override
+    public int followingCount(int pageUserId) {
+        return 0;
+    }
+
+    @Override
+    public int followerCount(int pageUserId) {
+        return 0;
     }
 }

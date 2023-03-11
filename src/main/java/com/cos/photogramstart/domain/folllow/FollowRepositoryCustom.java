@@ -2,5 +2,8 @@ package com.cos.photogramstart.domain.folllow;
 
 public interface FollowRepositoryCustom {
 
-    void Follow(int fromUserId , int toUserId);
+    int followState(int principalId, int pageUserId);
+    int followingCount(int pageUserId);
+    int followerCount(int pageUserId);
+
 }
