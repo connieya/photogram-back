@@ -9,15 +9,12 @@ import javax.validation.constraints.NotBlank;
 public class UserUpdateDto {
     @NotBlank
     private String nickname;
-    @NotBlank
-    private String password;
     private String website;
     private String bio;
 
     public User toEntity(){
         return User.builder()
                 .nickname(nickname)
-                .password(password)
                 .website(website)
                 .bio(bio)
                 .build();

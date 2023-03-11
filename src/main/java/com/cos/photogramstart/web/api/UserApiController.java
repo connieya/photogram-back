@@ -67,13 +67,6 @@ public class UserApiController {
 
 
 
-    @PutMapping("/api/user/{principalId}/profileImageUrl")
-    public ResponseEntity<?> profileImageUrlUpdate(@PathVariable int principalId , MultipartFile profileImageFile ,@AuthenticationPrincipal PrincipalDetails principalDetails){
-        User userEntity = userService.updateImage(principalId,profileImageFile);
-        principalDetails.setUser(userEntity);
-        return new ResponseEntity<>(new RespDto<>(1,"프로필 사진 변경",null),HttpStatus.OK);
-    }
-
     @GetMapping("/api/following/{pageUserId}")
     public ResponseEntity<?> followingList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
         List<FollowDto> subscribeDto = followService.followingList(principalDetails.getUser().getId(),pageUserId);
@@ -84,8 +77,30 @@ public class UserApiController {
     @GetMapping("/api/follower/{pageUserId}")
     public ResponseEntity<?> followerList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
         List<FollowDto> followerDto = followService.followerList(principalDetails.getUser().getId(),pageUserId);
-
+        System.out.println("followerDto = " + followerDto);
         return new ResponseEntity<>(new RespDto<>(1,"팔로워 리스트 불러오기 성공",followerDto), HttpStatus.OK);
+    }
+
+    @PutMapping("/api/user")
+    public RespDto<?> updateProfile(
+                             @Valid @RequestBody UserUpdateDto userUpdateDto ,
+                             BindingResult bindingResult,
+                             @AuthenticationPrincipal PrincipalDetails principalDetails){
+        if (bindingResult.hasErrors()){
+            Map<String,String> errorMap = new HashMap<>();
+            for(FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(),error.getDefaultMessage());
+            }
+            throw new CustomApiException("유효성 검사 실패함");
+        }
+
+        if (principalDetails.getUser() == null){
+            throw new CustomApiException("로그인이 필요합니다");
+        }
+
+        User userEntity = userService.update(principalDetails.getUser().getId(), userUpdateDto.toEntity());
+        principalDetails.setUser(userEntity);
+        return new RespDto<>(1,"유저 정보 수정 ",userEntity);
     }
 
     @PutMapping("/api/user/{id}")

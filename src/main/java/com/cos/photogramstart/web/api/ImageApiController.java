@@ -20,6 +20,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -28,9 +30,21 @@ public class ImageApiController {
     private final ImageService imageService;
     private final LikesService likesService;
 
+//    @GetMapping("/api/image")
+//    public ResponseEntity<?> select(@AuthenticationPrincipal PrincipalDetails principalDetails ,@PageableDefault(size = 3) Pageable pageable){
+//        if (principalDetails == null){
+//            return new ResponseEntity<>(new RespDto<>(-1,"로그인이 필요합니다.",null), HttpStatus.OK);
+//        }
+//        Page<Image> images = imageService.select(principalDetails.getUser().getId() ,pageable);
+//        return new ResponseEntity<>(new RespDto<>(1,"성공",images), HttpStatus.OK);
+//    }
+
     @GetMapping("/api/image")
-    public ResponseEntity<?> select(@AuthenticationPrincipal PrincipalDetails principalDetails ,@PageableDefault(size = 3) Pageable pageable){
-        Page<Image> images = imageService.select(principalDetails.getUser().getId() ,pageable);
+    public ResponseEntity<?> selectImages(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        if (principalDetails == null){
+            return new ResponseEntity<>(new RespDto<>(-1,"로그인이 필요합니다.",null), HttpStatus.OK);
+        }
+        List<Image> images = imageService.selectImages(principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"성공",images), HttpStatus.OK);
     }
 

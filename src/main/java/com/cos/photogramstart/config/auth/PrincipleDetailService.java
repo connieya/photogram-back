@@ -24,7 +24,6 @@ public class PrincipleDetailService implements UserDetailsService {
         System.out.println("로그인 요청 => " +userEntity);
 
         if (userEntity == null){
-            System.out.println("@@@@@@@@");
             return null;
         }
         return new PrincipalDetails(userEntity);

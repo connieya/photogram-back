@@ -26,9 +26,9 @@ public class FollowService {
     public List<FollowDto> followingList(int principalId, int pageUserId) {
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT u.id , u.username , u.profileImageUrl , ");
-        sb.append("if ((SELECT 1 FROM subscribe WHERE fromUserId = ? AND toUserId = u.id),1 ,0) subscribeState , ");
+        sb.append("if ((SELECT 1 FROM follow WHERE fromUserId = ? AND toUserId = u.id),1 ,0) followState , ");
         sb.append("if ((? =u.id) ,1,0) equalUserState ");
-        sb.append("FROM user u INNER JOIN subscribe s ");
+        sb.append("FROM user u INNER JOIN follow s ");
         sb.append("ON u.id = s.toUserId ");
         sb.append("WHERE s.fromUserId = ? ");
 
@@ -47,9 +47,9 @@ public class FollowService {
     public List<FollowDto> followerList(int principalId, int pageUserId) {
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT u.id , u.username , u.profileImageUrl , ");
-        sb.append("if ((SELECT 1 FROM subscribe WHERE fromUserId = ? AND toUserId = u.id),1 ,0) subscribeState , ");
+        sb.append("if ((SELECT 1 FROM follow WHERE fromUserId = ? AND toUserId = u.id),1 ,0) followState , ");
         sb.append("if ((? =u.id) ,1,0) equalUserState ");
-        sb.append("FROM user u INNER JOIN subscribe s ");
+        sb.append("FROM user u INNER JOIN follow s ");
         sb.append("ON u.id = s.fromUserId ");
         sb.append("WHERE s.toUserId = ? ");
 

@@ -4,10 +4,7 @@ import com.cos.photogramstart.domain.comment.Comment;
 import com.cos.photogramstart.domain.likes.Likes;
 import com.cos.photogramstart.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@ToString(exclude = {"likes" ,"comments"})
 public class Image { // N : 1
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

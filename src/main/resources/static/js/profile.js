@@ -74,7 +74,7 @@ function getSubscribedModalItem(user) {
         <div class="subscribed__btn">`;
 
     if(!user.eqaulUserState){
-        if(user.subscribeState){
+        if(user.fl){
             item += `<button className="cta blue" onClick="toggleSubscribe(${user.id},this)">팔로우 취소</button>`;
         }else {
             item += `<button className="cta" onClick="toggleSubscribe(${user.id},this)">팔로우 하기</button>`;

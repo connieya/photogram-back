@@ -74,7 +74,6 @@ public class AuthService {
         System.out.println("authenticate = " + authenticate);
         PrincipalDetails principal = (PrincipalDetails) authenticate.getPrincipal();
         System.out.println("principal22 = " + principal);
-        System.out.println("principal33 = " + principal.getUser());
         TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);
 
         RefreshToken refreshToken = RefreshToken.builder()

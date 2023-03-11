@@ -43,6 +43,20 @@ public class ImageService {
         return images;
     }
 
+    @Transactional(readOnly = true)
+    public List<Image> selectImages(int principalId ){
+        List<Image> images = imageRepository.mStorys(principalId);
+        images.forEach(image ->{
+            image.setLikeCount(image.getLikes().size());
+            image.getLikes().forEach(like->{
+                if (like.getUser().getId() == principalId){
+                    image.setLikeState(true);
+                }
+            });
+        });
+        return images;
+    }
+
     @Value("${file.path}")
     private String uploadFolder;
 

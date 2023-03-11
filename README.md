@@ -192,7 +192,8 @@ public interface SubscribeRepository extends JpaRepository<Subscribe,Integer> {
 
 </details>
 
-![팔로우성공](https://user-images.githubusercontent.com/66653324/223059521-186b42f1-b07f-428d-8fd6-44e9af9a82ec.gif)
+![팔로우우](https://user-images.githubusercontent.com/66653324/223716096-9d773d28-f015-430a-b529-1bcd093361b7.gif)
+
 
 <br/>
 
