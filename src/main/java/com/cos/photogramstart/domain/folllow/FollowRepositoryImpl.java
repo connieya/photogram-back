@@ -2,7 +2,9 @@ package com.cos.photogramstart.domain.folllow;
 
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.web.dto.follow.FollowDto;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
@@ -47,17 +49,39 @@ public class FollowRepositoryImpl implements FollowRepositoryCustom {
                 .fetchCount();
     }
 
-    public List<User> followingList(int principalId ,int pageUser) {
-//        queryFactory
-//                .select()
-//                .from(user)
-//                .where(follow.fromUser.id.eq(principalId))
+    @Override
+    public List<FollowDto> followingList(int principalId ,int pageUser) {
+        QFollow followSub = new QFollow("followSub");
         return queryFactory
-                .select(user)
+                .select(Projections.fields(FollowDto.class,
+                        user.id, user.username, user.profileImageUrl,
+                        ExpressionUtils.as(JPAExpressions.select().from(followSub)
+                                .where(followSub.fromUser.id.eq(principalId).and(followSub.toUser.id.eq(user.id))).exists(), "followState"),
+                        user.id.eq(principalId).as("equalUserState")
+
+                ))
                 .from(follow)
                 .innerJoin(user)
                 .on(user.id.eq(follow.toUser.id))
                 .where(follow.fromUser.id.eq(pageUser))
+                .fetch();
+    }
+
+    @Override
+    public List<FollowDto> followerList(int principalId, int pageUser) {
+        QFollow followSub = new QFollow("followSub");
+        return queryFactory
+                .select(Projections.fields(FollowDto.class,
+                        user.id, user.username, user.profileImageUrl,
+                        ExpressionUtils.as(JPAExpressions.select().from(followSub)
+                                .where(followSub.fromUser.id.eq(principalId).and(followSub.toUser.id.eq(user.id))).exists(), "followState"),
+                        user.id.eq(principalId).as("equalUserState")
+
+                ))
+                .from(follow)
+                .innerJoin(user)
+                .on(user.id.eq(follow.fromUser.id))
+                .where(follow.toUser.id.eq(pageUser))
                 .fetch();
     }
 }

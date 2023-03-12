@@ -78,7 +78,6 @@ class FollowRepositoryImplTest {
         int principalId = 1;
         int pageUser = 2;
         QFollow followSub = new QFollow("followSub");
-        QUser userSub = new QUser("userSub");
         List<FollowDto> followDtos = queryFactory
                 .select(Projections.fields(FollowDto.class,
                         user.id, user.username, user.profileImageUrl,
