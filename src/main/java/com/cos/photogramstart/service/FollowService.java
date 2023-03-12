@@ -38,8 +38,8 @@ public class FollowService {
                 .setParameter(3, pageUserId);
 
         JpaResultMapper result = new JpaResultMapper();
-        List<FollowDto> subscribeDtos = result.list(query, FollowDto.class);
-        return  subscribeDtos;
+        List<FollowDto> followingDto = result.list(query, FollowDto.class);
+        return  followingDto;
     }
 
     // 팔로워 리스트

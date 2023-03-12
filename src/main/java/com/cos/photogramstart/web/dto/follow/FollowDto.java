@@ -15,6 +15,6 @@ public class FollowDto {
     private int id;
     private String username;
     private String profileImageUrl;
-    private BigInteger followState;
-    private BigInteger equalUserState;
+    private boolean followState;
+    private boolean equalUserState;
 }

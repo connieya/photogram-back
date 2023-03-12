@@ -1,6 +1,15 @@
 package com.cos.photogramstart.domain.folllow;
 
+import com.cos.photogramstart.domain.user.QUser;
+import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.web.dto.follow.FollowDto;
+import com.querydsl.core.QueryFactory;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,9 +19,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import static com.cos.photogramstart.domain.folllow.QFollow.*;
+import static com.cos.photogramstart.domain.user.QUser.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -60,6 +71,32 @@ class FollowRepositoryImplTest {
                 .fetchCount();
 
         assertThat(count).isEqualTo(3);
+    }
+
+    @Test
+    public void followingList(){
+        int principalId = 1;
+        int pageUser = 2;
+        QFollow followSub = new QFollow("followSub");
+        QUser userSub = new QUser("userSub");
+        List<FollowDto> followDtos = queryFactory
+                .select(Projections.fields(FollowDto.class,
+                        user.id, user.username, user.profileImageUrl,
+                        ExpressionUtils.as(JPAExpressions.select().from(followSub)
+                                .where(followSub.fromUser.id.eq(principalId).and(followSub.toUser.id.eq(user.id))).exists(), "followState"),
+                        user.id.eq(principalId).as("equalUserState")
+
+                ))
+                .from(follow)
+                .innerJoin(user)
+                .on(user.id.eq(follow.toUser.id))
+                .where(follow.fromUser.id.eq(pageUser))
+                .fetch();
+
+        for (FollowDto followDto : followDtos) {
+            System.out.println("followDto = " + followDto);
+        }
+
     }
 
 
