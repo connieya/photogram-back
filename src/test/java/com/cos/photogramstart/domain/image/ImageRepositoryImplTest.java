@@ -82,7 +82,7 @@ class ImageRepositoryImplTest {
 
         List<ImagePopularDto> imageList = queryFactory
                 .select(Projections.fields(ImagePopularDto.class,
-                        image.id, image.caption , image.postImageUrl, image.user.username, image.user.id.as("userId")
+                        image.id, image.caption , image.postImageUrl, image.user
                         , likes.image.id.count().as("likeCount")))
                 .from(image)
                 .innerJoin(likes)

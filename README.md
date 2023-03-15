@@ -225,53 +225,52 @@ queryFactory
 
 <br/>
 
-<details>
-<summary>예외 처리하기</summary>
 
-### ExceptionHandler
+<details>
+<summary>좋아요 많은 인기 게시물</summary>
+
+### 응답 dto
 
 ```java
-@RestController
-@ControllerAdvice
-public class ControllerExceptionHandler {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ImagePopularDto {
 
-    @ExceptionHandler(CustomValidationException.class)
-    public String  validationException(CustomValidationException e) {
-        if (e.getErrorMap() == null){
-            return Script.back(e.getMessage());
-        }
-        return Script.back(e.getErrorMap().toString());
-    }
-    @ExceptionHandler(CustomValidationApiException.class)
-    public ResponseEntity<?> validationApiException(CustomValidationApiException e) {
-        return new ResponseEntity<>(new RespDto<>(-1,e.getMessage(),e.getErrorMap()),HttpStatus.BAD_REQUEST);
-    }
-    @ExceptionHandler(CustomApiException.class)
-    public ResponseEntity<?> apiException(CustomApiException e) {
-        return new ResponseEntity<>(new RespDto<>(-1,e.getMessage(),null),HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(CustomException.class)
-    public String CustomException(CustomException e) {
-        return Script.back(e.getMessage());
-    }
+    private int id;
+    private String caption;
+    private String postImageUrl;
+    private long likeCount;
+    private User user;
 }
 ```
 
-### 팔로우
+### querydsl 로 데이터 조회
 
-팔로우하기 예외처리
+- 좋아요 테이블 (likes) 에서 imageId로 그룹화하기
+- 좋아요 테이블 (likes) 과 게시물 테이블 (Images) 조인화기
+- imageId로 그룹화 한 뒤 count 개수로 정렬
+- 좋아요 개수가 같을 경우 게시물 등록 최신 순 정렬
+- 개수는 9개만 (limit = 9)
 
 ```java
-    @Transactional
-    public void subscribe(int fromUserId , int toUserId){
-        try {
-            subscribeRepository.mSubscribe(fromUserId,toUserId);
-        }catch (Exception e){
-            throw new CustomApiException("이미 구독을 하였습니다.");
-        }
-
-    }
+queryFactory
+                .select(Projections.fields(ImagePopularDto.class,
+                        image.id, image.caption , image.postImageUrl, image.user
+                        , likes.image.id.count().as("likeCount")))
+                .from(image)
+                .innerJoin(likes)
+                .on(image.id.eq(likes.image.id))
+                .groupBy(likes.image.id)
+                .orderBy(likes.image.id.count().desc(), image.createDate.desc())
+                .limit(9)
+                .fetch();
 ```
 
+
+
 </details>
+
+![인기게시물](https://user-images.githubusercontent.com/66653324/225461487-075d202f-42ce-4548-8450-41a6577b45f5.gif)
+
+<br/>

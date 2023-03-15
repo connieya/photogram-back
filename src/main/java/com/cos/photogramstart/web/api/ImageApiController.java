@@ -6,6 +6,7 @@ import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.service.ImageService;
 import com.cos.photogramstart.service.LikesService;
 import com.cos.photogramstart.web.dto.RespDto;
+import com.cos.photogramstart.web.dto.image.ImagePopularDto;
 import com.cos.photogramstart.web.dto.image.ImageUploadDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -70,7 +71,7 @@ public class ImageApiController {
         if (principalDetails == null){
             return new ResponseEntity<>(new RespDto<>(-1,"로그인이 필요합니다.",null), HttpStatus.OK);
         }
-        List<Image> images = imageService.popular();
+        List<ImagePopularDto> images = imageService.popular();
         return new ResponseEntity<>(new RespDto<>(1,"인기 이미지 조회",images), HttpStatus.OK);
     }
 
