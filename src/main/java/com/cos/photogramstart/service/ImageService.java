@@ -25,6 +25,8 @@ public class ImageService {
 
     @Transactional(readOnly = true)
     public List<Image> popular(){
+        List<Image> images = imageRepository.mPopular();
+
         return imageRepository.mPopular();
     }
 
