@@ -3,18 +3,12 @@ package com.cos.photogramstart.web.api;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.handler.ex.CustomApiException;
-import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.service.ImageService;
 import com.cos.photogramstart.service.LikesService;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.image.ImageUploadDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -48,13 +42,13 @@ public class ImageApiController {
         return new ResponseEntity<>(new RespDto<>(1,"성공",images), HttpStatus.OK);
     }
 
-    @PostMapping("/api/image/{imageId}/likes")
+    @PostMapping("/api/likes/{imageId}")
     public ResponseEntity<?> like(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){
         likesService.like(imageId , principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"좋아요 성공",null),HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/api/image/{imageId}/likes")
+    @DeleteMapping("/api/likes/{imageId}")
     public ResponseEntity<?> unLike(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){
         likesService.unLike(imageId,principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"좋아요 취소 성공",null),HttpStatus.OK);
@@ -70,4 +64,14 @@ public class ImageApiController {
         imageService.upload(imageUploadDto, principalDetails);
         return new ResponseEntity<>(new RespDto<>(1,"이미지 업로드  성공",principalDetails.getUser().getId()),HttpStatus.OK);
     }
+
+    @GetMapping("/api/image/popular")
+    public ResponseEntity<?> popular(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        if (principalDetails == null){
+            return new ResponseEntity<>(new RespDto<>(-1,"로그인이 필요합니다.",null), HttpStatus.OK);
+        }
+        List<Image> images = imageService.popular();
+        return new ResponseEntity<>(new RespDto<>(1,"인기 이미지 조회",images), HttpStatus.OK);
+    }
+
 }
