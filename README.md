@@ -91,25 +91,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ### 팔로우 모델
 
 ```java
-public class Subscribe {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Follow {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-    @JoinColumn(name = "fromUserId")
-    @ManyToOne
-    private User fromUser;
+  @JoinColumn(name = "fromUserId")
+  @ManyToOne
+  private User fromUser;
 
-    @JoinColumn(name = "toUserId")
-    @ManyToOne
-    private User toUser;
+  @JoinColumn(name = "toUserId")
+  @ManyToOne
+  private User toUser;
 
-    private LocalDateTime createDate;
+  private LocalDateTime createDate;
 
-    @PrePersist // 디비에 INSERT 되기 직전에 실행
-    public void createDate() {
-        this.createDate = LocalDateTime.now();
-    }
+  @PrePersist // 디비에 INSERT 되기 직전에 실행
+  public void createDate() {
+    this.createDate = LocalDateTime.now();
+  }
 }
 ```
 같은 사람을 계속해서 팔로우 하면 안되기 때문에 Unique 제약 조건을 설정하였다.
@@ -122,7 +122,7 @@ public class Subscribe {
                 )
         }
 )
-public class Subscribe {
+public class Follow {
 }
 ```
 
@@ -132,25 +132,25 @@ public class Subscribe {
 
 #### Controller
 
-
 ```java
 @RestController
 @RequiredArgsConstructor
-public class SubscribeApiController {
+public class FollowApiController {
 
-    private final SubscribeService subscribeService;
-    
-    @PostMapping("/api/subscribe/{toUserId}")
-    public ResponseEntity<?> subscribe(@AuthenticationPrincipal PrincipalDetails principalDetails , @PathVariable int toUserId){
-        subscribeService.subscribe(principalDetails.getUser().getId() , toUserId);
-        return new ResponseEntity<>(new RespDto<>(1, "팔로우 성공",null), HttpStatus.OK);
-    }
+  private final FollowService followService;
 
-    @DeleteMapping("/api/subscribe/{toUserId}")
-    public ResponseEntity<?> unSubscribe(@AuthenticationPrincipal PrincipalDetails principalDetails , @PathVariable int toUserId) {
-        subscribeService.unSubscribe(principalDetails.getUser().getId() , toUserId);
-        return new ResponseEntity<>(new RespDto<>(1, "팔로우 취소 성공",null), HttpStatus.OK);
-    }
+  @PostMapping("/api/subscribe/{toUserId}")
+  public ResponseEntity<?> follow(@AuthenticationPrincipal PrincipalDetails principalDetails , @PathVariable int toUserId){
+    followService.follow(principalDetails.getUser().getId() , toUserId);
+    return new ResponseEntity<>(new RespDto<>(1, "팔로우 성공",null), HttpStatus.OK);
+  }
+
+  @DeleteMapping("/api/subscribe/{toUserId}")
+  public ResponseEntity<?> unfollow(@AuthenticationPrincipal PrincipalDetails principalDetails , @PathVariable int toUserId) {
+    System.out.println("principalDetails = " + principalDetails);
+    followService.unfollow(principalDetails.getUser().getId() , toUserId);
+    return new ResponseEntity<>(new RespDto<>(1, "팔로우 취소 성공",null), HttpStatus.OK);
+  }
 }
 ```
 
@@ -161,30 +161,17 @@ public class SubscribeApiController {
 
 - 팔로우 하기
 - 팔로우 취소
-- 팔로우 했는지 여부
-- 팔로워 숫자
-- 팔로잉 숫자
 
 ```java
-public interface SubscribeRepository extends JpaRepository<Subscribe,Integer> {
+public interface FollowRepository extends JpaRepository<Follow,Integer> ,FollowRepositoryCustom{
 
-    @Modifying
-    @Query(value = "insert into subscribe(fromUserid ,toUserId , createDate) values(:fromUserId, :toUserId , now())", nativeQuery = true)
-    void mSubscribe(int fromUserId, int toUserId);
+  @Modifying
+  @Query(value = "insert into follow(fromUserid ,toUserId , createDate) values(:fromUserId, :toUserId , now())", nativeQuery = true)
+  void mFollow(int fromUserId, int toUserId);
 
-    @Modifying
-    @Query(value = "delete from  subscribe where fromUserId =:fromUserId and toUserId =:toUserId", nativeQuery = true)
-    void mUnSubscribe(int fromUserId , int toUserId);
-
-    @Query(value = "SELECT count(*) FROM subscribe WHERE fromUserId =:principalId and toUserId= :pageUserId" , nativeQuery = true)
-    int mSubscribeState(int principalId, int pageUserId);
-
-    @Query(value = "SELECT count(*) FROM subscribe WHERE fromUserId =:pageUserId" , nativeQuery = true)
-    int mSubscribeCount(int pageUserId);
-
-    @Query(value = "SELECT count(*) FROM subscribe WHERE toUserId =:pageUserId" , nativeQuery = true)
-    int mSubscribedCount(int pageUserId);
-
+  @Modifying
+  @Query(value = "delete from  follow where fromUserId =:fromUserId and toUserId =:toUserId", nativeQuery = true)
+  void mUnfollow(int fromUserId , int toUserId);
 }
 ```
 
