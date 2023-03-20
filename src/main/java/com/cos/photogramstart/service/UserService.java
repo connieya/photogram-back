@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,6 +28,11 @@ public class UserService {
 
     @Value("${file.path}")
     private String uploadFolder;
+
+    @Transactional(readOnly = true)
+    public List<User> selectUsers(){
+        return userRepository.findAll();
+    }
 
     @Transactional(readOnly = true)
     public UserProfileDto selectUserProfile(int pageUserId, int principalId){

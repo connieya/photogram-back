@@ -38,6 +38,12 @@ public class UserApiController {
         return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",dto),HttpStatus.OK);
     }
 
+    @GetMapping("/api/users")
+    public ResponseEntity<?> userList() {
+        List<User> users = userService.selectUsers();
+        return new ResponseEntity<>(new RespDto<>(1,"포토그램 회원 리스트",users),HttpStatus.OK);
+    }
+
     @GetMapping("/api/user/profile")
     public ResponseEntity<?> update(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         if(principalDetails.getUser() == null){
@@ -101,23 +107,5 @@ public class UserApiController {
         User userEntity = userService.update(principalDetails.getUser().getId(), userUpdateDto.toEntity());
         principalDetails.setUser(userEntity);
         return new RespDto<>(1,"유저 정보 수정 ",userEntity);
-    }
-
-    @PutMapping("/api/user/{id}")
-    public RespDto<?> update(@PathVariable int id ,
-                             @Valid UserUpdateDto userUpdateDto ,
-                             BindingResult bindingResult,
-                             @AuthenticationPrincipal PrincipalDetails principalDetails){
-        if (bindingResult.hasErrors()){
-            Map<String,String> errorMap = new HashMap<>();
-            for(FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(error.getField(),error.getDefaultMessage());
-            }
-            throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
-        }
-
-        User userEntity = userService.update(id, userUpdateDto.toEntity());
-        principalDetails.setUser(userEntity);
-        return new RespDto<>(1,"회원수정완료",userEntity);
     }
 }
