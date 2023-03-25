@@ -1,6 +1,6 @@
 package com.cos.photogramstart.web.api;
 
-import antlr.Token;
+
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.service.AuthService;
 import com.cos.photogramstart.web.dto.RespDto;
@@ -48,11 +48,12 @@ public class AuthApiController {
     @PostMapping("/auth/signin")
     public ResponseEntity<?> signin(@RequestBody SignInRequest signInRequest) {
         SignInResponse signInResponse = authService.signin(signInRequest);
-        return new ResponseEntity<>(new RespDto<>(1, "로그인 성공", signInResponse), HttpStatus.CREATED);
+        return new ResponseEntity<>(new RespDto<>(1, "로그인 성공", signInResponse), HttpStatus.OK);
     }
 
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(@RequestBody TokenDto tokenDto) {
-        return  null;
+        TokenDto reissue = authService.reissue(tokenDto);
+        return new ResponseEntity<>(new RespDto<>(1, "refresh token 발급", reissue), HttpStatus.CREATED);
     }
 }

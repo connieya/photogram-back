@@ -76,7 +76,6 @@ public class UserApiController {
     @GetMapping("/api/following/{pageUserId}")
     public ResponseEntity<?> followingList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
         List<FollowDto> subscribeDto = followService.followingList(principalDetails.getUser().getId(),pageUserId);
-
         return new ResponseEntity<>(new RespDto<>(1,"팔로잉 리스트 불러오기 성공",subscribeDto), HttpStatus.OK);
     }
 

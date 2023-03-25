@@ -86,4 +86,24 @@ public class AuthService {
 
         return new SignInResponse(tokenDto,principal.getUser());
     }
+
+    @Transactional
+    public TokenDto reissue(TokenDto tokenDto) {
+        if(!tokenHelper.validateToken(tokenDto.getRefreshToken())){
+            throw new RuntimeException("Refreh Token이 유효하지 않습니다.");
+        }
+
+        Authentication authentication = tokenHelper.getAuthentication(tokenDto.getAccessToken());
+        System.out.println("authentication.getName() = " + authentication.getName());
+        RefreshToken refreshToken = refreshTokenRepository.
+                findByKey(authentication.getName()).orElseThrow(() -> new RuntimeException("로그아웃 된 사용자 입니다."));
+
+        if(!refreshToken.getValue().equals(tokenDto.getRefreshToken())) {
+            throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다");
+        }
+        TokenDto newToken = tokenHelper.generateTokenDto(authentication);
+        RefreshToken newRefreshToken = refreshToken.updateValue(newToken.getRefreshToken());
+        refreshTokenRepository.save(newRefreshToken);
+        return newToken;
+    }
 }
