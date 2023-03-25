@@ -1,16 +1,13 @@
 package com.cos.photogramstart.service;
 
 import com.cos.photogramstart.domain.folllow.FollowRepository;
-import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.web.dto.follow.FollowDto;
 import lombok.RequiredArgsConstructor;
-import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.List;
 
 @Service

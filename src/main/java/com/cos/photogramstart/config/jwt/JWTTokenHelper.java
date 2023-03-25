@@ -1,6 +1,7 @@
 package com.cos.photogramstart.config.jwt;
 
 
+import com.auth0.jwt.algorithms.Algorithm;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
@@ -32,11 +33,14 @@ public class JWTTokenHelper {
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 *7;
 
     private Key key;
+    private Algorithm algorithm;
+
 
 
     public JWTTokenHelper(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        algorithm = Algorithm.HMAC256("secret".getBytes());
     }
     public TokenDto generateTokenDto(Authentication authentication) {
         long now = (new Date()).getTime();

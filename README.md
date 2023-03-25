@@ -82,7 +82,124 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ![회원가입2](https://user-images.githubusercontent.com/66653324/223017753-c0536161-e25e-4a97-963d-b9fd1b2a0a59.gif)
 <br/>
 
+<details>
+<summary>회원 정보 수정</summary>
 
+
+
+### dto
+
+```java
+public class UserProfileUpdateResponse {
+    private int id;
+    private String username;
+    private String nickname;
+    private String bio;
+    private String email;
+    private String website;
+    private String profileImageUrl;
+}
+
+```
+
+### 회원 정보 수정 페이지
+
+회원 정보 수정 페이지 렌더링에 필요한 데이터
+
+- 고유 key (primary key) 
+- 소개
+- 닉네임
+- 아이디
+- 이메일
+- 웹 사이트
+- 프로필 이미지 url
+
+```java
+@GetMapping("/api/user/profile")
+    public ResponseEntity<?> update(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if(principalDetails.getUser() == null){
+            throw new CustomApiException("로그인이 필요합니다");
+        }
+        User user = principalDetails.getUser();
+        UserProfileUpdateResponse profileUpdateResponse = UserProfileUpdateResponse.builder()
+                .bio(user.getBio())
+                .id(user.getId())
+                .username(user.getUsername())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .profileImageUrl(user.getProfileImageUrl())
+                .website(user.getWebsite()).build();
+
+
+        return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",profileUpdateResponse),HttpStatus.OK);
+    }
+```
+
+</details>
+
+![회원정보-수정](https://user-images.githubusercontent.com/66653324/223888848-9fb5168d-dbe0-465b-9263-978af6f42235.gif)
+
+
+<br/>
+
+
+<details>
+<summary>사용자 검색/프로필 조회</summary>
+
+### controller 
+
+- 프로필 조회 했을 때 로그인 한 유저의 프로필 여부에 따라 화면이 다름
+- 따라서 AuthenticationPrincipal 객체가 필요함
+
+```java
+    @GetMapping("/api/user/{pageUserId}")
+    public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
+        UserProfileDto dto = userService.selectUserProfile(pageUserId, principalDetails.getUser().getId());
+        return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",dto),HttpStatus.OK);
+    }
+```
+
+### service
+
+- 프로필 유저 정보 
+- 로그인 한 유저의 프로필 여부
+- 게시물 개수
+- 해당 프로필 유저의 팔로잉 상태 여부
+- 해당 프로필 유저의 팔로잉 수
+- 해당 프로필 유저의 팔로워 수
+
+```java
+ @Transactional(readOnly = true)
+    public UserProfileDto selectUserProfile(int pageUserId, int principalId){
+        UserProfileDto dto = new UserProfileDto();
+        User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
+            throw new CustomApiException("해당 프로필 페이지는 없는 페이지입니다.");
+        });
+        dto.setUser(userEntity);
+        dto.setPageOwner(pageUserId == principalId);
+        dto.setImageCount(userEntity.getImages().size());
+
+        int followState = followRepository.followState(principalId, pageUserId);
+        int followingCount = followRepository.followingCount(pageUserId);
+        int followerCount = followRepository.followerCount(pageUserId);
+
+        dto.setFollowState(followState == 1);
+        dto.setFollowingCount(followingCount);
+        dto.setFollowerCount(followerCount);
+
+        // 좋아요 개수
+        userEntity.getImages().forEach(image -> {
+            image.setLikeCount(image.getLikes().size());
+        });
+        return dto;
+    }
+```
+
+</details>
+
+![프로필조회](https://user-images.githubusercontent.com/66653324/226251783-84274a24-b4c2-4b7b-a0c8-6447861d5a26.gif)
+
+<br/>
 
 
 <details>
@@ -259,5 +376,100 @@ queryFactory
 </details>
 
 ![인기게시물](https://user-images.githubusercontent.com/66653324/225461487-075d202f-42ce-4548-8450-41a6577b45f5.gif)
+
+<br/>
+
+<details>
+<summary>댓글 등록/삭제</summary>
+
+### 댓글 도메인
+
+- 하나의 유저는 N개의 댓글을 등록할 수 있다.
+- 하나의 게시글(이미지)에는 N개의 댓글이 등록 될 수 있다.
+
+```java
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(length = 100 , nullable = false)
+    private String content;
+
+    @JsonIgnoreProperties({"images"})
+    @JoinColumn(name = "userId")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User user;
+
+    @JoinColumn(name = "imageId")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Image image;
+    private LocalDateTime createDate;
+
+    @PrePersist
+    public void createDate(){
+        this.createDate = LocalDateTime.now();
+    }
+
+}
+```
+
+### 댓글 등록 / 삭제
+
+- 댓글 등록을 위한 dto
+```java
+public class CommentDto {
+    @NotBlank // 빈 값이거나 null 체크 , 빈 공백
+    private String content;
+    @NotNull // 빈 값 체크
+    private Integer imageId;
+}
+
+```
+- 컨트롤러에서 댓글 등록 서비스 호출
+```java
+@PostMapping("/api/comment")
+public ResponseEntity<?> commentService(
+@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult,
+@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if (bindingResult.hasErrors()) {
+        Map<String, String> errorMap = new HashMap<>();
+        for (FieldError error : bindingResult.getFieldErrors()) {
+        errorMap.put(error.getField(), error.getDefaultMessage());
+        }
+        throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
+        }
+        Comment comment = commentService.write(commentDto.getContent(), commentDto.getImageId(), principalDetails.getUser().getId());
+
+        return new ResponseEntity<>(new RespDto<>(1, "댓글 쓰기 성공", comment), HttpStatus.CREATED);
+        }
+```
+
+- 댓글 삭제 서비스 호출
+```java
+ @DeleteMapping("/api/comment/{id}")
+    public ResponseEntity<?> commentDelete(@PathVariable int id) {
+        commentService.delete(id);
+        return new ResponseEntity<>(new RespDto<>(1, "댓글 삭제 성공", null), HttpStatus.OK);
+    }
+```
+
+- data JPA repository 내장 함수 호출
+
+```java
+  @Transactional
+    public void delete(int id) {
+        try{
+        commentRepository.deleteById(id);
+        }catch(Exception e){
+            throw new CustomApiException(e.getMessage());
+        }
+    }
+```
+
+
+</details>
+
+![댓글등록삭제](https://user-images.githubusercontent.com/66653324/226517482-24cd420a-6096-478a-9a6f-9ac5a92bf542.gif)
 
 <br/>

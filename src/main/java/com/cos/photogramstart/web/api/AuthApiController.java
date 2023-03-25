@@ -1,5 +1,6 @@
 package com.cos.photogramstart.web.api;
 
+import antlr.Token;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.service.AuthService;
 import com.cos.photogramstart.web.dto.RespDto;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,15 +45,14 @@ public class AuthApiController {
         return new ResponseEntity<>(new RespDto<>(1, "회원가입 성공", userEntity), HttpStatus.CREATED);
     }
 
-    @PostMapping("/auth/login")
-    public ResponseEntity<?> login(@RequestBody SignInRequest signInRequest) {
-        TokenDto tokenDto = authService.login(signInRequest);
-        return new ResponseEntity<>(new RespDto<>(1, "로그인 성공", tokenDto), HttpStatus.CREATED);
-    }
-
     @PostMapping("/auth/signin")
     public ResponseEntity<?> signin(@RequestBody SignInRequest signInRequest) {
         SignInResponse signInResponse = authService.signin(signInRequest);
         return new ResponseEntity<>(new RespDto<>(1, "로그인 성공", signInResponse), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<?> reissue(@RequestBody TokenDto tokenDto) {
+        return  null;
     }
 }

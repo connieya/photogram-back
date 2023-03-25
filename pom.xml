@@ -96,16 +96,12 @@
 			<artifactId>spring-aop</artifactId>
 		</dependency>
 
-
-
-		<!-- https://mvnrepository.com/artifact/org.qlrm/qlrm -->
+		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
 		<dependency>
-			<groupId>org.qlrm</groupId>
-			<artifactId>qlrm</artifactId>
-			<version>3.0.4</version>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.18.1</version>
 		</dependency>
-
-
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

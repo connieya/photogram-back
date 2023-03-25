@@ -12,5 +12,4 @@ public class CommentDto {
     private String content;
     @NotNull // 빈 값 체크
     private Integer imageId;
-
 }
