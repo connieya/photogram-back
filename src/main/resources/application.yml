@@ -35,6 +35,16 @@ spring:
     user:
       name: test
       password: 1234
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 908264090410986
+            client-secret: 024c81a22d42bd36d623f06b7b5e887e
+            scope:
+              - public-profile
+              - email
+
 
 file:
   path: C:/workspace/photogram-front/public/images/
