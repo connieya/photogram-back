@@ -4,6 +4,7 @@ import com.cos.photogramstart.config.jwt.JWTAuthenticationFilter;
 import com.cos.photogramstart.config.jwt.JWTTokenHelper;
 import com.cos.photogramstart.config.jwt.JwtAccessDeniedHandler;
 import com.cos.photogramstart.config.jwt.JwtAuthenticationEntryPoint;
+import com.cos.photogramstart.oauth.OAuth2DetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CorsConfig corsConfig;
+    private final OAuth2DetailService oAuth2DetailService;
 
     @Override
     @Bean
@@ -60,6 +62,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
                 .antMatchers("/api/user/**","/user/**","/image/**","/subscribe/**","/comment/**,/api/**")
                 .authenticated()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(oAuth2DetailService);
     }
 }
