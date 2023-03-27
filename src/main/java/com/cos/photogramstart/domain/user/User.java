@@ -29,9 +29,7 @@ public class User {
     private String email;
     private String website;
     private String bio;
-
     private String profileImageUrl;
-    private String role;
 
     // user를 select 를 할때 해당 userId 로 등록된 image를 가져온다.
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // 연관 관계의 주인이 아니다.

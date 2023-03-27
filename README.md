@@ -1,5 +1,13 @@
 # Photogram
 
+### 도메인 모델
+
+![img_1.png](img_1.png)
+
+
+### 기능
+
+
 <details>
 <summary>회원가입</summary>
 
