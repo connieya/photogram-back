@@ -43,7 +43,6 @@ public class AuthService {
         String rawPassword = user.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
-        user.setRole("ROLE_USER");
         User userEntity = userRepository.save(user);
         return userEntity;
     }
@@ -71,9 +70,7 @@ public class AuthService {
         UsernamePasswordAuthenticationToken authenticationToken = signInRequest.toAuthentication();
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         Authentication authenticate = authenticationManager.getObject().authenticate(authenticationToken);
-        System.out.println("authenticate = " + authenticate);
         PrincipalDetails principal = (PrincipalDetails) authenticate.getPrincipal();
-        System.out.println("principal22 = " + principal);
         TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);
 
         RefreshToken refreshToken = RefreshToken.builder()
@@ -94,7 +91,6 @@ public class AuthService {
         }
 
         Authentication authentication = tokenHelper.getAuthentication(tokenDto.getAccessToken());
-        System.out.println("authentication.getName() = " + authentication.getName());
         RefreshToken refreshToken = refreshTokenRepository.
                 findByKey(authentication.getName()).orElseThrow(() -> new RuntimeException("로그아웃 된 사용자 입니다."));
 

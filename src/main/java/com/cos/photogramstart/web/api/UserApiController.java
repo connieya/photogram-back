@@ -65,7 +65,6 @@ public class UserApiController {
 
     @PutMapping("/api/user/image")
     public ResponseEntity<?> profileImageUpdate(@RequestParam("file") MultipartFile profileImageFile , @AuthenticationPrincipal PrincipalDetails principalDetails){
-        System.out.println("profileImageFile = " + profileImageFile);
         User userEntity = userService.updateImage(principalDetails.getUser().getId(),profileImageFile);
         principalDetails.setUser(userEntity);
         return new ResponseEntity<>(new RespDto<>(1,"프로필 사진 변경",null),HttpStatus.OK);
@@ -82,23 +81,13 @@ public class UserApiController {
     @GetMapping("/api/follower/{pageUserId}")
     public ResponseEntity<?> followerList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
         List<FollowDto> followerDto = followService.followerList(principalDetails.getUser().getId(),pageUserId);
-        System.out.println("followerDto = " + followerDto);
         return new ResponseEntity<>(new RespDto<>(1,"팔로워 리스트 불러오기 성공",followerDto), HttpStatus.OK);
     }
 
     @PutMapping("/api/user")
     public RespDto<?> updateProfile(
                              @Valid @RequestBody UserUpdateDto userUpdateDto ,
-                             BindingResult bindingResult,
-                             @AuthenticationPrincipal PrincipalDetails principalDetails){
-        if (bindingResult.hasErrors()){
-            Map<String,String> errorMap = new HashMap<>();
-            for(FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(error.getField(),error.getDefaultMessage());
-            }
-            throw new CustomApiException("유효성 검사 실패함");
-        }
-
+                             BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails){
         if (principalDetails.getUser() == null){
             throw new CustomApiException("로그인이 필요합니다");
         }

@@ -29,17 +29,6 @@ public class AuthApiController {
 
     @PostMapping("/auth/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupDto signupDto , BindingResult bindingResult){
-        System.out.println("signupDto = " + signupDto);
-        System.out.println("bindingResult.hasError => " + bindingResult.hasErrors());
-        if(bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            for(FieldError error : bindingResult.getFieldErrors()) {
-                System.out.println("error ======> " + error);
-                errorMap.put(error.getField() , error.getDefaultMessage());
-            }
-            return new ResponseEntity<>(new RespDto<>(0, "회원가입 실패", errorMap), HttpStatus.BAD_REQUEST);
-        }
-
         User user = signupDto.toEntity();
         User userEntity = authService.signup(user);
         return new ResponseEntity<>(new RespDto<>(1, "회원가입 성공", userEntity), HttpStatus.CREATED);

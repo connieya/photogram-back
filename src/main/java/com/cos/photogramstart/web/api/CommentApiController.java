@@ -28,13 +28,6 @@ public class CommentApiController {
     public ResponseEntity<?> commentService(
             @Valid @RequestBody CommentDto commentDto, BindingResult bindingResult,
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-            throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
-        }
         Comment comment = commentService.write(commentDto.getContent(), commentDto.getImageId(), principalDetails.getUser().getId());
 
         return new ResponseEntity<>(new RespDto<>(1, "댓글 쓰기 성공", comment), HttpStatus.CREATED);

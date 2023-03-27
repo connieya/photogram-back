@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@ToString(exclude = {"likes" ,"comments"})
+@ToString(exclude = {"likes" ,"comments","user"})
 public class Image { // N : 1
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

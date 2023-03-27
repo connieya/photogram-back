@@ -1,7 +1,5 @@
 package com.cos.photogramstart.config.jwt;
 
-
-import com.auth0.jwt.algorithms.Algorithm;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
@@ -33,18 +31,13 @@ public class JWTTokenHelper {
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 *7;
 
     private Key key;
-    private Algorithm algorithm;
-
-
-
+    
     public JWTTokenHelper(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
-        algorithm = Algorithm.HMAC256("secret".getBytes());
     }
     public TokenDto generateTokenDto(Authentication authentication) {
         long now = (new Date()).getTime();
-        System.out.println("authentication = " + authentication);
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         User userEntity = principalDetails.getUser();
@@ -74,13 +67,11 @@ public class JWTTokenHelper {
 
     public Authentication getAuthentication(String accessToken){
         Claims claims = parseClaims(accessToken);
-        System.out.println("claims = " + claims);
         if(claims.get(AUTHORITIES_KEY) == null){
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
         ObjectMapper mapper = new ObjectMapper();
         ClaimDto claimDto = mapper.convertValue(claims.get(AUTHORITIES_KEY), ClaimDto.class);
-        System.out.println("getAuthentication 호출 claimDto = " + claimDto);
         User user = userRepository.findById(claimDto.getId()).orElseThrow(() -> {
             throw new CustomApiException("존재하지 않는 아이디 입니다.");
         });
