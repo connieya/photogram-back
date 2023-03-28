@@ -29,7 +29,6 @@ public class CommentApiController {
             @Valid @RequestBody CommentDto commentDto, BindingResult bindingResult,
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Comment comment = commentService.write(commentDto.getContent(), commentDto.getImageId(), principalDetails.getUser().getId());
-
         return new ResponseEntity<>(new RespDto<>(1, "댓글 쓰기 성공", comment), HttpStatus.CREATED);
     }
 

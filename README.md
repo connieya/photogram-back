@@ -15,6 +15,17 @@
 ![img_2.png](img_2.png)
 
 
+### 애플리케이션 아키텍처
+
+![img_3.png](img_3.png)
+
+- controller  :  웹 계층
+- service : .비즈니스 로직 , 트랜잭션 처리
+- repository : JPA를 직접 사용하는 계층  , querydsl , native query 사용
+- domain : 엔티티가 모여 있는 계층 , 모든 계층에서 사용
+
+
+
 ### 기능
 
 
@@ -232,11 +243,11 @@ public class Follow {
   private int id;
 
   @JoinColumn(name = "fromUserId")
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   private User fromUser;
 
   @JoinColumn(name = "toUserId")
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   private User toUser;
 
   private LocalDateTime createDate;
@@ -407,30 +418,39 @@ queryFactory
 
 ```java
 public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-    @Column(length = 100 , nullable = false)
-    private String content;
+  @Column(length = 100 , nullable = false)
+  private String content;
 
-    @JsonIgnoreProperties({"images"})
-    @JoinColumn(name = "userId")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
+  @JsonIgnoreProperties({"images"})
+  @JoinColumn(name = "userId")
+  @ManyToOne(fetch = FetchType.LAZY)
+  private User user;
 
-    @JoinColumn(name = "imageId")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Image image;
-    private LocalDateTime createDate;
+  @JoinColumn(name = "imageId")
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Image image;
+  private LocalDateTime createDate;
 
-    @PrePersist
-    public void createDate(){
-        this.createDate = LocalDateTime.now();
-    }
+  @PrePersist
+  public void createDate(){
+    this.createDate = LocalDateTime.now();
+  }
 
+  public static Comment addComment(String content , Image image ,User user){
+    Comment comment = new Comment();
+    comment.setContent(content);
+    comment.setImage(image);
+    comment.setUser(user);
+    return comment;
+  }
 }
 ```
+
+- 댓글 등록을 위한 addComment 메서드 생성
 
 ### 댓글 등록 / 삭제
 
@@ -445,20 +465,13 @@ public class CommentDto {
 
 ```
 - 컨트롤러에서 댓글 등록 서비스 호출
+- 유효성 검사 AOP 처리
 ```java
 @PostMapping("/api/comment")
 public ResponseEntity<?> commentService(
 @Valid @RequestBody CommentDto commentDto, BindingResult bindingResult,
 @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        if (bindingResult.hasErrors()) {
-        Map<String, String> errorMap = new HashMap<>();
-        for (FieldError error : bindingResult.getFieldErrors()) {
-        errorMap.put(error.getField(), error.getDefaultMessage());
-        }
-        throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
-        }
         Comment comment = commentService.write(commentDto.getContent(), commentDto.getImageId(), principalDetails.getUser().getId());
-
         return new ResponseEntity<>(new RespDto<>(1, "댓글 쓰기 성공", comment), HttpStatus.CREATED);
         }
 ```

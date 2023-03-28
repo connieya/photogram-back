@@ -2,7 +2,9 @@ package com.cos.photogramstart.domain.likes;
 
 import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,7 +12,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
 @Entity
 @Table(
@@ -21,19 +23,20 @@ import java.time.LocalDateTime;
                 )
         }
 )
-@ToString(exclude = "user")
+@ToString(exclude = {"user" ,"image"})
 public class Likes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @JoinColumn(name = "imageId")
-    @ManyToOne // 연관관계의 주인
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Image image;
 
-    @JsonIgnoreProperties({"images"})
     @JoinColumn(name = "userId")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User user;
 
     private LocalDateTime createDate;

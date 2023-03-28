@@ -3,6 +3,7 @@ package com.cos.photogramstart.service;
 import com.cos.photogramstart.domain.comment.Comment;
 import com.cos.photogramstart.domain.comment.CommentRepository;
 import com.cos.photogramstart.domain.image.Image;
+import com.cos.photogramstart.domain.image.ImageRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
@@ -16,20 +17,19 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
 
     @Transactional
     public Comment write(String content , int imageId , int userId)
     {
-        Image image = new Image();
-        image.setId(imageId);
         User userEntity = userRepository.findById(userId).orElseThrow(() -> {
             throw new CustomApiException("유저 아이디를 찾을 수 없습니다.");
         });
+        Image image = imageRepository.findById(imageId).orElseThrow(() -> {
+            throw new CustomApiException("해당 게시글을 찾을 수 없습니다.");
+        });
 
-        Comment comment = new Comment();
-        comment.setContent(content);
-        comment.setImage(image);
-        comment.setUser(userEntity);
+        Comment comment = Comment.addComment(content, image, userEntity);
         return commentRepository.save(comment);
     }
 

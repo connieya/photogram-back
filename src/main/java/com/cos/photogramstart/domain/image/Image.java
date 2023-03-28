@@ -3,16 +3,18 @@ package com.cos.photogramstart.domain.image;
 import com.cos.photogramstart.domain.comment.Comment;
 import com.cos.photogramstart.domain.likes.Likes;
 import com.cos.photogramstart.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
 @Entity
 @ToString(exclude = {"likes" ,"comments","user"})
@@ -23,9 +25,9 @@ public class Image { // N : 1
     private String caption;
     private String postImageUrl; // 사진을 전송받아서 사진을 서버에 특정 폴더에 저장
 
-    @JsonIgnoreProperties({"images"})
     @JoinColumn(name = "userId")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User user;
 
     @JsonIgnoreProperties({"image"})
@@ -36,7 +38,7 @@ public class Image { // N : 1
 
     @JsonIgnoreProperties({"image"})
     @OneToMany(mappedBy = "image")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @Transient
     private boolean likeState;

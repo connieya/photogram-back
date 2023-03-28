@@ -1,17 +1,15 @@
 package com.cos.photogramstart.domain.folllow;
 
 import com.cos.photogramstart.domain.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
 @Entity
 @Table(
@@ -28,11 +26,13 @@ public class Follow {
     private int id;
 
     @JoinColumn(name = "fromUserId")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User fromUser;
 
     @JoinColumn(name = "toUserId")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User toUser;
 
     private LocalDateTime createDate;

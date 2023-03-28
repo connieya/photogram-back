@@ -36,10 +36,13 @@ public class ImageApiController {
 
     @GetMapping("/api/image")
     public ResponseEntity<?> selectImages(@AuthenticationPrincipal PrincipalDetails principalDetails){
-        if (principalDetails == null){
+        if (principalDetails.getUser() == null){
             return new ResponseEntity<>(new RespDto<>(-1,"로그인이 필요합니다.",null), HttpStatus.OK);
         }
         List<Image> images = imageService.selectImages(principalDetails.getUser().getId());
+        for (Image image : images) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!image = " + image);
+        }
         return new ResponseEntity<>(new RespDto<>(1,"성공",images), HttpStatus.OK);
     }
 

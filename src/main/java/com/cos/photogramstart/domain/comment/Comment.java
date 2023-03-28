@@ -2,18 +2,16 @@ package com.cos.photogramstart.domain.comment;
 
 import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
 @Entity
 public class Comment {
@@ -24,13 +22,15 @@ public class Comment {
     @Column(length = 100 , nullable = false)
     private String content;
 
-    @JsonIgnoreProperties({"images"})
+
     @JoinColumn(name = "userId")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User user;
 
     @JoinColumn(name = "imageId")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Image image;
     private LocalDateTime createDate;
 
@@ -39,4 +39,11 @@ public class Comment {
         this.createDate = LocalDateTime.now();
     }
 
+    public static Comment addComment(String content , Image image ,User user){
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setImage(image);
+        comment.setUser(user);
+        return comment;
+    }
 }

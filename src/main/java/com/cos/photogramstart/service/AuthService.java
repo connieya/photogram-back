@@ -67,6 +67,7 @@ public class AuthService {
 
     @Transactional
     public SignInResponse signin(SignInRequest signInRequest) {
+        System.out.println("signInRequest = " + signInRequest);
         UsernamePasswordAuthenticationToken authenticationToken = signInRequest.toAuthentication();
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         Authentication authenticate = authenticationManager.getObject().authenticate(authenticationToken);
@@ -77,8 +78,6 @@ public class AuthService {
                 .key(authenticate.getName())
                 .value(tokenDto.getRefreshToken())
                 .build();
-
-        System.out.println("refreshToken = " + refreshToken);
         refreshTokenRepository.save(refreshToken);
 
         return new SignInResponse(tokenDto,principal.getUser());

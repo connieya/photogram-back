@@ -62,13 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
                 .antMatchers("/api/user/**","/user/**","/image/**","/subscribe/**","/comment/**,/api/**")
                 .authenticated()
-                .anyRequest().permitAll()
-                .and()
-                .oauth2Login()
-                .authorizationEndpoint()
-                .baseUri("/oauth2/authorize")
-                .and()
-                .userInfoEndpoint()
-                .userService(oAuth2DetailService);
+                .anyRequest().permitAll();
     }
 }
