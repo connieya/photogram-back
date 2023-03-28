@@ -40,12 +40,6 @@ public class Image { // N : 1
     @OneToMany(mappedBy = "image")
     private List<Comment> comments = new ArrayList<>();
 
-    @Transient
-    private boolean likeState;
-
-    @Transient
-    private int likeCount;
-
     @PrePersist // 디비에 INSERT 되기 직전에 실행
     public void createDate() {
         this.createDate = LocalDateTime.now();

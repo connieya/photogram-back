@@ -3,6 +3,7 @@ package com.cos.photogramstart.service;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.domain.image.ImageRepository;
+import com.cos.photogramstart.web.dto.image.ImageData;
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
 import com.cos.photogramstart.web.dto.image.ImageUploadDto;
 import lombok.RequiredArgsConstructor;
@@ -33,28 +34,20 @@ public class ImageService {
     @Transactional(readOnly = true)
     public Page<Image> select(int principalId , Pageable pageable ){
         Page<Image> images = imageRepository.mStory(principalId ,pageable);
-        images.forEach(image ->{
-            image.setLikeCount(image.getLikes().size());
-            image.getLikes().forEach(like->{
-                if (like.getUser().getId() == principalId){
-                 image.setLikeState(true);
-                }
-            });
-        });
+//        images.forEach(image ->{
+//            image.setLikeCount(image.getLikes().size());
+//            image.getLikes().forEach(like->{
+//                if (like.getUser().getId() == principalId){
+//                 image.setLikeState(true);
+//                }
+//            });
+//        });
         return images;
     }
 
     @Transactional(readOnly = true)
-    public List<Image> selectImages(int principalId ){
-        List<Image> images = imageRepository.getStory(principalId);
-        images.forEach(image ->{
-            image.setLikeCount(image.getLikes().size());
-            image.getLikes().forEach(like->{
-                if (like.getUser().getId() == principalId){
-                    image.setLikeState(true);
-                }
-            });
-        });
+    public List<ImageData> selectImages(int principalId ){
+        List<ImageData> images = imageRepository.getStory(principalId);
         return images;
     }
 

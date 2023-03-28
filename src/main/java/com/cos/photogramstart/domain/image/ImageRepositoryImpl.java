@@ -1,7 +1,10 @@
 package com.cos.photogramstart.domain.image;
 
 import com.cos.photogramstart.domain.folllow.QFollow;
+import com.cos.photogramstart.domain.likes.QLikes;
+import com.cos.photogramstart.web.dto.image.ImageData;
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -23,12 +26,18 @@ public class ImageRepositoryImpl implements ImageRepositoryCustom {
     }
 
     @Override
-    public List<Image> getStory(int principalId) {
-        List<Image> storys = queryFactory
-                .selectFrom(image)
+    public List<ImageData> getStory(int principalId) {
+        List<ImageData> storyData = queryFactory
+                .select(Projections.fields(ImageData.class,
+                        image,
+                        ExpressionUtils.as(JPAExpressions.select(likes.id.count()).from(likes).where(likes.image.id.eq(image.id)),"likeCount"),
+                        ExpressionUtils.as(JPAExpressions.select().from(likes).where(likes.user.id.eq(principalId)).exists()
+                                , "likeState")
+                ))
+                .from(image)
                 .where(image.user.id.in(JPAExpressions.select(follow.toUser.id).from(follow)
                         .where(follow.fromUser.id.eq(principalId)))).orderBy(image.createDate.desc()).fetch();
-        return storys;
+        return storyData;
     }
 
     @Override

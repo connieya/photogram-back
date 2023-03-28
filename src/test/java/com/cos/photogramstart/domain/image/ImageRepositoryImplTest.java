@@ -1,8 +1,10 @@
 package com.cos.photogramstart.domain.image;
 
 import com.cos.photogramstart.domain.likes.QLikes;
+import com.cos.photogramstart.web.dto.image.ImageData;
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -10,6 +12,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,6 +25,7 @@ import static com.cos.photogramstart.domain.likes.QLikes.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class ImageRepositoryImplTest {
     @PersistenceContext
     EntityManager em;
@@ -71,6 +75,22 @@ class ImageRepositoryImplTest {
         }
     }
 
+    @Test void getStory3(){
+        int principalId = 1;
+        List<ImageData> storyData = queryFactory
+                .select(Projections.fields(ImageData.class,
+                        image,
+                        ExpressionUtils.as(JPAExpressions.select(likes.id.count()).from(likes).where(likes.image.id.eq(image.id)),"likeCount"),
+                        ExpressionUtils.as(JPAExpressions.select().from(likes).where(likes.user.id.eq(principalId)).exists()
+                                , "likeState")
+                ))
+                .from(image)
+                .where(image.user.id.in(JPAExpressions.select(follow.toUser.id).from(follow)
+                        .where(follow.fromUser.id.eq(principalId)))).orderBy(image.createDate.desc()).fetch();
+        for (ImageData story : storyData){
+            System.out.println("story = " + story.getImage() + story.getLikeCount() + story.isLikeState());
+        }
+    }
     @Test
     public void popular() {
         List<Tuple> fetch = queryFactory

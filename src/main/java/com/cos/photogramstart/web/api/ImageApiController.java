@@ -6,6 +6,7 @@ import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.service.ImageService;
 import com.cos.photogramstart.service.LikesService;
 import com.cos.photogramstart.web.dto.RespDto;
+import com.cos.photogramstart.web.dto.image.ImageData;
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
 import com.cos.photogramstart.web.dto.image.ImageUploadDto;
 import lombok.RequiredArgsConstructor;
@@ -39,10 +40,7 @@ public class ImageApiController {
         if (principalDetails.getUser() == null){
             return new ResponseEntity<>(new RespDto<>(-1,"로그인이 필요합니다.",null), HttpStatus.OK);
         }
-        List<Image> images = imageService.selectImages(principalDetails.getUser().getId());
-        for (Image image : images) {
-            System.out.println("!!!!!!!!!!!!!!!!!!!image = " + image);
-        }
+        List<ImageData> images = imageService.selectImages(principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"성공",images), HttpStatus.OK);
     }
 
