@@ -23,6 +23,16 @@
 - domain : 엔티티가 모여 있는 계층 , 모든 계층에서 사용
 
 
+### 리팩토링
+
+- api 모든 파라미터 Entity 가 아닌 dto 로 변경
+  - 엔티티에는 민감한 데이터가 포함될 수 있음
+  - 예를 들어 패스워드와 같은 보안 정보
+  - API 요청의 파라미터로 Entity를 전달하면 보안 상의 문제가 발생할 수 있음
+  - DTO는 필요한 데이터만 포함하고 있으므로 데이터 전송에 필요한 데이터 야이 적어 짐
+  - DTO를 사용하면 코드 유지보수가 쉬워진다.
+  - 엔티티 객체와 DTO는 역할이 분리되어 있기 때문에 변경 사항이 있을 때 해당 영역만 수정하면 된다.
+  - DTO는 특정한 스키마에 의존하지 않고, 필요한 데이터만 포함하고 있기 때문에 확장성이 높다.
 
 ### 기능
 
@@ -213,11 +223,7 @@ public class UserProfileUpdateResponse {
         dto.setFollowState(followState == 1);
         dto.setFollowingCount(followingCount);
         dto.setFollowerCount(followerCount);
-
-        // 좋아요 개수
-        userEntity.getImages().forEach(image -> {
-            image.setLikeCount(image.getLikes().size());
-        });
+        
         return dto;
     }
 ```
@@ -340,13 +346,20 @@ queryFactory
 .fetch();
 ```
 - Image 테이블에서 userId 가 팔로우 한 유저 아이디에 해당하는 정보 가져오기
+  - (좋아요 여부 , 좋아요 개수, Image)  => ImageData DTO
   - 서브 쿼리 사용
   - 게시물 업로드 최신 순으로 가져오기
 ```java
 queryFactory
-.selectFrom(image)
-.where(image.user.id.in(JPAExpressions.select(follow.toUser.id).from(follow)
-.where(follow.fromUser.id.eq(principalId)))).orderBy(image.createDate.desc()).fetch();
+        .select(Projections.fields(ImageData.class,
+        image,
+        ExpressionUtils.as(JPAExpressions.select(likes.id.count()).from(likes).where(likes.image.id.eq(image.id)),"likeCount"),
+        ExpressionUtils.as(JPAExpressions.select().from(likes).where(likes.user.id.eq(principalId)).exists()
+        , "likeState")
+        ))
+        .from(image)
+        .where(image.user.id.in(JPAExpressions.select(follow.toUser.id).from(follow)
+        .where(follow.fromUser.id.eq(principalId)))).orderBy(image.createDate.desc()).fetch();
 ```
 
 

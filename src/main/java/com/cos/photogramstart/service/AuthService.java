@@ -29,10 +29,9 @@ public class AuthService {
     private final AuthenticationManagerBuilder authenticationManager;
     private final JWTTokenHelper tokenHelper;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final AuthenticationManager authentication;
 
-    // 회원가입
-    @Transactional // insert , update ,delete 시 사용
+
+    @Transactional
     public User signup(User user){
         if(userRepository.existsByUsername(user.getUsername())){
             throw new CustomApiException("사용중인 아이디 입니다.");
@@ -47,27 +46,9 @@ public class AuthService {
         return userEntity;
     }
 
-    @Transactional
-    public TokenDto login(SignInRequest signInRequest){
-        Authentication authenticate = authentication.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-        TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);
-
-
-        RefreshToken refreshToken = RefreshToken.builder()
-                .key(authenticate.getName())
-                .value(tokenDto.getRefreshToken())
-                .build();
-
-        System.out.println("refreshToken = " + refreshToken);
-        refreshTokenRepository.save(refreshToken);
-        return tokenDto;
-
-    }
 
     @Transactional
     public SignInResponse signin(SignInRequest signInRequest) {
-        System.out.println("signInRequest = " + signInRequest);
         UsernamePasswordAuthenticationToken authenticationToken = signInRequest.toAuthentication();
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         Authentication authenticate = authenticationManager.getObject().authenticate(authenticationToken);

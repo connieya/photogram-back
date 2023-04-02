@@ -20,25 +20,21 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 20 , unique = true)
     private String username;
-    @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
     private String nickname;
-    @Column(nullable = false , unique = true)
     private String email;
     private String website;
     private String bio;
     private String profileImageUrl;
 
-    // user를 select 를 할때 해당 userId 로 등록된 image를 가져온다.
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // 연관 관계의 주인이 아니다.
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Image> images;
 
     private LocalDateTime createDate;
 
-    @PrePersist // 디비에 INSERT 되기 직전에 실행
+    @PrePersist
     public void createDate() {
         this.createDate = LocalDateTime.now();
     }
