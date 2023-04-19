@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +48,11 @@ public class ImageService {
 
     @Transactional(readOnly = true)
     public List<ImageData> selectImages(int principalId ){
-        List<ImageData> images = imageRepository.getStory(principalId);
-        return images;
+        List<Image> images = imageRepository.getStory(principalId);
+        List<ImageData> result = images.stream()
+                .map(i -> new ImageData(i))
+                .collect(Collectors.toList());
+        return result;
     }
 
     @Value("${file.path}")

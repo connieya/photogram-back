@@ -29,7 +29,7 @@ public class User {
     private String profileImageUrl;
 
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private List<Image> images;
 
     private LocalDateTime createDate;

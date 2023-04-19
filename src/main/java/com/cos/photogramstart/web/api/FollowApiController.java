@@ -26,7 +26,6 @@ public class FollowApiController {
 
     @DeleteMapping("/api/subscribe/{toUserId}")
     public ResponseEntity<?> unfollow(@AuthenticationPrincipal PrincipalDetails principalDetails , @PathVariable int toUserId) {
-        System.out.println("principalDetails = " + principalDetails);
         followService.unfollow(principalDetails.getUser().getId() , toUserId);
         return new ResponseEntity<>(new RespDto<>(1, "팔로우 취소 성공",null), HttpStatus.OK);
     }

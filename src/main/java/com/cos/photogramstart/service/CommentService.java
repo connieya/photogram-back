@@ -7,9 +7,12 @@ import com.cos.photogramstart.domain.image.ImageRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
+import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -40,5 +43,10 @@ public class CommentService {
         }catch(Exception e){
             throw new CustomApiException(e.getMessage());
         }
+    }
+
+    @Transactional
+    public List<CommentResponseDto> findByImageId(int imageId) {
+        return commentRepository.findByImageId(imageId);
     }
 }

@@ -5,10 +5,10 @@ import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
+import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +31,11 @@ public class UserService {
     private String uploadFolder;
 
     @Transactional(readOnly = true)
-    public List<User> selectUsers(){
-        return userRepository.findAll();
+    public List<UserInfo> selectUsers(){
+        return userRepository.findAll()
+                .stream()
+                .map(u -> new UserInfo(u.getId(),u.getUsername(),u.getProfileImageUrl()))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

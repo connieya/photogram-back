@@ -3,10 +3,10 @@ package com.cos.photogramstart.web.api;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.handler.ex.CustomApiException;
-import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 import com.cos.photogramstart.service.FollowService;
 import com.cos.photogramstart.service.UserService;
 import com.cos.photogramstart.web.dto.RespDto;
+import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.follow.FollowDto;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import com.cos.photogramstart.web.dto.user.UserProfileUpdateResponse;
@@ -16,14 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -40,7 +38,7 @@ public class UserApiController {
 
     @GetMapping("/api/users")
     public ResponseEntity<?> userList() {
-        List<User> users = userService.selectUsers();
+        List<UserInfo> users = userService.selectUsers();
         return new ResponseEntity<>(new RespDto<>(1,"포토그램 회원 리스트",users),HttpStatus.OK);
     }
 

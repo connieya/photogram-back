@@ -2,21 +2,18 @@ package com.cos.photogramstart.web.api;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.comment.Comment;
-import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 import com.cos.photogramstart.service.CommentService;
 import com.cos.photogramstart.web.dto.RespDto;
-import com.cos.photogramstart.web.dto.comment.CommentDto;
+import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
+import com.cos.photogramstart.web.dto.comment.CommentWriteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,9 +23,9 @@ public class CommentApiController {
 
     @PostMapping("/api/comment")
     public ResponseEntity<?> commentService(
-            @Valid @RequestBody CommentDto commentDto, BindingResult bindingResult,
+            @Valid @RequestBody CommentWriteDto dto, BindingResult bindingResult,
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        Comment comment = commentService.write(commentDto.getContent(), commentDto.getImageId(), principalDetails.getUser().getId());
+        Comment comment = commentService.write(dto.getContent(), dto.getImageId(), principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1, "댓글 쓰기 성공", comment), HttpStatus.CREATED);
     }
 

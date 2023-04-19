@@ -30,13 +30,11 @@ public class Image { // N : 1
     @JsonIgnore
     private User user;
 
-    @JsonIgnoreProperties({"image"})
     @OneToMany(mappedBy = "image") // 연관관계의 주인이 아니다.
     private List<Likes> likes;
 
     private LocalDateTime createDate;
 
-    @JsonIgnoreProperties({"image"})
     @OneToMany(mappedBy = "image")
     private List<Comment> comments = new ArrayList<>();
 

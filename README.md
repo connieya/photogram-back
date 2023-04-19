@@ -9,9 +9,12 @@
 - 게시글에는 여러 개의 댓글을 달 수 있다. (일대다 양방향)
 - 게시글에는 여러 회원이 좋아요를 누를 수 있다. (일대다 양방향)
 
+
+
 ### 엔티티
 
 ![img_2.png](img_2.png)
+
 
 ### 애플리케이션 아키텍처
 
@@ -23,16 +26,19 @@
 - domain : 엔티티가 모여 있는 계층 , 모든 계층에서 사용
 
 
+
 ### 리팩토링
 
-- api 모든 파라미터 Entity 가 아닌 dto 로 변경
+- api 모든 파라미터,응답 값 Entity 가 아닌 dto 로 변경
   - 엔티티에는 민감한 데이터가 포함될 수 있음
   - 예를 들어 패스워드와 같은 보안 정보
   - API 요청의 파라미터로 Entity를 전달하면 보안 상의 문제가 발생할 수 있음
-  - DTO는 필요한 데이터만 포함하고 있으므로 데이터 전송에 필요한 데이터 야이 적어 짐
+  - DTO는 필요한 데이터만 포함하고 있으므로 데이터 전송에 필요한 데이터 양이 적어 짐
   - DTO를 사용하면 코드 유지보수가 쉬워진다.
   - 엔티티 객체와 DTO는 역할이 분리되어 있기 때문에 변경 사항이 있을 때 해당 영역만 수정하면 된다.
   - DTO는 특정한 스키마에 의존하지 않고, 필요한 데이터만 포함하고 있기 때문에 확장성이 높다.
+  - 엔티티가 변경되면 API 스펙 또한 변경되기 때문에 예상치 못한 장애가 발생할 수 있다.
+  - => DTO를 사용하자 !!
 
 ### 기능
 
@@ -184,6 +190,20 @@ public class UserProfileUpdateResponse {
 <summary>사용자 검색/프로필 조회</summary>
 
 ### controller 
+
+#### 사용자 검색을 위한 회원 정보 리스트 가져오기
+
+````java
+@Transactional(readOnly = true)
+    public List<UserInfo> selectUsers(){
+        return userRepository.findAll()
+                .stream()
+                .map(u -> new UserInfo(u.getId(),u.getUsername(),u.getProfileImageUrl()))
+                .collect(Collectors.toList());
+    }
+````
+
+#### 프로필 조회
 
 - 프로필 조회 했을 때 로그인 한 유저의 프로필 여부에 따라 화면이 다름
 - 따라서 AuthenticationPrincipal 객체가 필요함
@@ -480,9 +500,9 @@ public class CommentDto {
 ```java
 @PostMapping("/api/comment")
 public ResponseEntity<?> commentService(
-@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult,
+@Valid @RequestBody CommentDto commentResponseDto, BindingResult bindingResult,
 @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        Comment comment = commentService.write(commentDto.getContent(), commentDto.getImageId(), principalDetails.getUser().getId());
+        Comment comment = commentService.write(commentResponseDto.getContent(), commentResponseDto.getImageId(), principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1, "댓글 쓰기 성공", comment), HttpStatus.CREATED);
         }
 ```
