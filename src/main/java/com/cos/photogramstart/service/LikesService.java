@@ -19,4 +19,9 @@ public class LikesService {
     public void unLike(int imageId , int principalId){
         likesRepository.mUnLike(imageId,principalId);
     }
+
+
+    public boolean likeState(int imageId , int userId){
+        return likesRepository.findByImageIdAndUserId(imageId,userId) != null;
+    }
 }

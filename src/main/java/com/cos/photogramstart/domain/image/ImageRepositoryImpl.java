@@ -34,23 +34,7 @@ public class ImageRepositoryImpl implements ImageRepositoryCustom {
         return storys;
     }
 
-//    @Override
-//    public List<ImageData> getStory(int principalId) {
-//        List<ImageData> storyData = queryFactory
-//                .select(Projections.fields(ImageData.class,
-//                        image,
-//                        ExpressionUtils.as(JPAExpressions.select(likes.id.count()).from(likes).where(likes.image.id.eq(image.id)),"likeCount"),
-//                        ExpressionUtils.as(JPAExpressions.select().from(likes).where(likes.user.id.eq(principalId)).exists()
-//                                , "likeState")
-//                ))
-//                .from(image)
-//                .where(image.user.id.in(JPAExpressions.select(follow.toUser.id).from(follow)
-//                        .where(follow.fromUser.id.eq(principalId)))).orderBy(image.createDate.desc()).fetch();
-//        for (ImageData storyDatum : storyData) {
-//            System.out.println("@@@@@ storyDatum = " + storyDatum.getImage().getUser().getProfileImageUrl());
-//        }
-//        return storyData;
-//    }
+
 
     @Override
     public List<ImagePopularDto> popular() {

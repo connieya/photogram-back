@@ -26,9 +26,7 @@ public class ImageData {
         this.postImageUrl = image.getPostImageUrl();
         this.username = image.getUser().getUsername();
         this.imageId = image.getId();
-//        this.comments = image.getComments();
         this.likeCount = image.getLikes().size();
-        this.likeState = false;
         this.caption = image.getCaption();
     }
 }

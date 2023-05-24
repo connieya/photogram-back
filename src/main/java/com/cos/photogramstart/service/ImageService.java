@@ -3,6 +3,8 @@ package com.cos.photogramstart.service;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.domain.image.ImageRepository;
+import com.cos.photogramstart.domain.likes.LikesRepository;
+import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import com.cos.photogramstart.web.dto.image.ImageData;
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
 import com.cos.photogramstart.web.dto.image.ImageUploadDto;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 public class ImageService {
 
     private final ImageRepository imageRepository;
+    private final CommentService commentService;
+    private final LikesService likesService;
 
     @Transactional(readOnly = true)
     public List<ImagePopularDto> popular(){
@@ -52,6 +56,11 @@ public class ImageService {
         List<ImageData> result = images.stream()
                 .map(i -> new ImageData(i))
                 .collect(Collectors.toList());
+        result.forEach(o->{
+            o.setLikeState(likesService.likeState(o.getImageId(),principalId));
+            List<CommentResponseDto> commentDto = commentService.findByImageId(o.getImageId());
+            o.setComments(commentDto);
+        });
         return result;
     }
 
