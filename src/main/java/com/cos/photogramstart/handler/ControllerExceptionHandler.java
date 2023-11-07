@@ -20,6 +20,7 @@ public class ControllerExceptionHandler {
     }
     @ExceptionHandler(CustomApiException.class)
     public ResponseEntity<?> apiException(CustomApiException e) {
+        System.out.println("exception Handler ");
         return new ResponseEntity<>(new RespDto<>(-1,e.getMessage(),null),HttpStatus.BAD_REQUEST);
     }
 }

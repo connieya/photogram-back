@@ -9,6 +9,7 @@ import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.image.ImageData;
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
 import com.cos.photogramstart.web.dto.image.ImageUploadDto;
+import com.cos.photogramstart.web.dto.image.UserImageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,11 +36,13 @@ public class ImageApiController {
 //        return new ResponseEntity<>(new RespDto<>(1,"성공",images), HttpStatus.OK);
 //    }
 
+    @GetMapping("/api/user/image")
+    public List<UserImageResponse> selectUserImages(@RequestParam int userId) {
+        return imageService.selectUserImages(userId);
+    }
+
     @GetMapping("/api/image")
     public ResponseEntity<?> selectImages(@AuthenticationPrincipal PrincipalDetails principalDetails){
-        if (principalDetails.getUser() == null){
-            return new ResponseEntity<>(new RespDto<>(-1,"로그인이 필요합니다.",null), HttpStatus.OK);
-        }
         List<ImageData> images = imageService.selectImages(principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"성공",images), HttpStatus.OK);
     }
@@ -58,7 +61,6 @@ public class ImageApiController {
 
     @PostMapping( "/api/image")
     public ResponseEntity<?>  imageUpload(@RequestParam("file") MultipartFile file, @RequestParam("caption") String caption, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        System.out.println("imageUploadDto = " + file);
         if (file.isEmpty()) {
             throw new CustomApiException("이미지가 첨부되지 않았습니다.");
         }

@@ -4,16 +4,13 @@ import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Data
+@Getter
 @Entity
 @Table(
         uniqueConstraints = {
@@ -23,7 +20,7 @@ import java.time.LocalDateTime;
                 )
         }
 )
-@ToString(exclude = {"user" ,"image"})
+//@ToString(exclude = {"user" ,"image"})
 public class Likes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,12 +28,10 @@ public class Likes {
 
     @JoinColumn(name = "imageId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private Image image;
 
     @JoinColumn(name = "userId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private User user;
 
     private LocalDateTime createDate;

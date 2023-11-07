@@ -4,6 +4,7 @@ import com.cos.photogramstart.domain.folllow.QFollow;
 import com.cos.photogramstart.domain.likes.QLikes;
 import com.cos.photogramstart.web.dto.image.ImageData;
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
+import com.cos.photogramstart.web.dto.image.UserImageResponse;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
@@ -48,6 +49,23 @@ public class ImageRepositoryImpl implements ImageRepositoryCustom {
                 .groupBy(likes.image.id)
                 .orderBy(likes.image.id.count().desc(), image.createDate.desc())
                 .limit(9)
+                .fetch();
+    }
+
+    @Override
+    public List<UserImageResponse> selectUserImage(int userId) {
+        return queryFactory
+                .select(Projections.fields(
+                        UserImageResponse.class,
+                        image.postImageUrl
+                        ,image.caption
+                        ,image.id.as("imageId")
+                        ,image.id.count().as("likeCount")))
+                .from(image)
+                .innerJoin(likes)
+                .on(image.id.eq(likes.image.id)
+                        .and(image.user.id.eq(userId)))
+                .groupBy(image.id)
                 .fetch();
     }
 

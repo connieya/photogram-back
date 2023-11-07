@@ -16,5 +16,9 @@ public class UserProfileDto {
     private boolean followState;
     private int followingCount;
     private int followerCount;
-    private User user;
+    private int userId;
+    private String bio;
+    private String webSite;
+    private String nickname;
+//    private User user;
 }

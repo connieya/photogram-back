@@ -8,6 +8,7 @@ import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import com.cos.photogramstart.web.dto.image.ImageData;
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
 import com.cos.photogramstart.web.dto.image.ImageUploadDto;
+import com.cos.photogramstart.web.dto.image.UserImageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -31,14 +32,14 @@ public class ImageService {
     private final LikesService likesService;
 
     @Transactional(readOnly = true)
-    public List<ImagePopularDto> popular(){
+    public List<ImagePopularDto> popular() {
         return imageRepository.popular();
     }
 
 
     @Transactional(readOnly = true)
-    public Page<Image> select(int principalId , Pageable pageable ){
-        Page<Image> images = imageRepository.mStory(principalId ,pageable);
+    public Page<Image> select(int principalId, Pageable pageable) {
+        Page<Image> images = imageRepository.mStory(principalId, pageable);
 //        images.forEach(image ->{
 //            image.setLikeCount(image.getLikes().size());
 //            image.getLikes().forEach(like->{
@@ -51,13 +52,13 @@ public class ImageService {
     }
 
     @Transactional(readOnly = true)
-    public List<ImageData> selectImages(int principalId ){
+    public List<ImageData> selectImages(int principalId) {
         List<Image> images = imageRepository.getStory(principalId);
         List<ImageData> result = images.stream()
                 .map(i -> new ImageData(i))
                 .collect(Collectors.toList());
-        result.forEach(o->{
-            o.setLikeState(likesService.likeState(o.getImageId(),principalId));
+        result.forEach(o -> {
+            o.setLikeState(likesService.likeState(o.getImageId(), principalId));
             List<CommentResponseDto> commentDto = commentService.findByImageId(o.getImageId());
             o.setComments(commentDto);
         });
@@ -68,20 +69,24 @@ public class ImageService {
     private String uploadFolder;
 
     @Transactional
-    public void upload(ImageUploadDto imageUploadDto , PrincipalDetails principalDetails) {
+    public void upload(ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
         // uuid 란?
         // 네트워크 상에서 고유성이 보장되는 id를 만들기 위한 표준 규약
         UUID uuid = UUID.randomUUID();
-        String imageFileName = uuid+"_"+imageUploadDto.getFile().getOriginalFilename();
-        Path imageFilePath = Paths.get(uploadFolder+imageFileName);
+        String imageFileName = uuid + "_" + imageUploadDto.getFile().getOriginalFilename();
+        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
 
-        try{
+        try {
             Files.write(imageFilePath, imageUploadDto.getFile().getBytes());
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Image image = imageUploadDto.toEntity(imageFileName,principalDetails.getUser());
+        Image image = imageUploadDto.toEntity(imageFileName, principalDetails.getUser());
         imageRepository.save(image);
+    }
+
+    public List<UserImageResponse> selectUserImages(int userId) {
+        return imageRepository.selectUserImage(userId);
     }
 }

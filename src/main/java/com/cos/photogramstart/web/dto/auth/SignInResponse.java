@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SignInResponse {
     private TokenDto tokenDto;
-    private User user;
+    private UserInfo userInfo;
 }
+

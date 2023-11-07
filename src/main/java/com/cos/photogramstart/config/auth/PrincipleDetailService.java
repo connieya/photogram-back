@@ -21,11 +21,6 @@ public class PrincipleDetailService implements UserDetailsService {
         User userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
             throw new CustomApiException("존재하지 않는 아이디 입니다.");
         });
-        System.out.println("로그인 요청 => " +userEntity);
-
-        if (userEntity == null){
-            return null;
-        }
         return new PrincipalDetails(userEntity);
     }
 }

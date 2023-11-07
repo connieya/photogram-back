@@ -27,7 +27,7 @@ public class JWTTokenHelper {
     private UserRepository userRepository;
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 *30;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 *300;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 *7;
 
     private Key key;
@@ -41,9 +41,11 @@ public class JWTTokenHelper {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         User userEntity = principalDetails.getUser();
+
         ClaimDto claimDto = ClaimDto.builder().id(userEntity.getId())
                 .nickname(userEntity.getNickname())
                 .email(userEntity.getEmail()).build();
+
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, claimDto)
@@ -76,7 +78,7 @@ public class JWTTokenHelper {
             throw new CustomApiException("존재하지 않는 아이디 입니다.");
         });
         PrincipalDetails principalDetails = new PrincipalDetails(user);
-        return new UsernamePasswordAuthenticationToken(principalDetails,principalDetails,principalDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(principalDetails,"",principalDetails.getAuthorities());
     }
 
     public boolean validateToken(String token) {
@@ -85,12 +87,16 @@ public class JWTTokenHelper {
             return true;
         }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e){
             log.info("잘못된 JWT 서명입니다.");
+//            throw e;
         } catch (ExpiredJwtException e) {
             log.info("만료된 JWT 토큰입니다.");
+//            throw e;
         } catch (UnsupportedJwtException e) {
             log.info("지원되지 않는 JWT 토큰입니다.");
+//            throw e;
         } catch (IllegalArgumentException e) {
             log.info("JWT 토큰이 잘못되었습니다.");
+//            throw e;
         }
         return false;
     }

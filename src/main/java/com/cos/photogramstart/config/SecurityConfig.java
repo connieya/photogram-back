@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsConfig corsConfig;
     private final OAuth2DetailService oAuth2DetailService;
 
+
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -46,22 +47,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-                formLogin().disable()
-                .httpBasic().disable()
+        System.out.println("시큐리티 config @@");
+        http
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .authorizeRequests()
+                .antMatchers("/auth/**")
+                .permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(new JWTAuthenticationFilter(tokenHelper) , UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
-                .addFilter(corsConfig.corsFilter())
-                .addFilterBefore(new JWTAuthenticationFilter(tokenHelper) , UsernamePasswordAuthenticationFilter.class)
-
-        .authorizeRequests()
-                .antMatchers("/api/user/**","/user/**","/image/**","/subscribe/**","/comment/**,/api/**")
-                .authenticated()
-                .anyRequest().permitAll();
+                .addFilter(corsConfig.corsFilter());
+//        http.
+//                formLogin().disable()
+//                .httpBasic().disable()
+//                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .exceptionHandling()
+//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//                .accessDeniedHandler(jwtAccessDeniedHandler)
+//                .and()
+//                .addFilter(corsConfig.corsFilter())
+//                .addFilterBefore(new JWTAuthenticationFilter(tokenHelper) , UsernamePasswordAuthenticationFilter.class)
+//        .authorizeRequests()
+//                .antMatchers("/api/user/**","/user/**","/image/**","/subscribe/**","/comment/**,/api/**")
+//                .authenticated()
+//                .anyRequest().permitAll();
     }
 }

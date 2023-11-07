@@ -2,7 +2,6 @@ package com.cos.photogramstart.domain.user;
 
 import com.cos.photogramstart.domain.image.Image;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,9 +11,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Data
+@Getter @Setter
 @Entity
-@ToString(exclude = "images")
+//@ToString(exclude = "images")
 public class User {
 
     @Id
@@ -30,6 +29,7 @@ public class User {
 
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Image> images;
 
     private LocalDateTime createDate;
@@ -38,7 +38,6 @@ public class User {
     public void createDate() {
         this.createDate = LocalDateTime.now();
     }
-
 
 
 }

@@ -7,13 +7,20 @@ import com.cos.photogramstart.domain.token.RefreshTokenRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomApiException;
+import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.auth.SignInRequest;
 import com.cos.photogramstart.web.dto.auth.SignInResponse;
+import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,11 +38,11 @@ public class AuthService {
 
 
     @Transactional
-    public User signup(User user){
-        if(userRepository.existsByUsername(user.getUsername())){
+    public User signup(User user) {
+        if (userRepository.existsByUsername(user.getUsername())) {
             throw new CustomApiException("사용중인 아이디 입니다.");
         }
-        if(userRepository.existsByEmail(user.getEmail())){
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new CustomApiException("사용중인 이메일 입니다.");
         }
         String rawPassword = user.getPassword();
@@ -47,25 +54,34 @@ public class AuthService {
 
 
     @Transactional
-    public SignInResponse signin(SignInRequest signInRequest) {
+    public ResponseEntity<?> signin(SignInRequest signInRequest) {
         UsernamePasswordAuthenticationToken authenticationToken = signInRequest.toAuthentication();
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        Authentication authenticate = authenticationManager.getObject().authenticate(authenticationToken);
-        PrincipalDetails principal = (PrincipalDetails) authenticate.getPrincipal();
+        Authentication authenticate;
+        try {
+            authenticate = authenticationManager.getObject().authenticate(authenticationToken);
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.OK).body(new RespDto<>(-1,"비밀번호가 일치 하지 않습니다.",null));
+        }
         TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);
+        PrincipalDetails principal = (PrincipalDetails) authenticate.getPrincipal();
+        User user = principal.getUser();
+        UserInfo userInfo = UserInfo.builder()
+                .username(user.getUsername())
+                .id(user.getId())
+                .profileImageUrl(user.getProfileImageUrl()).build();
+        return ResponseEntity.status(HttpStatus.OK).body(new RespDto<>(1,"로그인 성공",new SignInResponse(tokenDto,userInfo)));
 
-        RefreshToken refreshToken = RefreshToken.builder()
-                .key(authenticate.getName())
-                .value(tokenDto.getRefreshToken())
-                .build();
-        refreshTokenRepository.save(refreshToken);
+//        RefreshToken refreshToken = RefreshToken.builder()
+//                .key(authenticate.getName())
+//                .value(tokenDto.getRefreshToken())
+//                .build();
+//        refreshTokenRepository.save(refreshToken);
 
-        return new SignInResponse(tokenDto,principal.getUser());
     }
 
     @Transactional
     public TokenDto reissue(TokenDto tokenDto) {
-        if(!tokenHelper.validateToken(tokenDto.getRefreshToken())){
+        if (!tokenHelper.validateToken(tokenDto.getRefreshToken())) {
             throw new RuntimeException("Refreh Token이 유효하지 않습니다.");
         }
 
@@ -73,7 +89,7 @@ public class AuthService {
         RefreshToken refreshToken = refreshTokenRepository.
                 findByKey(authentication.getName()).orElseThrow(() -> new RuntimeException("로그아웃 된 사용자 입니다."));
 
-        if(!refreshToken.getValue().equals(tokenDto.getRefreshToken())) {
+        if (!refreshToken.getValue().equals(tokenDto.getRefreshToken())) {
             throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다");
         }
         TokenDto newToken = tokenHelper.generateTokenDto(authentication);

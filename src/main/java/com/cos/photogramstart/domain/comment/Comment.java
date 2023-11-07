@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Data
+@Getter @Setter
 @Entity
 public class Comment {
     @Id
@@ -24,12 +24,10 @@ public class Comment {
 
     @JoinColumn(name = "userId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private User user;
 
     @JoinColumn(name = "imageId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private Image image;
     private LocalDateTime createDate;
 

@@ -26,15 +26,14 @@ public class AuthApiController {
 
     @PostMapping("/auth/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupDto signupDto , BindingResult bindingResult){
-        User user = signupDto.toEntity();
-        User userEntity = authService.signup(user);
+        User userEntity = authService.signup(signupDto.toEntity());
         return new ResponseEntity<>(new RespDto<>(1, "회원가입 성공", userEntity), HttpStatus.CREATED);
     }
 
     @PostMapping("/auth/signin")
     public ResponseEntity<?> signin(@RequestBody SignInRequest signInRequest) {
-        SignInResponse signInResponse = authService.signin(signInRequest);
-        return new ResponseEntity<>(new RespDto<>(1, "로그인 성공", signInResponse), HttpStatus.OK);
+        System.out.println("로그인 요청 ");
+        return authService.signin(signInRequest);
     }
 
     @PostMapping("/reissue")

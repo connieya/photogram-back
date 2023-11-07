@@ -15,9 +15,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Data
+@Getter
 @Entity
-@ToString(exclude = {"likes" ,"comments","user"})
+//@ToString(exclude = {"likes" ,"comments","user"})
 public class Image { // N : 1
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

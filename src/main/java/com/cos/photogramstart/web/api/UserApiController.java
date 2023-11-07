@@ -32,6 +32,7 @@ public class UserApiController {
 
     @GetMapping("/api/user/{pageUserId}")
     public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
+        System.out.println("유저 조회 " +principalDetails.getUser().getId() + "  id  = " + pageUserId );
         UserProfileDto dto = userService.selectUserProfile(pageUserId, principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",dto),HttpStatus.OK);
     }

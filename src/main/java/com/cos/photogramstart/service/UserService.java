@@ -44,9 +44,12 @@ public class UserService {
         User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
             throw new CustomApiException("해당 프로필 페이지는 없는 페이지입니다.");
         });
-        dto.setUser(userEntity);
+        dto.setBio(userEntity.getBio());
+        dto.setWebSite(userEntity.getWebsite());
+        dto.setUserId(userEntity.getId());
         dto.setPageOwner(pageUserId == principalId);
         dto.setImageCount(userEntity.getImages().size());
+        dto.setNickname(userEntity.getNickname());
 
         int followState = followRepository.followState(principalId, pageUserId);
         int followingCount = followRepository.followingCount(pageUserId);
