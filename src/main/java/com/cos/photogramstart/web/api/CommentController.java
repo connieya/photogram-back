@@ -17,11 +17,12 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-public class CommentApiController {
+@RequestMapping("/api")
+public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/api/comment")
+    @PostMapping("/comment")
     public ResponseEntity<?> commentService(
             @Valid @RequestBody CommentWriteDto dto, BindingResult bindingResult,
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
@@ -29,7 +30,7 @@ public class CommentApiController {
         return new ResponseEntity<>(new RespDto<>(1, "댓글 쓰기 성공", comment), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/api/comment/{id}")
+    @DeleteMapping("/comment/{id}")
     public ResponseEntity<?> commentDelete(@PathVariable int id) {
         commentService.delete(id);
         return new ResponseEntity<>(new RespDto<>(1, "댓글 삭제 성공", null), HttpStatus.OK);

@@ -60,7 +60,7 @@ public class AuthService {
         try {
             authenticate = authenticationManager.getObject().authenticate(authenticationToken);
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.OK).body(new RespDto<>(-1,"비밀번호가 일치 하지 않습니다.",null));
+            return ResponseEntity.status(HttpStatus.OK).body(new RespDto<>(-1, "비밀번호가 일치 하지 않습니다.", null));
         }
         TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);
         PrincipalDetails principal = (PrincipalDetails) authenticate.getPrincipal();
@@ -69,7 +69,7 @@ public class AuthService {
                 .username(user.getUsername())
                 .id(user.getId())
                 .profileImageUrl(user.getProfileImageUrl()).build();
-        return ResponseEntity.status(HttpStatus.OK).body(new RespDto<>(1,"로그인 성공",new SignInResponse(tokenDto,userInfo)));
+        return ResponseEntity.status(HttpStatus.OK).body(new RespDto<>(1, "로그인 성공", new SignInResponse(tokenDto, userInfo)));
 
 //        RefreshToken refreshToken = RefreshToken.builder()
 //                .key(authenticate.getName())
@@ -96,5 +96,16 @@ public class AuthService {
         RefreshToken newRefreshToken = refreshToken.updateValue(newToken.getRefreshToken());
         refreshTokenRepository.save(newRefreshToken);
         return newToken;
+    }
+
+    @Transactional
+    public void changePassword(SignInRequest signInRequest) {
+        User user = userRepository.findByUsername(signInRequest.getUsername()).orElse(null);
+        if (user != null) {
+            String newPassword = passwordEncoder.encode(signInRequest.getPassword());
+            user.setPassword(newPassword);
+            userRepository.save(user);
+        }
+
     }
 }

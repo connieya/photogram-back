@@ -20,7 +20,7 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
-public class AuthApiController {
+public class AuthController {
 
     private final AuthService authService;
 
@@ -40,5 +40,10 @@ public class AuthApiController {
     public ResponseEntity<?> reissue(@RequestBody TokenDto tokenDto) {
         TokenDto reissue = authService.reissue(tokenDto);
         return new ResponseEntity<>(new RespDto<>(1, "refresh token 발급", reissue), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/auth/password")
+    public void changePassword(@RequestBody SignInRequest signInRequest){
+        authService.changePassword(signInRequest);
     }
 }

@@ -25,25 +25,25 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class UserApiController {
+@RequestMapping("/api")
+public class UserController {
 
     private final UserService userService;
-    private final FollowService followService;
 
-    @GetMapping("/api/user/{pageUserId}")
+    @GetMapping("/user/{pageUserId}")
     public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
         System.out.println("유저 조회 " +principalDetails.getUser().getId() + "  id  = " + pageUserId );
         UserProfileDto dto = userService.selectUserProfile(pageUserId, principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",dto),HttpStatus.OK);
     }
 
-    @GetMapping("/api/users")
+    @GetMapping("/users")
     public ResponseEntity<?> userList() {
         List<UserInfo> users = userService.selectUsers();
         return new ResponseEntity<>(new RespDto<>(1,"포토그램 회원 리스트",users),HttpStatus.OK);
     }
 
-    @GetMapping("/api/user/profile")
+    @GetMapping("/user/profile")
     public ResponseEntity<?> update(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         if(principalDetails.getUser() == null){
             throw new CustomApiException("로그인이 필요합니다");
@@ -62,7 +62,7 @@ public class UserApiController {
         return new ResponseEntity<>(new RespDto<>(1,"유저 프로필 조회",profileUpdateResponse),HttpStatus.OK);
     }
 
-    @PutMapping("/api/user/image")
+    @PutMapping("/user/image")
     public ResponseEntity<?> profileImageUpdate(@RequestParam("file") MultipartFile profileImageFile , @AuthenticationPrincipal PrincipalDetails principalDetails){
         User userEntity = userService.updateImage(principalDetails.getUser().getId(),profileImageFile);
         principalDetails.setUser(userEntity);
@@ -70,20 +70,7 @@ public class UserApiController {
     }
 
 
-
-    @GetMapping("/api/following/{pageUserId}")
-    public ResponseEntity<?> followingList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<FollowDto> subscribeDto = followService.followingList(principalDetails.getUser().getId(),pageUserId);
-        return new ResponseEntity<>(new RespDto<>(1,"팔로잉 리스트 불러오기 성공",subscribeDto), HttpStatus.OK);
-    }
-
-    @GetMapping("/api/follower/{pageUserId}")
-    public ResponseEntity<?> followerList(@PathVariable int pageUserId , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<FollowDto> followerDto = followService.followerList(principalDetails.getUser().getId(),pageUserId);
-        return new ResponseEntity<>(new RespDto<>(1,"팔로워 리스트 불러오기 성공",followerDto), HttpStatus.OK);
-    }
-
-    @PutMapping("/api/user")
+    @PutMapping("/user")
     public RespDto<?> updateProfile(
                              @Valid @RequestBody UserUpdateDto userUpdateDto ,
                              BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails){

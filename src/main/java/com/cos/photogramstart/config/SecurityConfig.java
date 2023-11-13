@@ -62,21 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .addFilter(corsConfig.corsFilter());
-//        http.
-//                formLogin().disable()
-//                .httpBasic().disable()
-//                .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                .accessDeniedHandler(jwtAccessDeniedHandler)
-//                .and()
-//                .addFilter(corsConfig.corsFilter())
-//                .addFilterBefore(new JWTAuthenticationFilter(tokenHelper) , UsernamePasswordAuthenticationFilter.class)
-//        .authorizeRequests()
-//                .antMatchers("/api/user/**","/user/**","/image/**","/subscribe/**","/comment/**,/api/**")
-//                .authenticated()
-//                .anyRequest().permitAll();
+
     }
 }

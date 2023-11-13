@@ -22,44 +22,31 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class ImageApiController {
+@RequestMapping("/api")
+public class ImageController {
 
     private final ImageService imageService;
-    private final LikesService likesService;
 
 //    @GetMapping("/api/image")
 //    public ResponseEntity<?> select(@AuthenticationPrincipal PrincipalDetails principalDetails ,@PageableDefault(size = 3) Pageable pageable){
-//        if (principalDetails == null){
-//            return new ResponseEntity<>(new RespDto<>(-1,"로그인이 필요합니다.",null), HttpStatus.OK);
-//        }
+//
 //        Page<Image> images = imageService.select(principalDetails.getUser().getId() ,pageable);
 //        return new ResponseEntity<>(new RespDto<>(1,"성공",images), HttpStatus.OK);
 //    }
 
-    @GetMapping("/api/user/image")
+    @GetMapping("/user/image")
     public List<UserImageResponse> selectUserImages(@RequestParam int userId) {
         return imageService.selectUserImages(userId);
     }
 
-    @GetMapping("/api/image")
+    @GetMapping("/image")
     public ResponseEntity<?> selectImages(@AuthenticationPrincipal PrincipalDetails principalDetails){
         List<ImageData> images = imageService.selectImages(principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1,"성공",images), HttpStatus.OK);
     }
 
-    @PostMapping("/api/likes/{imageId}")
-    public ResponseEntity<?> like(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){
-        likesService.like(imageId , principalDetails.getUser().getId());
-        return new ResponseEntity<>(new RespDto<>(1,"좋아요 성공",null),HttpStatus.CREATED);
-    }
 
-    @DeleteMapping("/api/likes/{imageId}")
-    public ResponseEntity<?> unLike(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){
-        likesService.unLike(imageId,principalDetails.getUser().getId());
-        return new ResponseEntity<>(new RespDto<>(1,"좋아요 취소 성공",null),HttpStatus.OK);
-    }
-
-    @PostMapping( "/api/image")
+    @PostMapping( "/image")
     public ResponseEntity<?>  imageUpload(@RequestParam("file") MultipartFile file, @RequestParam("caption") String caption, @AuthenticationPrincipal PrincipalDetails principalDetails){
         if (file.isEmpty()) {
             throw new CustomApiException("이미지가 첨부되지 않았습니다.");
@@ -69,7 +56,7 @@ public class ImageApiController {
         return new ResponseEntity<>(new RespDto<>(1,"이미지 업로드  성공",principalDetails.getUser().getId()),HttpStatus.OK);
     }
 
-    @GetMapping("/api/image/popular")
+    @GetMapping("/image/popular")
     public ResponseEntity<?> popular(@AuthenticationPrincipal PrincipalDetails principalDetails){
         if (principalDetails == null){
             return new ResponseEntity<>(new RespDto<>(-1,"로그인이 필요합니다.",null), HttpStatus.OK);
