@@ -40,24 +40,17 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserProfileDto selectUserProfile(int pageUserId, int principalId){
-        UserProfileDto dto = new UserProfileDto();
         User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
             throw new CustomApiException("해당 프로필 페이지는 없는 페이지입니다.");
         });
-        dto.setBio(userEntity.getBio());
-        dto.setWebSite(userEntity.getWebsite());
-        dto.setUserId(userEntity.getId());
-        dto.setPageOwner(pageUserId == principalId);
-        dto.setImageCount(userEntity.getImages().size());
-        dto.setNickname(userEntity.getNickname());
-
         int followState = followRepository.followState(principalId, pageUserId);
-        int followingCount = followRepository.followingCount(pageUserId);
-        int followerCount = followRepository.followerCount(pageUserId);
-
-        dto.setFollowState(followState == 1);
-        dto.setFollowingCount(followingCount);
-        dto.setFollowerCount(followerCount);
+        UserProfileDto dto = UserProfileDto
+                .builder().bio(userEntity.getBio())
+                .webSite(userEntity.getWebsite())
+                .imageCount(userEntity.getImages().size())
+                .profileImageUrl(userEntity.getProfileImageUrl())
+                .nickname(userEntity.getNickname())
+                .followState(followState == 1).build();
         return dto;
     }
 

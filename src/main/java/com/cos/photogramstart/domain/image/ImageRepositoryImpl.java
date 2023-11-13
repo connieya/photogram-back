@@ -41,7 +41,12 @@ public class ImageRepositoryImpl implements ImageRepositoryCustom {
     public List<ImagePopularDto> popular() {
         return  queryFactory
                 .select(Projections.fields(ImagePopularDto.class,
-                        image.id, image.caption , image.postImageUrl, image.user
+                        image.id
+                        , image.caption
+                        , image.postImageUrl
+                        , image.user.username
+                        , image.user.profileImageUrl
+                        , image.user.id.as("userId")
                         , likes.image.id.count().as("likeCount")))
                 .from(image)
                 .innerJoin(likes)

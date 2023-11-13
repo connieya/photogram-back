@@ -11,14 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserProfileDto {
-    private boolean pageOwner;
-    private int imageCount;
-    private boolean followState;
-    private int followingCount;
-    private int followerCount;
-    private int userId;
-    private String bio;
-    private String webSite;
     private String nickname;
-//    private User user;
+    private String profileImageUrl;
+    private boolean followState;
+    private String webSite;
+    private String bio;
+    private int imageCount;
 }

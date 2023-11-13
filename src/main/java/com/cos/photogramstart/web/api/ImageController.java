@@ -58,9 +58,6 @@ public class ImageController {
 
     @GetMapping("/image/popular")
     public ResponseEntity<?> popular(@AuthenticationPrincipal PrincipalDetails principalDetails){
-        if (principalDetails == null){
-            return new ResponseEntity<>(new RespDto<>(-1,"로그인이 필요합니다.",null), HttpStatus.OK);
-        }
         List<ImagePopularDto> images = imageService.popular();
         return new ResponseEntity<>(new RespDto<>(1,"인기 이미지 조회",images), HttpStatus.OK);
     }
