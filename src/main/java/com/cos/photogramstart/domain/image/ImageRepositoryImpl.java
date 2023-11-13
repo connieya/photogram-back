@@ -60,11 +60,11 @@ public class ImageRepositoryImpl implements ImageRepositoryCustom {
                         image.postImageUrl
                         ,image.caption
                         ,image.id.as("imageId")
-                        ,image.id.count().as("likeCount")))
+                        ,likes.id.count().as("likeCount")))
                 .from(image)
-                .innerJoin(likes)
-                .on(image.id.eq(likes.image.id)
-                        .and(image.user.id.eq(userId)))
+                .leftJoin(likes)
+                .on(image.id.eq(likes.image.id))
+                .where(image.user.id.eq(userId))
                 .groupBy(image.id)
                 .fetch();
     }

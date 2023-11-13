@@ -34,7 +34,7 @@ public class ImageController {
 //        return new ResponseEntity<>(new RespDto<>(1,"성공",images), HttpStatus.OK);
 //    }
 
-    @GetMapping("/user/image")
+    @GetMapping("/user/images")
     public List<UserImageResponse> selectUserImages(@RequestParam int userId) {
         return imageService.selectUserImages(userId);
     }
