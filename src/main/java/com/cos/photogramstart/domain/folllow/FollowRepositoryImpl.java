@@ -1,6 +1,5 @@
 package com.cos.photogramstart.domain.folllow;
 
-import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.web.dto.follow.FollowDto;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;

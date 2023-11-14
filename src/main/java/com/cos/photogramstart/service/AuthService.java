@@ -1,7 +1,7 @@
 package com.cos.photogramstart.service;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
-import com.cos.photogramstart.config.jwt.JWTTokenHelper;
+import com.cos.photogramstart.config.jwt.TokenProvider;
 import com.cos.photogramstart.domain.token.RefreshToken;
 import com.cos.photogramstart.domain.token.RefreshTokenRepository;
 import com.cos.photogramstart.domain.user.User;
@@ -15,13 +15,10 @@ import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +30,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManager;
-    private final JWTTokenHelper tokenHelper;
+    private final TokenProvider tokenHelper;
     private final RefreshTokenRepository refreshTokenRepository;
 
 

@@ -21,7 +21,7 @@ import java.util.Date;
 
 @Service
 @Slf4j
-public class JWTTokenHelper {
+public class TokenProvider {
 
     @Autowired
     private UserRepository userRepository;
@@ -32,7 +32,7 @@ public class JWTTokenHelper {
 
     private Key key;
     
-    public JWTTokenHelper(@Value("${jwt.secret}") String secretKey) {
+    public TokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -70,7 +70,7 @@ public class JWTTokenHelper {
     public Authentication getAuthentication(String accessToken){
         Claims claims = parseClaims(accessToken);
         if(claims.get(AUTHORITIES_KEY) == null){
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+            return null;
         }
         ObjectMapper mapper = new ObjectMapper();
         ClaimDto claimDto = mapper.convertValue(claims.get(AUTHORITIES_KEY), ClaimDto.class);

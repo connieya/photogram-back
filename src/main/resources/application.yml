@@ -4,10 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/photogram2?serverTimezone=Asia/Seoul
-    username: cos
-    password: cos1234
-    
+    url:
+    username:
+    password:
   jpa:
     open-in-view: true
     hibernate:
@@ -34,6 +33,22 @@ spring:
             scope:
               - public-profile
               - email
+# S3
+#cloud:
+#  aws:
+#    credentials:
+#      access-key: ${accessKey}
+#      secret-key: ${secretKey}
+#    region:
+#      static: ${region}
+#    stack:
+#      auto: false
+#
+#
+#application:
+#  bucket:
+#    name:
+
 
 
 file:
@@ -42,5 +57,4 @@ file:
 
 jwt:
   header: Authorization
-  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
-
+  secret: ${jwtSecretKey}

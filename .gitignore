@@ -4,7 +4,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-src/main/resources/application.yml
 ### STS ###
 .apt_generated
 .classpath
@@ -15,10 +14,14 @@ src/main/resources/application.yml
 .sts4-cache
 
 ### IntelliJ IDEA ###
+application-aws.yml
+
 .idea
 *.iws
 *.iml
 *.ipr
+
+
 
 ### NetBeans ###
 /nbproject/private/
@@ -32,3 +35,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
