@@ -34,20 +34,18 @@ spring:
               - public-profile
               - email
 # S3
-#cloud:
-#  aws:
-#    credentials:
-#      access-key: ${accessKey}
-#      secret-key: ${secretKey}
-#    region:
-#      static: ${region}
-#    stack:
-#      auto: false
-#
-#
-#application:
-#  bucket:
-#    name:
+cloud:
+  aws:
+    s3:
+      bucket: ${bucket}
+    credentials:
+      access-key: ${accessKey}
+      secret-key: ${secretKey}
+    region:
+      static: ${region}
+    stack:
+      auto: false
+
 
 
 
