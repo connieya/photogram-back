@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:
-    username:
-    password:
+    url: jdbc:mysql://localhost:3306/photogram2?serverTimezone=Asia/Seoul
+    username: cos
+    password: cos1234
   jpa:
     open-in-view: true
     hibernate:
@@ -43,6 +43,7 @@ cloud:
       secret-key: ${secretKey}
     region:
       static: ${region}
+      auto: false
     stack:
       auto: false
 

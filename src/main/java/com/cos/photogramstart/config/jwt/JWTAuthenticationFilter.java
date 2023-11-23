@@ -4,6 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -26,20 +27,31 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = parseBearerToken(request);
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/auth")) {
+            log.info("로그인/회원가입 요청");
+            filterChain.doFilter(request, response);
+            return;
+        }
 
+        if (requestURI.startsWith(("/api/image"))) {
+            log.info("임시 로 허용");
+            filterChain.doFilter(request,response);
+            return;
+        }
+
+        String token = parseBearerToken(request);
         log.info("JWT Auth 필터 실행");
         try {
             if (StringUtils.hasText(token) & tokenHelper.validateToken(token)) {
                 Authentication authentication = tokenHelper.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-            filterChain.doFilter(request, response);
-        } catch (ExpiredJwtException e) {
-            log.info("토큰 예외  = {} ",e);
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.getWriter().write("만료된 JWT 토큰입니다.");
+        } catch (Exception e) {
+            log.info("토큰 예외  = {} ", e);
+            throw new BadCredentialsException("유효 하지 않은 토큰 ");
         }
+        filterChain.doFilter(request, response);
     }
 
     private String parseBearerToken(HttpServletRequest request) {

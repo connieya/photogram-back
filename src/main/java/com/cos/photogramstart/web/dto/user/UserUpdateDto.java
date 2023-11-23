@@ -8,13 +8,13 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class UserUpdateDto {
     @NotBlank
-    private String nickname;
+    private String username;
     private String website;
     private String bio;
 
     public User toEntity(){
         return User.builder()
-                .nickname(nickname)
+                .username(username)
                 .website(website)
                 .bio(bio)
                 .build();

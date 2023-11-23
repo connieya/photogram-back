@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserProfileDto {
-    private String nickname;
+    private String username;
     private String profileImageUrl;
     private boolean followState;
     private String webSite;

@@ -6,7 +6,7 @@ import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.domain.image.ImageRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
-import com.cos.photogramstart.handler.ex.CustomApiException;
+import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

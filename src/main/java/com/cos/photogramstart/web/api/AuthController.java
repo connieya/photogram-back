@@ -1,6 +1,8 @@
 package com.cos.photogramstart.web.api;
 
 
+import com.cos.photogramstart.config.baseresponse.ResponseEnum;
+import com.cos.photogramstart.config.baseresponse.SuccessResponse;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.service.AuthService;
 import com.cos.photogramstart.web.dto.RespDto;
@@ -9,6 +11,7 @@ import com.cos.photogramstart.web.dto.auth.SignInResponse;
 import com.cos.photogramstart.web.dto.auth.SignupDto;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -20,20 +23,22 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody SignupDto signupDto , BindingResult bindingResult){
-        User userEntity = authService.signup(signupDto.toEntity());
-        return new ResponseEntity<>(new RespDto<>(1, "회원가입 성공", userEntity), HttpStatus.CREATED);
+    public SuccessResponse<User> signup(@Valid @RequestBody SignupDto signupDto, BindingResult bindingResult) {
+        log.info("회원 가입 = {} ", signupDto);
+        authService.signup(signupDto.toEntity());
+        return new SuccessResponse<>(ResponseEnum.SIGNUP_SUCCESS);
     }
 
     @PostMapping("/auth/signin")
-    public ResponseEntity<?> signin(@RequestBody SignInRequest signInRequest) {
-        System.out.println("로그인 요청 ");
-        return authService.signin(signInRequest);
+    public SuccessResponse<?> signin(@RequestBody SignInRequest signInRequest) {
+        SignInResponse response = authService.signin(signInRequest);
+        return new SuccessResponse<>(ResponseEnum.SIGNIN_SUCCESS, response);
     }
 
     @PostMapping("/reissue")
@@ -43,7 +48,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/password")
-    public void changePassword(@RequestBody SignInRequest signInRequest){
+    public void changePassword(@RequestBody SignInRequest signInRequest) {
         authService.changePassword(signInRequest);
     }
 }

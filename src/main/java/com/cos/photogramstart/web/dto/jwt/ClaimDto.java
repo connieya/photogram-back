@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class ClaimDto {
 
     private int id;
-    private String nickname;
+    private String username;
     private String email;
 }

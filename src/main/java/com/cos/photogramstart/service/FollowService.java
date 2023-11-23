@@ -1,7 +1,7 @@
 package com.cos.photogramstart.service;
 
 import com.cos.photogramstart.domain.folllow.FollowRepository;
-import com.cos.photogramstart.handler.ex.CustomApiException;
+import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.web.dto.follow.FollowDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

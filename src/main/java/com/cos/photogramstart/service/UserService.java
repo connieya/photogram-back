@@ -3,8 +3,8 @@ package com.cos.photogramstart.service;
 import com.cos.photogramstart.domain.folllow.FollowRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
-import com.cos.photogramstart.handler.ex.CustomApiException;
-import com.cos.photogramstart.handler.ex.CustomValidationApiException;
+import com.cos.photogramstart.handler.exception.CustomApiException;
+import com.cos.photogramstart.handler.exception.CustomValidationApiException;
 import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,7 @@ public class UserService {
                 .webSite(userEntity.getWebsite())
                 .imageCount(userEntity.getImages().size())
                 .profileImageUrl(userEntity.getProfileImageUrl())
-                .nickname(userEntity.getNickname())
+                .username(userEntity.getUsername())
                 .followState(followState == 1).build();
         return dto;
     }
@@ -60,7 +60,7 @@ public class UserService {
         User userEntity = userRepository.findById(id).orElseThrow(()->
           new CustomValidationApiException("찾을 수 없는 id 입니다.")
         );
-        userEntity.setNickname(user.getNickname());
+        userEntity.setUsername(user.getUsername());
         userEntity.setBio(user.getBio());
         userEntity.setWebsite(user.getWebsite());
         return userEntity;

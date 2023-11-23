@@ -3,7 +3,7 @@ package com.cos.photogramstart.config.jwt;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
-import com.cos.photogramstart.handler.ex.CustomApiException;
+import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import com.cos.photogramstart.web.dto.jwt.ClaimDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +43,7 @@ public class TokenProvider {
         User userEntity = principalDetails.getUser();
 
         ClaimDto claimDto = ClaimDto.builder().id(userEntity.getId())
-                .nickname(userEntity.getNickname())
+                .username(userEntity.getUsername())
                 .email(userEntity.getEmail()).build();
 
         String accessToken = Jwts.builder()

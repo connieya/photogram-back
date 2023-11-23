@@ -2,12 +2,10 @@ package com.cos.photogramstart.web.api;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.user.User;
-import com.cos.photogramstart.handler.ex.CustomApiException;
-import com.cos.photogramstart.service.FollowService;
+import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.service.UserService;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.auth.UserInfo;
-import com.cos.photogramstart.web.dto.follow.FollowDto;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import com.cos.photogramstart.web.dto.user.UserProfileUpdateResponse;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
@@ -52,7 +50,7 @@ public class UserController {
                 .bio(user.getBio())
                 .id(user.getId())
                 .username(user.getUsername())
-                .nickname(user.getNickname())
+                .name(user.getName())
                 .email(user.getEmail())
                 .profileImageUrl(user.getProfileImageUrl())
                 .website(user.getWebsite()).build();

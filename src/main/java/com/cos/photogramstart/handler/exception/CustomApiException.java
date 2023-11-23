@@ -1,4 +1,4 @@
-package com.cos.photogramstart.handler.ex;
+package com.cos.photogramstart.handler.exception;
 
 
 public class CustomApiException extends RuntimeException {
