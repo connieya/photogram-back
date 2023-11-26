@@ -10,14 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "likes_uk",
-                        columnNames = {"imageId" ,"userId"}
-                )
-        }
-)
+@Table(name = "post_likes")
 public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,20 +8,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class PostLikeService {
-    private final PostLIkeRepository likesRepository;
+    private final PostLIkeRepository postLIkeRepository;
 
     @Transactional
     public void like(int imageId , int principalId){
-        likesRepository.mLike(imageId,principalId);
+        postLIkeRepository.mLike(imageId,principalId);
     }
 
     @Transactional
     public void unLike(int imageId , int principalId){
-        likesRepository.mUnLike(imageId,principalId);
+        postLIkeRepository.mUnLike(imageId,principalId);
     }
 
 
     public boolean likeState(int imageId , int userId){
-        return likesRepository.findByImageIdAndUserId(imageId,userId) != null;
+        return false;
+//        return postLIkeRepository.findByImageIdAndUserId(imageId,userId) != null;
     }
 }

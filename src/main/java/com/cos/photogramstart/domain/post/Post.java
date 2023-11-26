@@ -26,6 +26,7 @@ public class Post { // N : 1
     @Lob
     @Column(name = "post_content")
     private String caption;
+    private String location;
     private String baseUrl;
     private String postImageUrl; // 사진을 전송받아서 사진을 서버에 특정 폴더에 저장
 

@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.dto.image;
+package com.cos.photogramstart.web.dto.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImagePopularDto {
+public class PostPopularDto {
 
     private int id;
     private String caption;

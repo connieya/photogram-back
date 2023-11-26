@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.dto.image;
+package com.cos.photogramstart.web.dto.post;
 
 import lombok.Getter;
 

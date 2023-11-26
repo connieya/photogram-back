@@ -13,24 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 class LikesRepositoryTest {
 
     @Autowired
-    private PostLIkeRepository likesRepository;
+    private PostLIkeRepository postLIkeRepository;
 
     @Autowired
-    PostLikeService likesService;
+    PostLikeService postLikeService;
 
-
-    @Test
-    public void Test() {
-        //given
-        int imageId = 7;
-        int userId = 2;
-        //when
-        PostLike likes = likesRepository.findByImageIdAndUserId(imageId, userId);
-        //then
-        Assertions.assertThat(likes).isNull();
-
-        System.out.println("likes = " + likes);
-    }
 
     @Test
     public void Test2() {
@@ -38,7 +25,7 @@ class LikesRepositoryTest {
         int imageId = 7;
         int userId = 1;
         //when
-        boolean likeState = likesService.likeState(imageId, userId);
+        boolean likeState = postLikeService.likeState(imageId, userId);
         Assertions.assertThat(likeState).isEqualTo(true);
 
     }

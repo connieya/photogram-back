@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.dto.image;
+package com.cos.photogramstart.web.dto.post;
 
 import com.cos.photogramstart.domain.post.Post;
 import com.cos.photogramstart.domain.user.User;
@@ -12,13 +12,13 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImageUploadDto implements Serializable {
+public class PostUploadDto implements Serializable {
     private MultipartFile file;
     private String caption;
 
     private String baseUrl;
 
-    public ImageUploadDto(MultipartFile file, String caption) {
+    public PostUploadDto(MultipartFile file, String caption) {
         this.file = file;
         this.caption = caption;
     }

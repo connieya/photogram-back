@@ -3,24 +3,22 @@ package com.cos.photogramstart.web.api;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.config.baseresponse.ResponseEnum;
 import com.cos.photogramstart.config.baseresponse.SuccessResponse;
-import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.service.PostService;
 //import com.cos.photogramstart.service.S3Service;
 import com.cos.photogramstart.service.S3Service;
 import com.cos.photogramstart.web.dto.RespDto;
-import com.cos.photogramstart.web.dto.image.ImageData;
-import com.cos.photogramstart.web.dto.image.ImagePopularDto;
-import com.cos.photogramstart.web.dto.image.ImageUploadDto;
-import com.cos.photogramstart.web.dto.image.UserImageResponse;
+import com.cos.photogramstart.web.dto.post.PostData;
+import com.cos.photogramstart.web.dto.post.PostPopularDto;
+import com.cos.photogramstart.web.dto.post.PostUploadRequest;
+import com.cos.photogramstart.web.dto.post.UserImageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -30,7 +28,7 @@ import java.util.List;
 @Slf4j
 public class PostController {
 
-    private final PostService imageService;
+    private final PostService postService;
     private final S3Service s3Service;
 
 //    @GetMapping("/api/image")
@@ -42,38 +40,27 @@ public class PostController {
 
     @GetMapping("/user/images")
     public List<UserImageResponse> selectUserImages(@RequestParam int userId) {
-        return imageService.selectUserImages(userId);
+        return postService.selectUserImages(userId);
     }
 
     @GetMapping("/image")
     public ResponseEntity<?> selectImages(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<ImageData> images = imageService.selectImages(principalDetails.getUser().getId());
+        List<PostData> images = postService.selectImages(principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1, "성공", images), HttpStatus.OK);
     }
 
 
-    @PostMapping("/image")
-    public SuccessResponse<?> imageUpload(@RequestParam("file") MultipartFile file, @RequestParam("caption") String caption, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        if (file.isEmpty()) {
-            throw new CustomApiException("이미지가 첨부되지 않았습니다.");
-        }
-        ImageUploadDto imageUploadDto = new ImageUploadDto(file, caption);
-        try {
-            log.info("파일 =  {}", file);
-            s3Service.uploadImage(file, "images/" + principalDetails.getUser().getUsername());
-            imageService.upload(imageUploadDto, principalDetails);
-        } catch (IOException e) {
-            log.info("이미지 업로드 실패");
-            throw new RuntimeException(e);
-        }
-        log.info("이미지 업로드 ={}", imageUploadDto);
+
+    @PostMapping(value = "/posts" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public SuccessResponse<?> uploadPost(@ModelAttribute PostUploadRequest request , @AuthenticationPrincipal PrincipalDetails principalDetails){
+        postService.uploadPost(request , principalDetails);
         return new SuccessResponse<>(ResponseEnum.UPLOAD_SUCCESS);
     }
 
 
     @GetMapping("/image/popular")
     public ResponseEntity<?> popular(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<ImagePopularDto> images = imageService.popular();
+        List<PostPopularDto> images = postService.popular();
         return new ResponseEntity<>(new RespDto<>(1, "인기 이미지 조회", images), HttpStatus.OK);
     }
 

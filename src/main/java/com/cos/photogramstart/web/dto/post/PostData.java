@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.dto.image;
+package com.cos.photogramstart.web.dto.post;
 
 import com.cos.photogramstart.domain.post.Post;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Data
-public class ImageData {
+public class PostData {
 
     private String profileImageUrl;
     private String caption;
@@ -20,7 +20,7 @@ public class ImageData {
     private int likeCount;
     private List<CommentResponseDto> comments;
 
-    public ImageData(Post image){
+    public PostData(Post image){
         this.profileImageUrl = image.getUser().getProfileImageUrl();
         this.userId = image.getUser().getId();
         this.postImageUrl = image.getPostImageUrl();

@@ -1,7 +1,7 @@
 package com.cos.photogramstart.domain.post;
 
-import com.cos.photogramstart.web.dto.image.ImagePopularDto;
-import com.cos.photogramstart.web.dto.image.UserImageResponse;
+import com.cos.photogramstart.web.dto.post.PostPopularDto;
+import com.cos.photogramstart.web.dto.post.UserImageResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -33,9 +33,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
 
     @Override
-    public List<ImagePopularDto> popular() {
+    public List<PostPopularDto> popular() {
         return  queryFactory
-                .select(Projections.fields(ImagePopularDto.class,
+                .select(Projections.fields(PostPopularDto.class,
                         image.id
                         , image.caption
                         , image.postImageUrl

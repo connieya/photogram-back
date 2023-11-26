@@ -1,6 +1,6 @@
 package com.cos.photogramstart.domain.post;
 
-import com.cos.photogramstart.web.dto.image.ImagePopularDto;
+import com.cos.photogramstart.web.dto.post.PostPopularDto;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
@@ -79,8 +79,8 @@ class ImageRepositoryImplTest {
                 .orderBy(likes.image.id.count().desc())
                 .fetch();
 
-        List<ImagePopularDto> imageList = queryFactory
-                .select(Projections.fields(ImagePopularDto.class,
+        List<PostPopularDto> imageList = queryFactory
+                .select(Projections.fields(PostPopularDto.class,
                         image.id, image.caption , image.postImageUrl, image.user
                         , likes.image.id.count().as("likeCount")))
                 .from(image)

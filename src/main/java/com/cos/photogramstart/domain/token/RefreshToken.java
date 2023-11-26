@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-//@Entity
+@Entity
 @Table(name = "refresh_token")
 public class RefreshToken {
 
