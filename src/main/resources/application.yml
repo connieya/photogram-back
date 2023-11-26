@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/photogram2?serverTimezone=Asia/Seoul
-    username: cos
-    password: cos1234
+    url: ${db_url}
+    username: ${db_username}
+    password: ${db_password}
   jpa:
     open-in-view: true
     hibernate:
@@ -19,6 +19,7 @@ spring:
     multipart:
       enabled: true
       max-file-size: 2MB
+
 
   security:
     user:
@@ -48,11 +49,7 @@ cloud:
       auto: false
 
 
-
-
-file:
-  path: C:/workspace/photogram-front/public/images/
-
+base-url: ${s3-base-url}
 
 jwt:
   header: Authorization

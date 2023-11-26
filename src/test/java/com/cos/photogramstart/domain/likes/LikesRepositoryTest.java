@@ -1,16 +1,11 @@
 package com.cos.photogramstart.domain.likes;
 
-import com.cos.photogramstart.service.LikesService;
-import lombok.RequiredArgsConstructor;
+import com.cos.photogramstart.service.PostLikeService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -18,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class LikesRepositoryTest {
 
     @Autowired
-    private LikesRepository likesRepository;
+    private PostLIkeRepository likesRepository;
 
     @Autowired
-    LikesService likesService;
+    PostLikeService likesService;
 
 
     @Test
@@ -30,7 +25,7 @@ class LikesRepositoryTest {
         int imageId = 7;
         int userId = 2;
         //when
-        Likes likes = likesRepository.findByImageIdAndUserId(imageId, userId);
+        PostLike likes = likesRepository.findByImageIdAndUserId(imageId, userId);
         //then
         Assertions.assertThat(likes).isNull();
 

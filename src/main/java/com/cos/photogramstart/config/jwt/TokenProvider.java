@@ -53,17 +53,11 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
-                .signWith(key, SignatureAlgorithm.HS512)
-                .compact();
-
         return TokenDto
                 .builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
-                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -83,20 +77,17 @@ public class TokenProvider {
 
     public boolean validateToken(String token) {
         try {
+            log.info("token = {}" ,token);
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e){
-            log.info("잘못된 JWT 서명입니다.");
-//            throw e;
+            log.info("잘못된 JWT 서명입니다. ={}",e);
         } catch (ExpiredJwtException e) {
             log.info("만료된 JWT 토큰입니다.");
-//            throw e;
         } catch (UnsupportedJwtException e) {
             log.info("지원되지 않는 JWT 토큰입니다.");
-//            throw e;
         } catch (IllegalArgumentException e) {
             log.info("JWT 토큰이 잘못되었습니다.");
-//            throw e;
         }
         return false;
     }

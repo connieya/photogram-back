@@ -1,4 +1,4 @@
-package com.cos.photogramstart.domain.image;
+package com.cos.photogramstart.domain.post;
 
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
 import com.querydsl.core.Tuple;
@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static com.cos.photogramstart.domain.folllow.QFollow.follow;
-import static com.cos.photogramstart.domain.image.QImage.*;
+import static com.cos.photogramstart.domain.post.QImage.*;
 import static com.cos.photogramstart.domain.likes.QLikes.*;
 
 @SpringBootTest
@@ -51,21 +51,21 @@ class ImageRepositoryImplTest {
                 .from(follow)
                 .where(follow.fromUser.id.eq(principalId))
                 .fetch();
-        List<Image> storys = queryFactory
+        List<Post> storys = queryFactory
                 .selectFrom(image)
                 .where(image.user.id.in(followingList)).fetch();
-        for (Image story : storys) {
+        for (Post story : storys) {
             System.out.println("story = " + story);
         }
     }
     @Test
     public void getStory2(){
         int principalId = 1;
-        List<Image> storys = queryFactory
+        List<Post> storys = queryFactory
                 .selectFrom(image)
                 .where(image.user.id.in(JPAExpressions.select(follow.toUser.id).from(follow)
                         .where(follow.fromUser.id.eq(principalId)))).orderBy(image.createDate.desc()).fetch();
-        for (Image story : storys) {
+        for (Post story : storys) {
             System.out.println("story = " + story);
         }
     }

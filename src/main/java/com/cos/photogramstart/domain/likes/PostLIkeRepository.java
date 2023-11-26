@@ -4,9 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-
-public interface LikesRepository extends JpaRepository<Likes, Integer> {
+public interface PostLIkeRepository extends JpaRepository<PostLike, Integer> {
 
     @Modifying
     @Query(value = "insert into likes(imageId , userId ,createDate) values(:imageId , :principalId , now())" , nativeQuery = true)
@@ -16,5 +14,5 @@ public interface LikesRepository extends JpaRepository<Likes, Integer> {
     @Query(value = "delete from likes where imageId =:imageId and userId =:principalId" , nativeQuery = true)
     int mUnLike(int imageId , int principalId);
 
-    Likes findByImageIdAndUserId(int imageId , int userId);
+    PostLike findByImageIdAndUserId(int imageId , int userId);
 }

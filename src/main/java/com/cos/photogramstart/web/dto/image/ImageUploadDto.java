@@ -1,6 +1,6 @@
 package com.cos.photogramstart.web.dto.image;
 
-import com.cos.photogramstart.domain.image.Image;
+import com.cos.photogramstart.domain.post.Post;
 import com.cos.photogramstart.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,11 +16,19 @@ public class ImageUploadDto implements Serializable {
     private MultipartFile file;
     private String caption;
 
-    public Image toEntity(String postImgUrl , User user){
-        return Image.builder()
+    private String baseUrl;
+
+    public ImageUploadDto(MultipartFile file, String caption) {
+        this.file = file;
+        this.caption = caption;
+    }
+
+    public Post toEntity(String postImgUrl , User user , String baseUrl){
+        return Post.builder()
                 .caption(caption)
                 .postImageUrl(postImgUrl)
                 .user(user)
+                .baseUrl(baseUrl)
                 .build();
     }
 }

@@ -1,34 +1,29 @@
-package com.cos.photogramstart.domain.image;
+package com.cos.photogramstart.domain.post;
 
-import com.cos.photogramstart.domain.folllow.QFollow;
-import com.cos.photogramstart.domain.likes.QLikes;
-import com.cos.photogramstart.web.dto.image.ImageData;
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
 import com.cos.photogramstart.web.dto.image.UserImageResponse;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.cos.photogramstart.domain.folllow.QFollow.*;
-import static com.cos.photogramstart.domain.image.QImage.image;
+import static com.cos.photogramstart.domain.post.QImage.image;
 import static com.cos.photogramstart.domain.likes.QLikes.likes;
 
-public class ImageRepositoryImpl implements ImageRepositoryCustom {
+public class PostRepositoryImpl implements PostRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public ImageRepositoryImpl(EntityManager em) {
+    public PostRepositoryImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
     @Override
-    public List<Image> getStory(int principalId) {
-        List<Image> storys = queryFactory
+    public List<Post> getStory(int principalId) {
+        List<Post> storys = queryFactory
                 .selectFrom(image)
                 .where(image.user.id.in(JPAExpressions.select(follow.toUser.id).from(follow)
                         .where(follow.fromUser.id.eq(principalId)))).orderBy(image.createDate.desc()).fetch();

@@ -1,6 +1,6 @@
 package com.cos.photogramstart.domain.user;
 
-import com.cos.photogramstart.domain.image.Image;
+import com.cos.photogramstart.domain.post.Post;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -30,7 +30,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<Image> images;
+    private List<Post> images;
 
     private LocalDateTime createDate;
 

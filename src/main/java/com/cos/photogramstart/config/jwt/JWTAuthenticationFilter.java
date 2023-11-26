@@ -1,5 +1,6 @@
 package com.cos.photogramstart.config.jwt;
 
+import com.cos.photogramstart.handler.exception.TokenMissingException;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,13 +35,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        if (requestURI.startsWith(("/api/image"))) {
-            log.info("임시 로 허용");
-            filterChain.doFilter(request,response);
-            return;
-        }
-
         String token = parseBearerToken(request);
+        if (token == null) {
+            throw new TokenMissingException("Token is missing");
+        }
         log.info("JWT Auth 필터 실행");
         try {
             if (StringUtils.hasText(token) & tokenHelper.validateToken(token)) {
@@ -56,6 +54,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private String parseBearerToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        log.info("bearerToken = {} " ,bearerToken);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }

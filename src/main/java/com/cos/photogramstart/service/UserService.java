@@ -27,9 +27,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
 
-    @Value("${file.path}")
-    private String uploadFolder;
-
     @Transactional(readOnly = true)
     public List<UserInfo> selectUsers(){
         return userRepository.findAll()
@@ -70,12 +67,6 @@ public class UserService {
     public User updateImage(int principalId, MultipartFile profileImageFile) {
         UUID uuid = UUID.randomUUID();
         String imageFileName = uuid + "_" + profileImageFile.getOriginalFilename();
-        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
-        try{
-            Files.write(imageFilePath , profileImageFile.getBytes());
-        }catch(Exception e){
-            e.printStackTrace();
-        }
         User userEntity = userRepository.findById(principalId).orElseThrow(() -> {
             throw new CustomApiException("유저를 찾을 수 없습니다.");
         });

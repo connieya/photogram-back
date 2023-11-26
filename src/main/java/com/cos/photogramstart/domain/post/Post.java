@@ -1,10 +1,9 @@
-package com.cos.photogramstart.domain.image;
+package com.cos.photogramstart.domain.post;
 
 import com.cos.photogramstart.domain.comment.Comment;
-import com.cos.photogramstart.domain.likes.Likes;
+import com.cos.photogramstart.domain.likes.PostLike;
 import com.cos.photogramstart.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,12 +16,17 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-//@ToString(exclude = {"likes" ,"comments","user"})
-public class Image { // N : 1
+@Table(name = "posts")
+public class Post { // N : 1
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_id")
     private int id;
+
+    @Lob
+    @Column(name = "post_content")
     private String caption;
+    private String baseUrl;
     private String postImageUrl; // 사진을 전송받아서 사진을 서버에 특정 폴더에 저장
 
     @JoinColumn(name = "userId")
@@ -30,8 +34,8 @@ public class Image { // N : 1
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "image") // 연관관계의 주인이 아니다.
-    private List<Likes> likes;
+    @OneToMany(mappedBy = "post") // 연관관계의 주인이 아니다.
+    private List<PostLike> likes;
 
     private LocalDateTime createDate;
 

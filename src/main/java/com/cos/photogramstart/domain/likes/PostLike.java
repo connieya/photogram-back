@@ -1,9 +1,7 @@
 package com.cos.photogramstart.domain.likes;
 
-import com.cos.photogramstart.domain.image.Image;
+import com.cos.photogramstart.domain.post.Post;
 import com.cos.photogramstart.domain.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,15 +18,14 @@ import java.time.LocalDateTime;
                 )
         }
 )
-//@ToString(exclude = {"user" ,"image"})
-public class Likes {
+public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @JoinColumn(name = "imageId")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Image image;
+    private Post post;
 
     @JoinColumn(name = "userId")
     @ManyToOne(fetch = FetchType.LAZY)

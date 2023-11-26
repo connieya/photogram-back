@@ -1,13 +1,12 @@
-package com.cos.photogramstart.domain.image;
+package com.cos.photogramstart.domain.post;
 
-import com.cos.photogramstart.web.dto.image.ImageData;
 import com.cos.photogramstart.web.dto.image.ImagePopularDto;
 import com.cos.photogramstart.web.dto.image.UserImageResponse;
 
 import java.util.List;
 
-public interface ImageRepositoryCustom {
-    List<Image> getStory(int principalId);
+public interface PostRepositoryCustom {
+    List<Post> getStory(int principalId);
 //    List<ImageData> getStory(int principalId);
     List<ImagePopularDto> popular();
 

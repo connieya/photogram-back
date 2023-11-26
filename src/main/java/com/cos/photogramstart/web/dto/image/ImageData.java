@@ -1,6 +1,6 @@
 package com.cos.photogramstart.web.dto.image;
 
-import com.cos.photogramstart.domain.image.Image;
+import com.cos.photogramstart.domain.post.Post;
 
 import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import lombok.Data;
@@ -20,7 +20,7 @@ public class ImageData {
     private int likeCount;
     private List<CommentResponseDto> comments;
 
-    public ImageData(Image image){
+    public ImageData(Post image){
         this.profileImageUrl = image.getUser().getProfileImageUrl();
         this.userId = image.getUser().getId();
         this.postImageUrl = image.getPostImageUrl();

@@ -1,7 +1,7 @@
 package com.cos.photogramstart.web.api;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
-import com.cos.photogramstart.service.LikesService;
+import com.cos.photogramstart.service.PostLikeService;
 import com.cos.photogramstart.web.dto.RespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class LikesController {
+public class PostLikeController {
 
-    private final LikesService likesService;
+    private final PostLikeService likesService;
 
     @PostMapping("/likes/{imageId}")
     public ResponseEntity<?> like(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){

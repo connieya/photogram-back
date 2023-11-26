@@ -1,9 +1,7 @@
 package com.cos.photogramstart.domain.comment;
 
-import com.cos.photogramstart.domain.image.Image;
+import com.cos.photogramstart.domain.post.Post;
 import com.cos.photogramstart.domain.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,7 +26,7 @@ public class Comment {
 
     @JoinColumn(name = "imageId")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Image image;
+    private Post image;
     private LocalDateTime createDate;
 
     @PrePersist
@@ -36,7 +34,7 @@ public class Comment {
         this.createDate = LocalDateTime.now();
     }
 
-    public static Comment addComment(String content , Image image ,User user){
+    public static Comment addComment(String content , Post image , User user){
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setImage(image);
