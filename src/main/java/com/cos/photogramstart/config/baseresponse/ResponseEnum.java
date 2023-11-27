@@ -15,7 +15,9 @@ public enum ResponseEnum {
     D1UPLICATE_EMAIL(false, 4006, "이미 존재하는 이메일입니다."),
     INVALID_JWT_SIGNATURE(false, 4007, "잘못된 JWT 서명입니다."),
     EXPIRED_JWT(false, 4008, "만료된 JWT 토큰입니다."),
-    UNSUPPORTED_JWT(false, 4009, "지원되지 않는 JWT 토큰입니다.");
+    UNSUPPORTED_JWT(false, 4009, "지원되지 않는 JWT 토큰입니다."),
+    FILE_CONVERT_FAIL(false,50001, "변환할 수 없는 파일입니다.");
+
 
     private final boolean isSuccess;
     private final int code;

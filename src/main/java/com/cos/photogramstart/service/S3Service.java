@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.cos.photogramstart.handler.exception.FileConvertFailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +30,7 @@ public class S3Service {
     private String bucket;
 
 
-    public String uploadImage(MultipartFile multipartFile, String dirName) throws IOException {
+    public String uploadImage(MultipartFile multipartFile, String dirName)  {
         File uploadFile = convertMultipartFileToFile(multipartFile);
         return upload(uploadFile, dirName);
     }
@@ -37,6 +38,7 @@ public class S3Service {
     private String upload(File uploadFile, String dirName) {
         String fileName = dirName + "/" + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
+        System.out.println("uploadImageUrl" +uploadImageUrl);
         removeNewFile(uploadFile);  // 로컬에 생성된 File 삭제 (MultipartFile -> File 전환 하며 로컬에 파일 생성됨)
         return uploadImageUrl;      // 업로드된 파일의 S3 URL 주소 반환
     }
@@ -57,7 +59,7 @@ public class S3Service {
         }
     }
 
-    public File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
+    public File convertMultipartFileToFile(MultipartFile multipartFile)  {
         File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         try (FileOutputStream fos = new FileOutputStream(file); InputStream is = multipartFile.getInputStream()) {
             int bytesRead;
@@ -65,19 +67,12 @@ public class S3Service {
             while ((bytesRead = is.read(buffer, 0, 8192)) != -1) {
                 fos.write(buffer, 0, bytesRead);
             }
+        }catch (IOException e) {
+            throw new FileConvertFailException("변환할 수 없는 파일입니다.");
         }
         return file;
     }
 
-    private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(file.getOriginalFilename());
-        if (convertFile.createNewFile()) {
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-                fos.write(file.getBytes());
-            }
-            return Optional.of(convertFile);
-        }
-        return Optional.empty();
-    }
+
 
 }

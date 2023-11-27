@@ -76,21 +76,16 @@ public class PostService {
 
     public void uploadPost(PostUploadRequest request) {
         User loginUser = authUtil.getLoginUser();
-        try {
-            s3Service.uploadImage(request.getFile(), "images" + loginUser.getUsername());
-            UUID uuid = UUID.randomUUID();
-            String imageFileName = uuid + "_" + request.getFile().getOriginalFilename();
-            Post post = Post.builder().
-                    caption(request.getCaption())
-                    .location(request.getLocation())
-                    .postImageUrl(imageFileName)
-                    .user(loginUser)
-                    .baseUrl(baseUrl).build();
-            imageRepository.save(post);
+        s3Service.uploadImage(request.getFile(), "images" + loginUser.getUsername());
+        UUID uuid = UUID.randomUUID();
+        String imageFileName = uuid + "_" + request.getFile().getOriginalFilename();
+        Post post = Post.builder().
+                caption(request.getCaption())
+                .location(request.getLocation())
+                .postImageUrl(imageFileName)
+                .user(loginUser)
+                .baseUrl(baseUrl).build();
+        imageRepository.save(post);
 
-        } catch (IOException e) {
-            log.warn("이미지 업로드 실패");
-            throw new RuntimeException(e);
-        }
     }
 }

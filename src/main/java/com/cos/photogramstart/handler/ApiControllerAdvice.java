@@ -46,5 +46,10 @@ public class ApiControllerAdvice {
         return new FailResponse(ResponseEnum.PASSWORD_MISMATCH);
     }
 
+    @ExceptionHandler(FileConvertFailException.class)
+    public FailResponse exceptionResolveFileFaile(RuntimeException e) {
+        return new FailResponse(ResponseEnum.FILE_CONVERT_FAIL);
+    }
+
 
 }

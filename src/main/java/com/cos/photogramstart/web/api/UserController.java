@@ -1,12 +1,14 @@
 package com.cos.photogramstart.web.api;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.config.baseresponse.SuccessResponse;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.service.UserService;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
+import com.cos.photogramstart.web.dto.user.UserProfileResponse;
 import com.cos.photogramstart.web.dto.user.UserProfileUpdateResponse;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +25,22 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/accounts")
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/{username}")
+    public SuccessResponse<?> getUserProfile(@PathVariable("username") String username){
+        UserProfileResponse response = userService.getUserProfile(username);
+        return new SuccessResponse<>(response);
+    }
+
+    @PostMapping("/image")
+    public SuccessResponse<?> uploadProfileImage(@RequestParam("file") MultipartFile uploadedImage) {
+       userService.uploadProfileImage(uploadedImage);
+        return null;
+    }
 
     @GetMapping("/user/{pageUserId}")
     public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
