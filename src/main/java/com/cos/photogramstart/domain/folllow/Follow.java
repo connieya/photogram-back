@@ -1,6 +1,6 @@
 package com.cos.photogramstart.domain.folllow;
 
-import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 

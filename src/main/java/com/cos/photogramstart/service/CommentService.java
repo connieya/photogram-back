@@ -2,10 +2,10 @@ package com.cos.photogramstart.service;
 
 import com.cos.photogramstart.domain.comment.Comment;
 import com.cos.photogramstart.domain.comment.CommentRepository;
-import com.cos.photogramstart.domain.post.Post;
-import com.cos.photogramstart.domain.post.PostRepository;
-import com.cos.photogramstart.domain.user.User;
-import com.cos.photogramstart.domain.user.UserRepository;
+import com.cos.photogramstart.domain.post.entity.Post;
+import com.cos.photogramstart.domain.post.repository.PostRepository;
+import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.UserRepository;
 import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import lombok.RequiredArgsConstructor;

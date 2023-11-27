@@ -1,6 +1,6 @@
-package com.cos.photogramstart.domain.user;
+package com.cos.photogramstart.domain.user.entity;
 
-import com.cos.photogramstart.domain.post.Post;
+import com.cos.photogramstart.domain.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter @Setter
 @Entity
-//@ToString(exclude = "images")
 public class User {
 
     @Id

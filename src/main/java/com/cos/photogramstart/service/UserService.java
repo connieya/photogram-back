@@ -2,8 +2,8 @@ package com.cos.photogramstart.service;
 
 import com.cos.photogramstart.config.auth.AuthUtil;
 import com.cos.photogramstart.domain.folllow.FollowRepository;
-import com.cos.photogramstart.domain.user.User;
-import com.cos.photogramstart.domain.user.UserRepository;
+import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.UserRepository;
 import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.handler.exception.CustomValidationApiException;
 import com.cos.photogramstart.handler.exception.UserNotFoundException;
@@ -11,15 +11,10 @@ import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import com.cos.photogramstart.web.dto.user.UserProfileResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;

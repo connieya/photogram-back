@@ -1,8 +1,8 @@
 package com.cos.photogramstart.config.jwt;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
-import com.cos.photogramstart.domain.user.User;
-import com.cos.photogramstart.domain.user.UserRepository;
+import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.UserRepository;
 import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import com.cos.photogramstart.web.dto.jwt.ClaimDto;

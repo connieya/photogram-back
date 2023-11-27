@@ -1,8 +1,7 @@
 package com.cos.photogramstart.web.dto.auth;
 
-import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.domain.user.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

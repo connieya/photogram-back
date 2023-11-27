@@ -1,6 +1,6 @@
 package com.cos.photogramstart.web.dto.auth;
 
-import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.domain.user.entity.User;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

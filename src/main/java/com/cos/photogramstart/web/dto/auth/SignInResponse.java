@@ -1,7 +1,5 @@
 package com.cos.photogramstart.web.dto.auth;
 
-import com.cos.photogramstart.domain.user.User;
-import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

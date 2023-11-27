@@ -38,7 +38,7 @@ public class S3Service {
     private String upload(File uploadFile, String dirName) {
         String fileName = dirName + "/" + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
-        System.out.println("uploadImageUrl" +uploadImageUrl);
+        System.out.println("uploadImageUrl = " +uploadImageUrl);
         removeNewFile(uploadFile);  // 로컬에 생성된 File 삭제 (MultipartFile -> File 전환 하며 로컬에 파일 생성됨)
         return uploadImageUrl;      // 업로드된 파일의 S3 URL 주소 반환
     }

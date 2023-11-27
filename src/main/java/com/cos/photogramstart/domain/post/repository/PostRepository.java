@@ -1,5 +1,6 @@
-package com.cos.photogramstart.domain.post;
+package com.cos.photogramstart.domain.post.repository;
 
+import com.cos.photogramstart.domain.post.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

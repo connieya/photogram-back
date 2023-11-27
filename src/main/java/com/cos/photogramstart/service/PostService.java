@@ -1,10 +1,9 @@
 package com.cos.photogramstart.service;
 
 import com.cos.photogramstart.config.auth.AuthUtil;
-import com.cos.photogramstart.config.auth.PrincipalDetails;
-import com.cos.photogramstart.domain.post.Post;
-import com.cos.photogramstart.domain.post.PostRepository;
-import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.domain.post.entity.Post;
+import com.cos.photogramstart.domain.post.repository.PostRepository;
+import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import com.cos.photogramstart.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -76,7 +73,7 @@ public class PostService {
 
     public void uploadPost(PostUploadRequest request) {
         User loginUser = authUtil.getLoginUser();
-        s3Service.uploadImage(request.getFile(), "images" + loginUser.getUsername());
+        s3Service.uploadImage(request.getFile(), "images/" + loginUser.getUsername());
         UUID uuid = UUID.randomUUID();
         String imageFileName = uuid + "_" + request.getFile().getOriginalFilename();
         Post post = Post.builder().

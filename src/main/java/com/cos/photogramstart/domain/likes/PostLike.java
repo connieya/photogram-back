@@ -1,7 +1,7 @@
 package com.cos.photogramstart.domain.likes;
 
-import com.cos.photogramstart.domain.post.Post;
-import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.domain.post.entity.Post;
+import com.cos.photogramstart.domain.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
