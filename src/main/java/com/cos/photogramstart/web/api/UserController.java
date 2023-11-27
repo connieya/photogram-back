@@ -4,7 +4,7 @@ import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.config.baseresponse.SuccessResponse;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.handler.exception.CustomApiException;
-import com.cos.photogramstart.service.UserService;
+import com.cos.photogramstart.domain.user.service.UserService;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;

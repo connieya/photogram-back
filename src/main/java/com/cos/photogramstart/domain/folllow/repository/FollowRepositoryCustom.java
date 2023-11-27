@@ -1,4 +1,4 @@
-package com.cos.photogramstart.domain.folllow;
+package com.cos.photogramstart.domain.folllow.repository;
 
 import com.cos.photogramstart.web.dto.follow.FollowDto;
 

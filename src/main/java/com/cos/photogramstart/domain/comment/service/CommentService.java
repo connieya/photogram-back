@@ -1,7 +1,7 @@
-package com.cos.photogramstart.service;
+package com.cos.photogramstart.domain.comment.service;
 
-import com.cos.photogramstart.domain.comment.Comment;
-import com.cos.photogramstart.domain.comment.CommentRepository;
+import com.cos.photogramstart.domain.comment.entity.Comment;
+import com.cos.photogramstart.domain.comment.repository.CommentRepository;
 import com.cos.photogramstart.domain.post.entity.Post;
 import com.cos.photogramstart.domain.post.repository.PostRepository;
 import com.cos.photogramstart.domain.user.entity.User;

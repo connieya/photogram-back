@@ -1,4 +1,4 @@
-package com.cos.photogramstart.service;
+package com.cos.photogramstart.domain.user.service;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.config.jwt.TokenProvider;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service // Ioc , 트랜잭션관리
-public class AuthService {
+public class UserAuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;

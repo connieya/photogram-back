@@ -4,7 +4,7 @@ package com.cos.photogramstart.web.api;
 import com.cos.photogramstart.config.baseresponse.ResponseEnum;
 import com.cos.photogramstart.config.baseresponse.SuccessResponse;
 import com.cos.photogramstart.domain.user.entity.User;
-import com.cos.photogramstart.service.AuthService;
+import com.cos.photogramstart.domain.user.service.UserAuthService;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.auth.SignInRequest;
 import com.cos.photogramstart.web.dto.auth.SignInResponse;
@@ -26,7 +26,7 @@ import javax.validation.Valid;
 @Slf4j
 public class AuthController {
 
-    private final AuthService authService;
+    private final UserAuthService authService;
 
     @PostMapping("/auth/signup")
     public SuccessResponse<User> signup(@Valid @RequestBody SignupDto signupDto, BindingResult bindingResult) {

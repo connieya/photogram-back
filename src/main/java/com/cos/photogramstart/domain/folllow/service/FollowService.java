@@ -1,6 +1,6 @@
-package com.cos.photogramstart.service;
+package com.cos.photogramstart.domain.folllow.service;
 
-import com.cos.photogramstart.domain.folllow.FollowRepository;
+import com.cos.photogramstart.domain.folllow.repository.FollowRepository;
 import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.web.dto.follow.FollowDto;
 import lombok.RequiredArgsConstructor;

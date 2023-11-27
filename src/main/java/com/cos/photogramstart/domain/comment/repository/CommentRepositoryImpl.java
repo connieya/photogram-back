@@ -1,4 +1,4 @@
-package com.cos.photogramstart.domain.comment;
+package com.cos.photogramstart.domain.comment.repository;
 
 import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import com.querydsl.core.types.Projections;

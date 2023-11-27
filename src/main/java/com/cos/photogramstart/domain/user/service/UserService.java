@@ -1,12 +1,13 @@
-package com.cos.photogramstart.service;
+package com.cos.photogramstart.domain.user.service;
 
 import com.cos.photogramstart.config.auth.AuthUtil;
-import com.cos.photogramstart.domain.folllow.FollowRepository;
+import com.cos.photogramstart.domain.folllow.repository.FollowRepository;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
 import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.handler.exception.CustomValidationApiException;
 import com.cos.photogramstart.handler.exception.UserNotFoundException;
+import com.cos.photogramstart.service.S3Service;
 import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import com.cos.photogramstart.web.dto.user.UserProfileResponse;

@@ -3,7 +3,7 @@ package com.cos.photogramstart.web.api;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.config.baseresponse.ResponseEnum;
 import com.cos.photogramstart.config.baseresponse.SuccessResponse;
-import com.cos.photogramstart.service.PostService;
+import com.cos.photogramstart.domain.post.service.PostService;
 //import com.cos.photogramstart.service.S3Service;
 import com.cos.photogramstart.service.S3Service;
 import com.cos.photogramstart.web.dto.RespDto;

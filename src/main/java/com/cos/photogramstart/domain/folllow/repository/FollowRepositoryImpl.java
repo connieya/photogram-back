@@ -1,5 +1,6 @@
-package com.cos.photogramstart.domain.folllow;
+package com.cos.photogramstart.domain.folllow.repository;
 
+import com.cos.photogramstart.domain.folllow.QFollow;
 import com.cos.photogramstart.web.dto.follow.FollowDto;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;

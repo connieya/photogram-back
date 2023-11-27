@@ -1,10 +1,9 @@
 package com.cos.photogramstart.web.api;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
-import com.cos.photogramstart.domain.comment.Comment;
-import com.cos.photogramstart.service.CommentService;
+import com.cos.photogramstart.domain.comment.entity.Comment;
+import com.cos.photogramstart.domain.comment.service.CommentService;
 import com.cos.photogramstart.web.dto.RespDto;
-import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import com.cos.photogramstart.web.dto.comment.CommentWriteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

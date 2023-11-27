@@ -1,6 +1,6 @@
-package com.cos.photogramstart.service;
+package com.cos.photogramstart.domain.likes.service;
 
-import com.cos.photogramstart.domain.likes.PostLIkeRepository;
+import com.cos.photogramstart.domain.likes.repository.PostLIkeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

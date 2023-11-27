@@ -1,39 +1,28 @@
-package com.cos.photogramstart.domain.folllow;
+package com.cos.photogramstart.domain.likes.entity;
 
+import com.cos.photogramstart.domain.post.entity.Post;
 import com.cos.photogramstart.domain.user.entity.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Setter @Getter
+@Getter
 @Entity
-@Table(
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "subscribe_uk",
-                        columnNames = {"fromUserId" ,"toUserId"}
-                )
-        }
-)
-public class Follow {
+@Table(name = "post_likes")
+public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @JoinColumn(name = "fromUserId")
+    @JoinColumn(name = "imageId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    private User fromUser;
+    private Post post;
 
-    @JoinColumn(name = "toUserId")
+    @JoinColumn(name = "userId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    private User toUser;
+    private User user;
 
     private LocalDateTime createDate;
 
@@ -41,4 +30,5 @@ public class Follow {
     public void createDate() {
         this.createDate = LocalDateTime.now();
     }
+
 }

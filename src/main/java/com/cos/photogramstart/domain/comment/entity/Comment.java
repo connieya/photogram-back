@@ -1,4 +1,4 @@
-package com.cos.photogramstart.domain.comment;
+package com.cos.photogramstart.domain.comment.entity;
 
 import com.cos.photogramstart.domain.post.entity.Post;
 import com.cos.photogramstart.domain.user.entity.User;

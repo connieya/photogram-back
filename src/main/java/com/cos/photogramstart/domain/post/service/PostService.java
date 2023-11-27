@@ -1,9 +1,12 @@
-package com.cos.photogramstart.service;
+package com.cos.photogramstart.domain.post.service;
 
 import com.cos.photogramstart.config.auth.AuthUtil;
 import com.cos.photogramstart.domain.post.entity.Post;
 import com.cos.photogramstart.domain.post.repository.PostRepository;
 import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.comment.service.CommentService;
+import com.cos.photogramstart.domain.likes.service.PostLikeService;
+import com.cos.photogramstart.service.S3Service;
 import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import com.cos.photogramstart.web.dto.post.*;
 import lombok.RequiredArgsConstructor;

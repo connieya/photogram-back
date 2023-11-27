@@ -1,5 +1,6 @@
-package com.cos.photogramstart.domain.likes;
+package com.cos.photogramstart.domain.likes.repository;
 
+import com.cos.photogramstart.domain.likes.entity.PostLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
