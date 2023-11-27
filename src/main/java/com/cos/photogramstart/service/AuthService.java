@@ -76,9 +76,7 @@ public class AuthService {
 
     @Transactional
     public TokenDto reissue(TokenDto tokenDto) {
-        if (!tokenHelper.validateToken(tokenDto.getRefreshToken())) {
-            throw new RuntimeException("Refreh Token이 유효하지 않습니다.");
-        }
+        tokenHelper.validateToken(tokenDto.getRefreshToken());
 
         Authentication authentication = tokenHelper.getAuthentication(tokenDto.getAccessToken());
         RefreshToken refreshToken = refreshTokenRepository.

@@ -1,8 +1,10 @@
 package com.cos.photogramstart.service;
 
+import com.cos.photogramstart.config.auth.AuthUtil;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.post.Post;
 import com.cos.photogramstart.domain.post.PostRepository;
+import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import com.cos.photogramstart.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PostService {
 
+    private final AuthUtil authUtil;
     private final PostRepository imageRepository;
     private final CommentService commentService;
     private final PostLikeService likesService;
@@ -71,18 +74,17 @@ public class PostService {
         return imageRepository.selectUserImage(userId);
     }
 
-    public void uploadPost(PostUploadRequest request, PrincipalDetails principalDetails) {
-        System.out.println("파일 " + request.getFile());
-        System.out.println("pricipaldetail" + principalDetails);
+    public void uploadPost(PostUploadRequest request) {
+        User loginUser = authUtil.getLoginUser();
         try {
-            s3Service.uploadImage(request.getFile(), "images" + principalDetails.getUser().getUsername());
+            s3Service.uploadImage(request.getFile(), "images" + loginUser.getUsername());
             UUID uuid = UUID.randomUUID();
             String imageFileName = uuid + "_" + request.getFile().getOriginalFilename();
             Post post = Post.builder().
                     caption(request.getCaption())
                     .location(request.getLocation())
                     .postImageUrl(imageFileName)
-                    .user(principalDetails.getUser())
+                    .user(loginUser)
                     .baseUrl(baseUrl).build();
             imageRepository.save(post);
 

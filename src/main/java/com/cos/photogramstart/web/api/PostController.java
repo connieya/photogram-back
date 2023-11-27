@@ -52,8 +52,8 @@ public class PostController {
 
 
     @PostMapping(value = "/posts" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public SuccessResponse<?> uploadPost(@ModelAttribute PostUploadRequest request , @AuthenticationPrincipal PrincipalDetails principalDetails){
-        postService.uploadPost(request , principalDetails);
+    public SuccessResponse<?> uploadPost(@ModelAttribute PostUploadRequest request ){
+        postService.uploadPost(request);
         return new SuccessResponse<>(ResponseEnum.UPLOAD_SUCCESS);
     }
 

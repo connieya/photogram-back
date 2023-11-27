@@ -3,6 +3,8 @@ package com.cos.photogramstart.handler;
 import com.cos.photogramstart.config.baseresponse.FailResponse;
 import com.cos.photogramstart.config.baseresponse.ResponseEnum;
 import com.cos.photogramstart.handler.exception.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,9 +31,10 @@ public class ApiControllerAdvice {
     @ExceptionHandler({
             UserNotFoundException.class,
             TokenMissingException.class,
-            PasswordMisMatchException.class
+            PasswordMisMatchException.class,
     })
     public FailResponse exceptionResolveUnauthorized(BadCredentialsException e) {
+
         if (e instanceof UserNotFoundException){
             return new FailResponse(ResponseEnum.NOT_FOUND_USER);
         }
@@ -42,4 +45,6 @@ public class ApiControllerAdvice {
         }
         return new FailResponse(ResponseEnum.PASSWORD_MISMATCH);
     }
+
+
 }

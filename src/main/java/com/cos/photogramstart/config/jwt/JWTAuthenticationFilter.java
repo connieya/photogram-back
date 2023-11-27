@@ -1,10 +1,14 @@
 package com.cos.photogramstart.config.jwt;
 
+import com.cos.photogramstart.config.baseresponse.ResponseEnum;
 import com.cos.photogramstart.handler.exception.TokenMissingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,23 +45,33 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
         log.info("JWT Auth 필터 실행");
         try {
-            if (StringUtils.hasText(token) & tokenHelper.validateToken(token)) {
+            if (StringUtils.hasText(token)) {
+                tokenHelper.validateToken(token);
                 Authentication authentication = tokenHelper.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } catch (Exception e) {
-            log.info("토큰 예외  = {} ", e);
-            throw new BadCredentialsException("유효 하지 않은 토큰 ");
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.warn("error");
+            setErrorResponse(response, ResponseEnum.INVALID_JWT_SIGNATURE);
+        } catch (ExpiredJwtException e) {
+            setErrorResponse(response, ResponseEnum.EXPIRED_JWT);
         }
         filterChain.doFilter(request, response);
     }
 
     private String parseBearerToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        log.info("bearerToken = {} " ,bearerToken);
+        log.info("bearerToken = {} ", bearerToken);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    private void setErrorResponse(HttpServletResponse response, ResponseEnum responseEnum) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write(objectMapper.writeValueAsString(responseEnum.toString()));
     }
 }

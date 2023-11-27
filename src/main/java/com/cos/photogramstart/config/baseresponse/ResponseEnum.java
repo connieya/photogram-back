@@ -12,7 +12,10 @@ public enum ResponseEnum {
     PASSWORD_MISMATCH(false, 4002, "비밀번호가 일치하지 않습니다."),
     TOKEN_MISSING(false, 4003, "토큰이 없습니다."),
     DUPLICATE_USER_NAME(false, 4005, "이미 존재하는 사용자 이름입니다."),
-    D1UPLICATE_EMAIL(false, 4006, "이미 존재하는 이메일입니다.");
+    D1UPLICATE_EMAIL(false, 4006, "이미 존재하는 이메일입니다."),
+    INVALID_JWT_SIGNATURE(false, 4007, "잘못된 JWT 서명입니다."),
+    EXPIRED_JWT(false, 4008, "만료된 JWT 토큰입니다."),
+    UNSUPPORTED_JWT(false, 4009, "지원되지 않는 JWT 토큰입니다.");
 
     private final boolean isSuccess;
     private final int code;
