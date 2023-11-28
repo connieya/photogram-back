@@ -4,13 +4,14 @@ import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.global.response.ResponseEnum;
 import com.cos.photogramstart.global.response.SuccessResponse;
 import com.cos.photogramstart.domain.post.service.PostService;
-//import com.cos.photogramstart.service.S3Service;
-import com.cos.photogramstart.service.S3Service;
+//import com.cos.photogramstart.global.aws.S3Service;
+import com.cos.photogramstart.global.aws.S3Uploader;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.post.PostData;
 import com.cos.photogramstart.web.dto.post.PostPopularDto;
 import com.cos.photogramstart.web.dto.post.PostUploadRequest;
 import com.cos.photogramstart.web.dto.post.UserImageResponse;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    private final S3Service s3Service;
+    private final S3Uploader s3Service;
 
 //    @GetMapping("/api/image")
 //    public ResponseEntity<?> select(@AuthenticationPrincipal PrincipalDetails principalDetails ,@PageableDefault(size = 3) Pageable pageable){
@@ -52,7 +53,8 @@ public class PostController {
 
 
 
-    @PostMapping(value = "/posts" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(value = "게시물 업로드" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/posts")
     public SuccessResponse<?> uploadPost(@ModelAttribute PostUploadRequest request ){
         postService.uploadPost(request);
         return new SuccessResponse<>(ResponseEnum.UPLOAD_SUCCESS);

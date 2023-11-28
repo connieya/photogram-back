@@ -1,6 +1,7 @@
 package com.cos.photogramstart.domain.user.entity;
 
 import com.cos.photogramstart.domain.post.entity.Post;
+import com.cos.photogramstart.global.common.Image;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -24,8 +25,16 @@ public class User {
     private String email;
     private String website;
     private String bio;
-    private String profileImageUrl;
 
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "imageUrl", column = @Column(name = "profile_image_url")),
+            @AttributeOverride(name = "imageType", column = @Column(name = "profile_image_type")),
+            @AttributeOverride(name = "imageUUID", column = @Column(name = "profile_image_uuid")),
+            @AttributeOverride(name = "imageName", column = @Column(name = "profile_image_name")),
+    })
+    private Image image;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore

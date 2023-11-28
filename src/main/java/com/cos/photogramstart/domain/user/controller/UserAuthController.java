@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.api;
+package com.cos.photogramstart.domain.user.controller;
 
 
 import com.cos.photogramstart.global.response.ResponseEnum;
@@ -24,7 +24,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-public class AuthController {
+public class UserAuthController {
 
     private final UserAuthService authService;
 

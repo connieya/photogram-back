@@ -61,7 +61,7 @@ public class UserAuthService {
         UserInfo userInfo = UserInfo.builder()
                 .username(user.getUsername())
                 .id(user.getId())
-                .profileImageUrl(user.getProfileImageUrl()).build();
+                .build();
         return new SignInResponse(tokenDto.getAccessToken(),userInfo);
 //        RefreshToken refreshToken = RefreshToken.builder()
 //                .key(authenticate.getName())

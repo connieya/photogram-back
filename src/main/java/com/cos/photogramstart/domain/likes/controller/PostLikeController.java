@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.api;
+package com.cos.photogramstart.domain.likes.controller;
 
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.likes.service.PostLikeService;

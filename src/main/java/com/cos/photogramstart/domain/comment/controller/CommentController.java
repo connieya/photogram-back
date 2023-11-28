@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.api;
+package com.cos.photogramstart.domain.comment.controller;
 
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.comment.entity.Comment;

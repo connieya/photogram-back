@@ -18,7 +18,7 @@ public class PostImage {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "baseUrl", column = @Column(name = "post_image_url")),
+            @AttributeOverride(name = "imageUrl", column = @Column(name = "post_image_url")),
             @AttributeOverride(name = "imageType", column = @Column(name = "post_image_type")),
             @AttributeOverride(name = "imageUUID", column = @Column(name = "post_image_uuid")),
             @AttributeOverride(name = "imageName", column = @Column(name = "post_image_name")),

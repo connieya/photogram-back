@@ -1,13 +1,14 @@
 package com.cos.photogramstart.domain.user.service;
 
-import com.cos.photogramstart.global.config.security.auth.AuthUtil;
+import com.cos.photogramstart.global.common.Image;
+import com.cos.photogramstart.global.util.AuthUtil;
 import com.cos.photogramstart.domain.folllow.repository.FollowRepository;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
 import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.handler.exception.CustomValidationApiException;
 import com.cos.photogramstart.handler.exception.UserNotFoundException;
-import com.cos.photogramstart.service.S3Service;
+import com.cos.photogramstart.global.aws.S3Uploader;
 import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import com.cos.photogramstart.web.dto.user.UserProfileResponse;
@@ -26,15 +27,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
-    private final S3Service s3Service;
+    private final S3Uploader s3Service;
     private final AuthUtil authUtil;
 
     @Transactional(readOnly = true)
     public List<UserInfo> selectUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(u -> new UserInfo(u.getId(), u.getUsername(), u.getProfileImageUrl()))
-                .collect(Collectors.toList());
+        return null;
+
     }
 
     @Transactional(readOnly = true)
@@ -47,7 +46,6 @@ public class UserService {
                 .builder().bio(userEntity.getBio())
                 .webSite(userEntity.getWebsite())
                 .imageCount(userEntity.getImages().size())
-                .profileImageUrl(userEntity.getProfileImageUrl())
                 .username(userEntity.getUsername())
                 .followState(followState == 1).build();
         return dto;
@@ -72,7 +70,6 @@ public class UserService {
         User userEntity = userRepository.findById(principalId).orElseThrow(() -> {
             throw new CustomApiException("유저를 찾을 수 없습니다.");
         });
-        userEntity.setProfileImageUrl(imageFileName);
         return userEntity;
     }
 
@@ -87,6 +84,8 @@ public class UserService {
 
     public void uploadProfileImage(MultipartFile uploadedImage) {
         User loginUser = authUtil.getLoginUser();
-        s3Service.uploadImage(uploadedImage, "/profile/"+loginUser.getUsername());
+        Image image = s3Service.uploadImage(uploadedImage, "user");
+        loginUser.setImage(image);
+        userRepository.save(loginUser);
     }
 }

@@ -21,7 +21,6 @@ public class PostData {
     private List<CommentResponseDto> comments;
 
     public PostData(Post image){
-        this.profileImageUrl = image.getUser().getProfileImageUrl();
         this.userId = image.getUser().getId();
         this.username = image.getUser().getUsername();
         this.imageId = image.getId();
