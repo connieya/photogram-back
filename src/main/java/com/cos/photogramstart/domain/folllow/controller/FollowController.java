@@ -2,6 +2,8 @@ package com.cos.photogramstart.domain.folllow.controller;
 
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.folllow.service.FollowService;
+import com.cos.photogramstart.global.result.ResultCode;
+import com.cos.photogramstart.global.result.ResultResponse;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.follow.FollowDto;
 import io.swagger.annotations.Api;
@@ -26,8 +28,7 @@ public class FollowController {
     @PostMapping("/follow/{username}")
     public ResponseEntity<?> follow(@PathVariable String username) {
         followService.follow(username);
-//        followService.follow(principalDetails.getUser().getId(), toUserId);
-        return new ResponseEntity<>(new RespDto<>(1, "팔로우 성공", null), HttpStatus.OK);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.FOLLOW_SUCCESS));
     }
 
     @DeleteMapping("/follow/{toUserId}")

@@ -31,6 +31,11 @@ public class Follow {
 
     private LocalDateTime createDate;
 
+    public Follow(User fromUser, User toUser) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+    }
+
     @PrePersist // 디비에 INSERT 되기 직전에 실행
     public void createDate() {
         this.createDate = LocalDateTime.now();

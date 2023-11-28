@@ -1,5 +1,6 @@
 package com.cos.photogramstart.domain.folllow.service;
 
+import com.cos.photogramstart.domain.folllow.entity.Follow;
 import com.cos.photogramstart.domain.folllow.exception.FollowMyselfFailException;
 import com.cos.photogramstart.domain.folllow.repository.FollowRepository;
 import com.cos.photogramstart.domain.user.entity.User;
@@ -46,23 +47,15 @@ public class FollowService {
         User loginUser = authUtil.getLoginUser();
         User followUser = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
 
-
         if (loginUser.getUsername().equals(username)){
            throw new FollowMyselfFailException();
         }
-        if (followRepository.existsByFromUserIAndToUserId(loginUser.getId(), followUser.getId())) {
+        if (followRepository.existsByFromUserIdAndToUserId(loginUser.getId(), followUser.getId())) {
             throw new EntityAlreadyExistException(ErrorCode.FOLLOW_ALREADY_EXIST);
         }
 
-    }
-
-    @Transactional
-    public void follow(int fromUserId, int toUserId) {
-        try {
-            followRepository.mFollow(fromUserId, toUserId);
-        } catch (Exception e) {
-            throw new CustomApiException("이미 구독을 하였습니다.");
-        }
+        Follow follow = new Follow(loginUser, followUser);
+        followRepository.save(follow);
 
     }
 

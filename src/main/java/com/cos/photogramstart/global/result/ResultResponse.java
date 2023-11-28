@@ -16,4 +16,19 @@ public class ResultResponse {
     private String message;
     @ApiModelProperty(value = "응답 데이터")
     private Object data;
+
+    public ResultResponse(ResultCode resultCode, Object data) {
+        this.status = resultCode.getStatus();
+        this.code = resultCode.getCode();
+        this.message = resultCode.getMessage();
+        this.data = data;
+    }
+
+    public static ResultResponse of(ResultCode resultCode, Object data) {
+        return new ResultResponse(resultCode, data);
+    }
+
+    public static ResultResponse of(ResultCode resultCode) {
+        return new ResultResponse(resultCode, "");
+    }
 }

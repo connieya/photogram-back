@@ -9,11 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface FollowRepository extends JpaRepository<Follow,Integer> , FollowRepositoryQuerydsl {
 
 
-    boolean existsByFromUserIAndToUserId(Long fromUserId , Long toUserId);
-
-    @Modifying
-    @Query(value = "insert into follow(fromUserid ,toUserId , createDate) values(:fromUserId, :toUserId , now())", nativeQuery = true)
-    void mFollow(int fromUserId, int toUserId);
+    boolean existsByFromUserIdAndToUserId(Long fromUserId , Long toUserId);
 
     @Modifying
     @Query(value = "delete from  follow where fromUserId =:fromUserId and toUserId =:toUserId", nativeQuery = true)
