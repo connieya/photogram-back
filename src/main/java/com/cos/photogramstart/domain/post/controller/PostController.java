@@ -6,6 +6,8 @@ import com.cos.photogramstart.global.response.SuccessResponse;
 import com.cos.photogramstart.domain.post.service.PostService;
 //import com.cos.photogramstart.global.aws.S3Service;
 import com.cos.photogramstart.global.aws.S3Uploader;
+import com.cos.photogramstart.global.result.ResultCode;
+import com.cos.photogramstart.global.result.ResultResponse;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.post.PostData;
 import com.cos.photogramstart.web.dto.post.PostPopularDto;
@@ -55,9 +57,9 @@ public class PostController {
 
     @ApiOperation(value = "게시물 업로드" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PostMapping(value = "/posts")
-    public SuccessResponse<?> uploadPost(@ModelAttribute PostUploadRequest request ){
+    public ResponseEntity<ResultResponse> uploadPost(@ModelAttribute PostUploadRequest request ){
         postService.uploadPost(request);
-        return new SuccessResponse<>(ResponseEnum.UPLOAD_SUCCESS);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.CREATE_POST_SUCCESS));
     }
 
 

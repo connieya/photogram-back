@@ -10,6 +10,7 @@ import com.cos.photogramstart.domain.user.dto.SignInRequest;
 import com.cos.photogramstart.domain.user.dto.SignInResponse;
 import com.cos.photogramstart.domain.user.dto.SignupRequest;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
+@Api(tags = "멤버 인증 API")
 @RestController
 @Slf4j
 public class UserAuthController {

@@ -1,5 +1,8 @@
 package com.cos.photogramstart.domain.post.service;
 
+import com.cos.photogramstart.domain.post.entity.PostImage;
+import com.cos.photogramstart.domain.post.repository.PostImageRepository;
+import com.cos.photogramstart.global.common.Image;
 import com.cos.photogramstart.global.util.AuthUtil;
 import com.cos.photogramstart.domain.post.entity.Post;
 import com.cos.photogramstart.domain.post.repository.PostRepository;
@@ -30,6 +33,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CommentService commentService;
     private final PostLikeService likesService;
+    private final PostImageRepository postImageRepository;
     private final S3Uploader s3Uploader;
 
 
@@ -74,17 +78,18 @@ public class PostService {
         return postRepository.selectUserImage(userId);
     }
 
+    @Transactional
     public void uploadPost(PostUploadRequest request) {
         User loginUser = authUtil.getLoginUser();
-        s3Uploader.uploadImage(request.getFile(), "images/" + loginUser.getUsername());
-        UUID uuid = UUID.randomUUID();
-        String imageFileName = uuid + "_" + request.getFile().getOriginalFilename();
+        Image image = s3Uploader.uploadImage(request.getFile(), "post");
+        PostImage postImage = new PostImage(image);
+        postImageRepository.save(postImage);
         Post post = Post.builder().
                 caption(request.getCaption())
                 .location(request.getLocation())
-                .postImageUrl(imageFileName)
                 .user(loginUser)
-                .baseUrl(baseUrl).build();
+                .postImage(postImage).
+                build();
         postRepository.save(post);
 
     }

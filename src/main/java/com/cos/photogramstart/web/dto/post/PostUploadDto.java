@@ -26,9 +26,7 @@ public class PostUploadDto implements Serializable {
     public Post toEntity(String postImgUrl , User user , String baseUrl){
         return Post.builder()
                 .caption(caption)
-                .postImageUrl(postImgUrl)
                 .user(user)
-                .baseUrl(baseUrl)
                 .build();
     }
 }

@@ -61,7 +61,6 @@ public class FollowService {
 
     }
 
-
     @Transactional
     public void unfollow(String username) {
         User loginUser = authUtil.getLoginUser();
@@ -74,5 +73,10 @@ public class FollowService {
         Follow follow = followRepository.findByFromUserIdAndToUserId(loginUser.getId(), followUser.getId())
                 .orElseThrow(UnfollowFailException::new);
         followRepository.delete(follow);
+    }
+
+    @Transactional(readOnly = true)
+    public void getFollowings(String username) {
+        User loginUser = authUtil.getLoginUser();
     }
 }

@@ -24,4 +24,8 @@ public class PostImage {
             @AttributeOverride(name = "imageName", column = @Column(name = "post_image_name")),
     })
     private Image image;
+
+    public PostImage(Image image) {
+        this.image = image;
+    }
 }

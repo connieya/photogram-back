@@ -33,13 +33,15 @@ public class FollowController {
 
     @ApiOperation(value = "언팔로우")
     @DeleteMapping("/follow/{username}")
-    public ResponseEntity<?> unfollow(@PathVariable String  username) {
+    public ResponseEntity<?> unfollow(@PathVariable String username) {
         followService.unfollow(username);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.UNFOLLOW_SUCCESS));
     }
 
-    @GetMapping("/following/{pageUserId}")
-    public ResponseEntity<?> followingList(@PathVariable int pageUserId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    @ApiOperation(value = "팔로잉 목록 조회")
+    @GetMapping("/following/{username}")
+    public ResponseEntity<?> followingList(@PathVariable String username) {
+        followService.getFollowings(username);
 //        List<FollowDto> subscribeDto = followService.followingList(principalDetails.getUser().getId(), pageUserId);
         return new ResponseEntity<>(new RespDto<>(1, "팔로잉 리스트 불러오기 성공", ""), HttpStatus.OK);
     }
