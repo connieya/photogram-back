@@ -19,15 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
+    private static final String USER_S3_DIRNAME = "user";
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
-    private final S3Uploader s3Service;
+    private final S3Uploader s3Uploader;
     private final AuthUtil authUtil;
 
     @Transactional(readOnly = true)
@@ -82,10 +81,19 @@ public class UserService {
                 .website(user.getWebsite()).build();
     }
 
+    @Transactional
     public void uploadProfileImage(MultipartFile uploadedImage) {
         User loginUser = authUtil.getLoginUser();
-        Image image = s3Service.uploadImage(uploadedImage, "user");
+        Image image = s3Uploader.uploadImage(uploadedImage, USER_S3_DIRNAME);
         loginUser.setImage(image);
+        userRepository.save(loginUser);
+    }
+
+    @Transactional
+    public void deleteProfileImage() {
+        User loginUser = authUtil.getLoginUser();
+        s3Uploader.deleteImage(loginUser.getImage(),USER_S3_DIRNAME);
+        loginUser.deleteImage();
         userRepository.save(loginUser);
     }
 }

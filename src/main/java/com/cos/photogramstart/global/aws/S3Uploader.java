@@ -81,5 +81,12 @@ public class S3Uploader {
     }
 
 
+    public void deleteImage(Image image, String dirName) {
+        if (image.getImageUUID().equals("base-UUID")){
+            return;
+        }
+        String filename = convertToFilename(dirName, image);
+        s3Client.deleteObject(bucket,filename);
 
+    }
 }

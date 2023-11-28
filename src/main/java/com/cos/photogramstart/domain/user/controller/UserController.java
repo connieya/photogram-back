@@ -45,6 +45,13 @@ public class UserController {
         return new SuccessResponse<>(ResponseEnum.UPLOAD_PROFILE_IMAGE_SUCCESS);
     }
 
+    @ApiOperation(value = "회원 프로필 삭제")
+    @DeleteMapping("/image")
+    public SuccessResponse<?> deleteProfileImage() {
+        userService.deleteProfileImage();
+        return new SuccessResponse<>();
+    }
+
     @GetMapping("/user/{pageUserId}")
     public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
         UserProfileDto dto = userService.selectUserProfile(pageUserId, principalDetails.getUser().getId());

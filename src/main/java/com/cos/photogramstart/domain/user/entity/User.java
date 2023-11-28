@@ -48,4 +48,14 @@ public class User {
     }
 
 
+    public void deleteImage() {
+        this.image = Image.builder()
+                .imageName("base")
+                .imageType("PNG")
+                .imageUrl("")
+                .imageUUID("base-UUID")
+                .build();
+
+    }
+
 }
