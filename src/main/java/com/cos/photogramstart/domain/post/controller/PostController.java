@@ -44,11 +44,11 @@ public class PostController {
         return postService.selectUserImages(userId);
     }
 
-    @GetMapping("/image")
-    public ResponseEntity<?> selectImages(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<PostData> images = postService.selectImages(principalDetails.getUser().getId());
-        return new ResponseEntity<>(new RespDto<>(1, "성공", images), HttpStatus.OK);
-    }
+//    @GetMapping("/image")
+//    public ResponseEntity<?> selectImages(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+//        List<PostData> images = postService.selectImages(principalDetails.getUser().getId());
+//        return new ResponseEntity<>(new RespDto<>(1, "성공", images), HttpStatus.OK);
+//    }
 
 
 

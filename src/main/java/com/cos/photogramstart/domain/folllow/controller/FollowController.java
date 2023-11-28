@@ -4,6 +4,8 @@ import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.folllow.service.FollowService;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.follow.FollowDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,31 +17,34 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Api(tags = "팔로우 API")
 public class FollowController {
 
     private final FollowService followService;
 
-    @PostMapping("/follow/{toUserId}")
-    public ResponseEntity<?> follow(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int toUserId) {
-        followService.follow(principalDetails.getUser().getId(), toUserId);
+    @ApiOperation(value = "팔로우")
+    @PostMapping("/follow/{username}")
+    public ResponseEntity<?> follow(@PathVariable String username) {
+        followService.follow(username);
+//        followService.follow(principalDetails.getUser().getId(), toUserId);
         return new ResponseEntity<>(new RespDto<>(1, "팔로우 성공", null), HttpStatus.OK);
     }
 
     @DeleteMapping("/follow/{toUserId}")
     public ResponseEntity<?> unfollow(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int toUserId) {
-        followService.unfollow(principalDetails.getUser().getId(), toUserId);
+//        followService.unfollow(principalDetails.getUser().getId(), toUserId);
         return new ResponseEntity<>(new RespDto<>(1, "팔로우 취소 성공", null), HttpStatus.OK);
     }
 
     @GetMapping("/following/{pageUserId}")
     public ResponseEntity<?> followingList(@PathVariable int pageUserId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<FollowDto> subscribeDto = followService.followingList(principalDetails.getUser().getId(), pageUserId);
-        return new ResponseEntity<>(new RespDto<>(1, "팔로잉 리스트 불러오기 성공", subscribeDto), HttpStatus.OK);
+//        List<FollowDto> subscribeDto = followService.followingList(principalDetails.getUser().getId(), pageUserId);
+        return new ResponseEntity<>(new RespDto<>(1, "팔로잉 리스트 불러오기 성공", ""), HttpStatus.OK);
     }
 
     @GetMapping("/follower/{pageUserId}")
     public ResponseEntity<?> followerList(@PathVariable int pageUserId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        List<FollowDto> followerDto = followService.followerList(principalDetails.getUser().getId(), pageUserId);
-        return new ResponseEntity<>(new RespDto<>(1, "팔로워 리스트 불러오기 성공", followerDto), HttpStatus.OK);
+//        List<FollowDto> followerDto = followService.followerList(principalDetails.getUser().getId(), pageUserId);
+        return new ResponseEntity<>(new RespDto<>(1, "팔로워 리스트 불러오기 성공", ""), HttpStatus.OK);
     }
 }

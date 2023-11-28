@@ -9,7 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserInfo {
 
-    private int id;
+    private long id;
     private String username;
-    private String profileImageUrl;
 }

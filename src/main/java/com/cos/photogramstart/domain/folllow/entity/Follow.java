@@ -12,25 +12,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Setter @Getter
 @Entity
-@Table(
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "subscribe_uk",
-                        columnNames = {"fromUserId" ,"toUserId"}
-                )
-        }
-)
+@Table(name = "follows")
 public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "follow_id")
+    private Long id;
 
-    @JoinColumn(name = "fromUserId")
+    @JoinColumn(name = "from_user_Id")
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User fromUser;
 
-    @JoinColumn(name = "toUserId")
+    @JoinColumn(name = "to_user_Id")
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User toUser;

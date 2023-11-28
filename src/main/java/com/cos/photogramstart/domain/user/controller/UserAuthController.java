@@ -6,9 +6,9 @@ import com.cos.photogramstart.global.response.SuccessResponse;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.service.UserAuthService;
 import com.cos.photogramstart.web.dto.RespDto;
-import com.cos.photogramstart.web.dto.auth.SignInRequest;
-import com.cos.photogramstart.web.dto.auth.SignInResponse;
-import com.cos.photogramstart.web.dto.auth.SignupDto;
+import com.cos.photogramstart.domain.user.dto.SignInRequest;
+import com.cos.photogramstart.domain.user.dto.SignInResponse;
+import com.cos.photogramstart.domain.user.dto.SignupRequest;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class UserAuthController {
     private final UserAuthService authService;
 
     @PostMapping("/auth/signup")
-    public SuccessResponse<User> signup(@Valid @RequestBody SignupDto signupDto, BindingResult bindingResult) {
+    public SuccessResponse<User> signup(@Valid @RequestBody SignupRequest signupDto, BindingResult bindingResult) {
         log.info("회원 가입 = {} ", signupDto);
         authService.signup(signupDto.toEntity());
         return new SuccessResponse<>(ResponseEnum.SIGNUP_SUCCESS);

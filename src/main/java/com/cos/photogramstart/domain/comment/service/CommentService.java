@@ -23,7 +23,7 @@ public class CommentService {
     private final PostRepository imageRepository;
 
     @Transactional
-    public Comment write(String content , int imageId , int userId)
+    public Comment write(String content , int imageId , long userId)
     {
         User userEntity = userRepository.findById(userId).orElseThrow(() -> {
             throw new CustomApiException("유저 아이디를 찾을 수 없습니다.");

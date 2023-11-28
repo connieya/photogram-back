@@ -11,12 +11,12 @@ public class PostLikeService {
     private final PostLIkeRepository postLIkeRepository;
 
     @Transactional
-    public void like(int imageId , int principalId){
+    public void like(int imageId , long principalId){
         postLIkeRepository.mLike(imageId,principalId);
     }
 
     @Transactional
-    public void unLike(int imageId , int principalId){
+    public void unLike(int imageId , long principalId){
         postLIkeRepository.mUnLike(imageId,principalId);
     }
 

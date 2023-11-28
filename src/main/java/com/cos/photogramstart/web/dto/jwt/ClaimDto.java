@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClaimDto {
 
-    private int id;
+    private long id;
     private String username;
     private String email;
 }

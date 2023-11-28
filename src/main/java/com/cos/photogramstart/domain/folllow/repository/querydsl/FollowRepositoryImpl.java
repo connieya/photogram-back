@@ -1,4 +1,4 @@
-package com.cos.photogramstart.domain.folllow.repository;
+package com.cos.photogramstart.domain.folllow.repository.querydsl;
 
 import com.cos.photogramstart.domain.folllow.QFollow;
 import com.cos.photogramstart.web.dto.follow.FollowDto;
@@ -14,7 +14,7 @@ import java.util.List;
 import static com.cos.photogramstart.domain.folllow.QFollow.follow;
 import static com.cos.photogramstart.domain.user.QUser.user;
 
-public class FollowRepositoryImpl implements FollowRepositoryCustom {
+public class FollowRepositoryImpl implements FollowRepositoryQuerydsl {
 
     private final JPAQueryFactory queryFactory;
 
@@ -24,11 +24,11 @@ public class FollowRepositoryImpl implements FollowRepositoryCustom {
 
 
     @Override
-    public int followState(int principalId, int pageUserId) {
+    public int followState(Long principalId, int pageUserId) {
         return (int)queryFactory
                 .select()
                 .from(follow)
-                .where(follow.fromUser.id.eq(principalId).and(follow.toUser.id.eq(pageUserId))).fetchCount();
+                .where(follow.fromUser.id.eq(Math.toIntExact(principalId)).and(follow.toUser.id.eq(pageUserId))).fetchCount();
     }
 
     @Override

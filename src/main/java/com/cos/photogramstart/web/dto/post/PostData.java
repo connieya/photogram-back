@@ -12,7 +12,7 @@ public class PostData {
 
     private String profileImageUrl;
     private String caption;
-    private int userId;
+    private long userId;
     private String postImageUrl;
     private String username;
     private int imageId;

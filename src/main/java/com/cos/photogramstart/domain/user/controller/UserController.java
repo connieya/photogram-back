@@ -9,7 +9,7 @@ import com.cos.photogramstart.domain.user.service.UserService;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.auth.UserInfo;
 import com.cos.photogramstart.web.dto.user.UserProfileDto;
-import com.cos.photogramstart.web.dto.user.UserProfileResponse;
+import com.cos.photogramstart.domain.user.dto.UserProfileResponse;
 import com.cos.photogramstart.web.dto.user.UserProfileUpdateResponse;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +32,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @ApiOperation(value = "유저 프로필 조회")
     @GetMapping("/{username}")
     public SuccessResponse<?> getUserProfile(@PathVariable("username") String username) {
         UserProfileResponse response = userService.getUserProfile(username);
@@ -54,8 +55,9 @@ public class UserController {
 
     @GetMapping("/user/{pageUserId}")
     public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
-        UserProfileDto dto = userService.selectUserProfile(pageUserId, principalDetails.getUser().getId());
-        return new ResponseEntity<>(new RespDto<>(1, "유저 프로필 조회", dto), HttpStatus.OK);
+//        UserProfileDto dto = userService.selectUserProfile(pageUserId, principalDetails.getUser().getId());
+//        return new ResponseEntity<>(new RespDto<>(1, "유저 프로필 조회", dto), HttpStatus.OK);
+        return null;
     }
 
     @GetMapping("/users")
@@ -82,12 +84,6 @@ public class UserController {
         return new ResponseEntity<>(new RespDto<>(1, "유저 프로필 조회", profileUpdateResponse), HttpStatus.OK);
     }
 
-    @PutMapping("/user/image")
-    public ResponseEntity<?> profileImageUpdate(@RequestParam("file") MultipartFile profileImageFile, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        User userEntity = userService.updateImage(principalDetails.getUser().getId(), profileImageFile);
-        principalDetails.setUser(userEntity);
-        return new ResponseEntity<>(new RespDto<>(1, "프로필 사진 변경", null), HttpStatus.OK);
-    }
 
 
     @PutMapping("/user")
