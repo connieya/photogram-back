@@ -2,6 +2,8 @@ package com.cos.photogramstart.domain.folllow.service;
 
 import com.cos.photogramstart.domain.folllow.entity.Follow;
 import com.cos.photogramstart.domain.folllow.exception.FollowMyselfFailException;
+import com.cos.photogramstart.domain.folllow.exception.UnfollowFailException;
+import com.cos.photogramstart.domain.folllow.exception.UnfollowMyselfFailException;
 import com.cos.photogramstart.domain.folllow.repository.FollowRepository;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
@@ -59,9 +61,18 @@ public class FollowService {
 
     }
 
-    @Transactional
-    public void unfollow(int fromUserId, int toUserId) {
-        followRepository.mUnfollow(fromUserId, toUserId);
-    }
 
+    @Transactional
+    public void unfollow(String username) {
+        User loginUser = authUtil.getLoginUser();
+        User followUser = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
+
+        if (loginUser.getUsername().equals(username)){
+            throw new UnfollowMyselfFailException();
+        }
+
+        Follow follow = followRepository.findByFromUserIdAndToUserId(loginUser.getId(), followUser.getId())
+                .orElseThrow(UnfollowFailException::new);
+        followRepository.delete(follow);
+    }
 }

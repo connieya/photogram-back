@@ -31,10 +31,11 @@ public class FollowController {
         return ResponseEntity.ok(ResultResponse.of(ResultCode.FOLLOW_SUCCESS));
     }
 
-    @DeleteMapping("/follow/{toUserId}")
-    public ResponseEntity<?> unfollow(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int toUserId) {
-//        followService.unfollow(principalDetails.getUser().getId(), toUserId);
-        return new ResponseEntity<>(new RespDto<>(1, "팔로우 취소 성공", null), HttpStatus.OK);
+    @ApiOperation(value = "언팔로우")
+    @DeleteMapping("/follow/{username}")
+    public ResponseEntity<?> unfollow(@PathVariable String  username) {
+        followService.unfollow(username);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.UNFOLLOW_SUCCESS));
     }
 
     @GetMapping("/following/{pageUserId}")

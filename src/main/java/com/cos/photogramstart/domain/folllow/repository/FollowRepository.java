@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface FollowRepository extends JpaRepository<Follow,Integer> , FollowRepositoryQuerydsl {
 
 
     boolean existsByFromUserIdAndToUserId(Long fromUserId , Long toUserId);
 
-    @Modifying
-    @Query(value = "delete from  follow where fromUserId =:fromUserId and toUserId =:toUserId", nativeQuery = true)
-    void mUnfollow(int fromUserId , int toUserId);
+    Optional<Follow> findByFromUserIdAndToUserId(Long fromUserId , Long toUserId);
 }
