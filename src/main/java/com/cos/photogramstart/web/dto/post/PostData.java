@@ -25,7 +25,7 @@ public class PostData {
         this.userId = image.getUser().getId();
         this.username = image.getUser().getUsername();
         this.imageId = image.getId();
-        this.likeCount = image.getLikes().size();
+        this.likeCount = image.getPostLikes().size();
         this.caption = image.getCaption();
     }
 }

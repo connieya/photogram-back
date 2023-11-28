@@ -1,6 +1,6 @@
 package com.cos.photogramstart.web.api;
 
-import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.likes.service.PostLikeService;
 import com.cos.photogramstart.web.dto.RespDto;
 import lombok.RequiredArgsConstructor;

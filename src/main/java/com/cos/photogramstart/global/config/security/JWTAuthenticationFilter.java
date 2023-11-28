@@ -1,15 +1,13 @@
-package com.cos.photogramstart.config.jwt;
+package com.cos.photogramstart.global.config.security;
 
-import com.cos.photogramstart.config.baseresponse.ResponseEnum;
+import com.cos.photogramstart.global.response.ResponseEnum;
 import com.cos.photogramstart.handler.exception.TokenMissingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;

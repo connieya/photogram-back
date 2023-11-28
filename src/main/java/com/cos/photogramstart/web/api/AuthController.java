@@ -1,8 +1,8 @@
 package com.cos.photogramstart.web.api;
 
 
-import com.cos.photogramstart.config.baseresponse.ResponseEnum;
-import com.cos.photogramstart.config.baseresponse.SuccessResponse;
+import com.cos.photogramstart.global.response.ResponseEnum;
+import com.cos.photogramstart.global.response.SuccessResponse;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.service.UserAuthService;
 import com.cos.photogramstart.web.dto.RespDto;

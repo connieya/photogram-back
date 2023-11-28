@@ -1,4 +1,4 @@
-package com.cos.photogramstart.config.aws.s3;
+package com.cos.photogramstart.global.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class S3Config {
+public class AWSConfig {
 
     @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;

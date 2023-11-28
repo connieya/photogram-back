@@ -1,6 +1,6 @@
-package com.cos.photogramstart.config.jwt;
+package com.cos.photogramstart.global.config.security;
 
-import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
 import com.cos.photogramstart.handler.exception.CustomApiException;

@@ -1,10 +1,8 @@
 package com.cos.photogramstart.handler;
 
-import com.cos.photogramstart.config.baseresponse.FailResponse;
-import com.cos.photogramstart.config.baseresponse.ResponseEnum;
+import com.cos.photogramstart.global.response.FailResponse;
+import com.cos.photogramstart.global.response.ResponseEnum;
 import com.cos.photogramstart.handler.exception.*;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -1,8 +1,8 @@
-package com.cos.photogramstart.web.api;
+package com.cos.photogramstart.domain.post.controller;
 
-import com.cos.photogramstart.config.auth.PrincipalDetails;
-import com.cos.photogramstart.config.baseresponse.ResponseEnum;
-import com.cos.photogramstart.config.baseresponse.SuccessResponse;
+import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
+import com.cos.photogramstart.global.response.ResponseEnum;
+import com.cos.photogramstart.global.response.SuccessResponse;
 import com.cos.photogramstart.domain.post.service.PostService;
 //import com.cos.photogramstart.service.S3Service;
 import com.cos.photogramstart.service.S3Service;
@@ -48,6 +48,7 @@ public class PostController {
         List<PostData> images = postService.selectImages(principalDetails.getUser().getId());
         return new ResponseEntity<>(new RespDto<>(1, "성공", images), HttpStatus.OK);
     }
+
 
 
 

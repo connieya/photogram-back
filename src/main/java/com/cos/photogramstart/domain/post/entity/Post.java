@@ -39,7 +39,7 @@ public class Post { // N : 1
     private User user;
 
     @OneToMany(mappedBy = "post") // 연관관계의 주인이 아니다.
-    private List<PostLike> likes;
+    private List<PostLike> postLikes;
 
 
     @OneToOne

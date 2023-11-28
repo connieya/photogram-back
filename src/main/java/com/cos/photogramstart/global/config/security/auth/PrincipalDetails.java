@@ -1,4 +1,4 @@
-package com.cos.photogramstart.config.auth;
+package com.cos.photogramstart.global.config.security.auth;
 
 import com.cos.photogramstart.domain.user.entity.User;
 import lombok.Data;

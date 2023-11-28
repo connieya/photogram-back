@@ -1,6 +1,6 @@
 package com.cos.photogramstart.domain.user.service;
 
-import com.cos.photogramstart.config.auth.AuthUtil;
+import com.cos.photogramstart.global.config.security.auth.AuthUtil;
 import com.cos.photogramstart.domain.folllow.repository.FollowRepository;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;

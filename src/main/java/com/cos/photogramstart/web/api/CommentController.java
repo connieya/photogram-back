@@ -1,6 +1,6 @@
 package com.cos.photogramstart.web.api;
 
-import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.comment.entity.Comment;
 import com.cos.photogramstart.domain.comment.service.CommentService;
 import com.cos.photogramstart.web.dto.RespDto;

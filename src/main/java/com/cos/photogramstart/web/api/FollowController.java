@@ -1,6 +1,6 @@
 package com.cos.photogramstart.web.api;
 
-import com.cos.photogramstart.config.auth.PrincipalDetails;
+import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.folllow.service.FollowService;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.follow.FollowDto;

@@ -1,4 +1,4 @@
-package com.cos.photogramstart.config.jwt;
+package com.cos.photogramstart.global.config.security;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

@@ -1,6 +1,5 @@
-package com.cos.photogramstart.config.baseresponse;
+package com.cos.photogramstart.global.response;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 
 @Getter

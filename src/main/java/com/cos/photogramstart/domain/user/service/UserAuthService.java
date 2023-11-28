@@ -1,7 +1,7 @@
 package com.cos.photogramstart.domain.user.service;
 
-import com.cos.photogramstart.config.auth.PrincipalDetails;
-import com.cos.photogramstart.config.jwt.TokenProvider;
+import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
+import com.cos.photogramstart.global.config.security.TokenProvider;
 import com.cos.photogramstart.domain.token.RefreshToken;
 import com.cos.photogramstart.domain.token.RefreshTokenRepository;
 import com.cos.photogramstart.domain.user.entity.User;

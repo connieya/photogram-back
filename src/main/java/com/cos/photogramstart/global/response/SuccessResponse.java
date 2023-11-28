@@ -1,4 +1,4 @@
-package com.cos.photogramstart.config.baseresponse;
+package com.cos.photogramstart.global.response;
 
 import lombok.Getter;
 
