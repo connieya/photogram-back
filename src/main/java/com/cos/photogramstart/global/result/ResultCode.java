@@ -10,9 +10,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ResultCode {
-    // Member
-    REGISTER_SUCCESS(200, "M001", "회원가입에 성공하였습니다."),
-    LOGIN_SUCCESS(200, "M002", "로그인에 성공하였습니다."),
+    // USER
+    REGISTER_SUCCESS(200, "U001", "회원가입에 성공하였습니다."),
+    LOGIN_SUCCESS(200, "U002", "로그인에 성공하였습니다."),
+    USER_GET_SUCCESS(200, "U003", "유저 프로필 조회에 성공하였습니다."),
+    USER_PROFILE_POST_SUCCESS(200, "U004", "유저 프로필 업로드에 성공하였습니다."),
+    USER_PROFILE_DELETE_SUCCESS(200, "U005", "유저 프로필 삭제에 성공하였습니다."),
 
     // Follow
     FOLLOW_SUCCESS(200, "F001", "회원 팔로우를 성공하였습니다."),

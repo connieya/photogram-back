@@ -12,9 +12,13 @@ public enum ErrorCode {
     INPUT_TYPE_INVALID(400, "G004", "입력 타입이 유효하지 않습니다."),
     HTTP_MESSAGE_NOT_READABLE(400, "G005", "request message body가 없거나, 값 타입이 올바르지 않습니다."),
 
+    JWT_INVALID(401, "J001", "유효하지 않은 토큰입니다."),
+    JWT_EXPIRED(401, "J002", "만료된 토큰입니다."),
+
     // user
-    USER_NOT_FOUND(400, "M001", "존재 하지 않는 유저입니다."),
-    USERNAME_ALREADY_EXIST(400, "M002", "이미 존재하는 사용자 이름입니다."),
+    USER_NOT_FOUND(400, "U001", "존재 하지 않는 유저입니다."),
+    USERNAME_ALREADY_EXIST(400, "U002", "이미 존재하는 사용자 이름입니다."),
+    PASSWORD_MISMATCH(400, "U003", "비밀번호가 일치 하지 않습니다."),
 
     // follow
     FOLLOW_ALREADY_EXIST(400, "F001", "이미 팔로우한 유저입니다."),

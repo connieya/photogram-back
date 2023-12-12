@@ -1,6 +1,5 @@
 package com.cos.photogramstart.global.config.security;
 
-import com.cos.photogramstart.global.response.ResponseEnum;
 import com.cos.photogramstart.handler.exception.TokenMissingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -36,24 +35,18 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
         String token = parseBearerToken(request);
         if (token == null) {
             throw new TokenMissingException("Token is missing");
         }
         log.info("JWT Auth 필터 실행");
-        try {
-            if (StringUtils.hasText(token)) {
-                tokenProvider.validateToken(token);
-                Authentication authentication = tokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.warn("error");
-            setErrorResponse(response, ResponseEnum.INVALID_JWT_SIGNATURE);
-        } catch (ExpiredJwtException e) {
-            setErrorResponse(response, ResponseEnum.EXPIRED_JWT);
+
+        if (StringUtils.hasText(token)) {
+            tokenProvider.validateToken(token);
+            Authentication authentication = tokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+
         filterChain.doFilter(request, response);
     }
 
@@ -66,10 +59,4 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private void setErrorResponse(HttpServletResponse response, ResponseEnum responseEnum) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(responseEnum.toString()));
-    }
 }

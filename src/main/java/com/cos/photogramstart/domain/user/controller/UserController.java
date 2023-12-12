@@ -1,14 +1,13 @@
 package com.cos.photogramstart.domain.user.controller;
 
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
-import com.cos.photogramstart.global.response.ResponseEnum;
-import com.cos.photogramstart.global.response.SuccessResponse;
 import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.global.result.ResultCode;
+import com.cos.photogramstart.global.result.ResultResponse;
 import com.cos.photogramstart.handler.exception.CustomApiException;
 import com.cos.photogramstart.domain.user.service.UserService;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.web.dto.auth.UserInfo;
-import com.cos.photogramstart.web.dto.user.UserProfileDto;
 import com.cos.photogramstart.domain.user.dto.UserProfileResponse;
 import com.cos.photogramstart.web.dto.user.UserProfileUpdateResponse;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
@@ -34,31 +33,25 @@ public class UserController {
 
     @ApiOperation(value = "유저 프로필 조회")
     @GetMapping("/{username}")
-    public SuccessResponse<?> getUserProfile(@PathVariable("username") String username) {
+    public ResponseEntity<ResultResponse> getUserProfile(@PathVariable("username") String username) {
         UserProfileResponse response = userService.getUserProfile(username);
-        return new SuccessResponse<>(response);
+        return ResponseEntity.ok(ResultResponse.of( ResultCode.USER_GET_SUCCESS,response));
     }
 
     @ApiOperation(value = "회원 프로필 사진 업로드")
     @PostMapping("/image")
-    public SuccessResponse<?> uploadProfileImage(@RequestParam("file") MultipartFile uploadedImage) {
+    public ResponseEntity<ResultResponse> uploadProfileImage(@RequestParam("file") MultipartFile uploadedImage) {
         userService.uploadProfileImage(uploadedImage);
-        return new SuccessResponse<>(ResponseEnum.UPLOAD_PROFILE_IMAGE_SUCCESS);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.REGISTER_SUCCESS));
     }
 
     @ApiOperation(value = "회원 프로필 삭제")
     @DeleteMapping("/image")
-    public SuccessResponse<?> deleteProfileImage() {
+    public ResponseEntity<ResultResponse> deleteProfileImage() {
         userService.deleteProfileImage();
-        return new SuccessResponse<>();
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.LOGIN_SUCCESS));
     }
 
-    @GetMapping("/user/{pageUserId}")
-    public ResponseEntity<?> profile(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable int pageUserId) {
-//        UserProfileDto dto = userService.selectUserProfile(pageUserId, principalDetails.getUser().getId());
-//        return new ResponseEntity<>(new RespDto<>(1, "유저 프로필 조회", dto), HttpStatus.OK);
-        return null;
-    }
 
     @GetMapping("/users")
     public ResponseEntity<?> userList() {

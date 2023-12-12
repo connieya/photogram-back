@@ -55,7 +55,7 @@ public class UserAuthService {
         try {
             authenticate = authenticationManager.getObject().authenticate(authenticationToken);
         } catch (BadCredentialsException e) {
-            throw new PasswordMisMatchException("비밀번호가 일치하지 않습니다.");
+            throw new PasswordMisMatchException(e.getMessage());
         }
         TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);
         PrincipalDetails principal = (PrincipalDetails) authenticate.getPrincipal();

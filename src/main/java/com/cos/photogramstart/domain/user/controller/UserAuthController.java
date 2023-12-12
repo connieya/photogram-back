@@ -1,9 +1,6 @@
 package com.cos.photogramstart.domain.user.controller;
 
 
-import com.cos.photogramstart.global.response.ResponseEnum;
-import com.cos.photogramstart.global.response.SuccessResponse;
-import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.service.UserAuthService;
 import com.cos.photogramstart.global.result.ResultCode;
 import com.cos.photogramstart.global.result.ResultResponse;
@@ -18,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

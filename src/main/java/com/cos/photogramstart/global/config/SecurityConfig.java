@@ -1,9 +1,6 @@
 package com.cos.photogramstart.global.config;
 
-import com.cos.photogramstart.global.config.security.JWTAuthenticationFilter;
-import com.cos.photogramstart.global.config.security.TokenProvider;
-import com.cos.photogramstart.global.config.security.JwtAccessDeniedHandler;
-import com.cos.photogramstart.global.config.security.JwtAuthenticationEntryPoint;
+import com.cos.photogramstart.global.config.security.*;
 import com.cos.photogramstart.oauth.OAuth2DetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtExceptionFilter jwtExceptionFilter;
     private final CorsConfig corsConfig;
-    private final OAuth2DetailService oAuth2DetailService;
 
 
     @Override
@@ -60,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JWTAuthenticationFilter(tokenProvider) , UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JWTAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()

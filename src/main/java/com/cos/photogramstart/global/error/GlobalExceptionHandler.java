@@ -1,10 +1,12 @@
 package com.cos.photogramstart.global.error;
 
 import com.cos.photogramstart.global.error.exception.BusinessException;
+import com.cos.photogramstart.handler.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,6 +36,20 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = e.getErrorCode();
         ErrorResponse response = ErrorResponse.of(errorCode, e.getErrors());
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+
+    @ExceptionHandler
+    protected ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e) {
+        log.warn("로그인 실패 예외 처리 !!!!!!!!!!");
+        if (e instanceof UserNotFoundException){
+            ErrorResponse response = ErrorResponse.of(ErrorCode.USER_NOT_FOUND);
+
+            return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+
+        }
+        ErrorResponse response = ErrorResponse.of(ErrorCode.PASSWORD_MISMATCH);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
 }
