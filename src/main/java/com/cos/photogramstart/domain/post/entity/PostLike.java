@@ -1,4 +1,4 @@
-package com.cos.photogramstart.domain.likes.entity;
+package com.cos.photogramstart.domain.post.entity;
 
 import com.cos.photogramstart.domain.post.entity.Post;
 import com.cos.photogramstart.domain.user.entity.User;
@@ -14,13 +14,13 @@ import java.time.LocalDateTime;
 public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @JoinColumn(name = "imageId")
+    @JoinColumn(name = "post_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
@@ -31,4 +31,8 @@ public class PostLike {
         this.createDate = LocalDateTime.now();
     }
 
+    public PostLike(Post post, User user) {
+        this.post = post;
+        this.user = user;
+    }
 }

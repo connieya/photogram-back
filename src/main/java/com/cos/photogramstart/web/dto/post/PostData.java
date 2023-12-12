@@ -12,10 +12,10 @@ public class PostData {
 
     private String profileImageUrl;
     private String caption;
-    private long userId;
+    private Long userId;
     private String postImageUrl;
     private String username;
-    private int imageId;
+    private Long imageId;
     private boolean likeState;
     private int likeCount;
     private List<CommentResponseDto> comments;

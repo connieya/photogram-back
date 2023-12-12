@@ -1,5 +1,6 @@
 package com.cos.photogramstart.domain.post.controller;
 
+import com.cos.photogramstart.domain.post.service.PostLikeService;
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.global.response.ResponseEnum;
 import com.cos.photogramstart.global.response.SuccessResponse;
@@ -27,11 +28,12 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/posts")
 @Slf4j
 public class PostController {
 
     private final PostService postService;
+    private final PostLikeService postLikeService;
     private final S3Uploader s3Service;
 
 //    @GetMapping("/api/image")
@@ -56,10 +58,18 @@ public class PostController {
 
 
     @ApiOperation(value = "게시물 업로드" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PostMapping(value = "/posts")
+    @PostMapping
     public ResponseEntity<ResultResponse> uploadPost(@ModelAttribute PostUploadRequest request ){
         postService.uploadPost(request);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.CREATE_POST_SUCCESS));
+    }
+
+    @ApiOperation(value = "게시물 좋아요")
+    @PostMapping("/like")
+    public ResponseEntity<ResultResponse> likePost(@RequestParam Long postId){
+        postLikeService.like(postId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.LIKE_POST_SUCCESS));
+
     }
 
 

@@ -16,7 +16,6 @@ public class AuthUtil {
     private final UserRepository userRepository;
 
     public User getLoginUser() {
-        System.out.println("@@@@" + SecurityContextHolder.getContext().getAuthentication().getName());
         try {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return userRepository.findByUsername(username)

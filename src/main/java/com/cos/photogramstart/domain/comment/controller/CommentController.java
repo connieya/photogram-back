@@ -25,8 +25,9 @@ public class CommentController {
     public ResponseEntity<?> commentService(
             @Valid @RequestBody CommentWriteDto dto, BindingResult bindingResult,
             @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        Comment comment = commentService.write(dto.getContent(), dto.getImageId(), principalDetails.getUser().getId());
-        return new ResponseEntity<>(new RespDto<>(1, "댓글 쓰기 성공", comment), HttpStatus.CREATED);
+//        Comment comment = commentService.write(dto.getContent(), dto.getImageId(), principalDetails.getUser().getId());
+//        return new ResponseEntity<>(new RespDto<>(1, "댓글 쓰기 성공", comment), HttpStatus.CREATED);
+        return null;
     }
 
     @DeleteMapping("/comment/{id}")

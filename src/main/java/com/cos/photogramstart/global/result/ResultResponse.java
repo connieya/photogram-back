@@ -15,13 +15,13 @@ public class ResultResponse {
     @ApiModelProperty(value = "응답 메시지")
     private String message;
     @ApiModelProperty(value = "응답 데이터")
-    private Object data;
+    private Object result;
 
-    public ResultResponse(ResultCode resultCode, Object data) {
+    public ResultResponse(ResultCode resultCode, Object result) {
         this.status = resultCode.getStatus();
         this.code = resultCode.getCode();
         this.message = resultCode.getMessage();
-        this.data = data;
+        this.result = result;
     }
 
     public static ResultResponse of(ResultCode resultCode, Object data) {

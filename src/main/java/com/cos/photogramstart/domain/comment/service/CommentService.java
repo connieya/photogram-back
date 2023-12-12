@@ -20,15 +20,15 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
-    private final PostRepository imageRepository;
+    private final PostRepository postRepository;
 
     @Transactional
-    public Comment write(String content , int imageId , long userId)
+    public Comment write(String content , Long imageId , Long userId)
     {
         User userEntity = userRepository.findById(userId).orElseThrow(() -> {
             throw new CustomApiException("유저 아이디를 찾을 수 없습니다.");
         });
-        Post image = imageRepository.findById(imageId).orElseThrow(() -> {
+        Post image = postRepository.findById(imageId).orElseThrow(() -> {
             throw new CustomApiException("해당 게시글을 찾을 수 없습니다.");
         });
 

@@ -26,7 +26,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    private final TokenProvider tokenHelper;
+    private final TokenProvider tokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -44,8 +44,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         log.info("JWT Auth 필터 실행");
         try {
             if (StringUtils.hasText(token)) {
-                tokenHelper.validateToken(token);
-                Authentication authentication = tokenHelper.getAuthentication(token);
+                tokenProvider.validateToken(token);
+                Authentication authentication = tokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {

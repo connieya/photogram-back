@@ -8,7 +8,6 @@ import com.cos.photogramstart.domain.post.entity.Post;
 import com.cos.photogramstart.domain.post.repository.PostRepository;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.comment.service.CommentService;
-import com.cos.photogramstart.domain.likes.service.PostLikeService;
 import com.cos.photogramstart.global.aws.S3Uploader;
 import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
 import com.cos.photogramstart.web.dto.post.*;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,11 +64,11 @@ public class PostService {
         List<PostData> result = images.stream()
                 .map(i -> new PostData(i))
                 .collect(Collectors.toList());
-        result.forEach(o -> {
-            o.setLikeState(likesService.likeState(o.getImageId(), principalId));
-            List<CommentResponseDto> commentDto = commentService.findByImageId(o.getImageId());
-            o.setComments(commentDto);
-        });
+//        result.forEach(o -> {
+//            o.setLikeState(likesService.likeState(o.getImageId(), principalId));
+//            List<CommentResponseDto> commentDto = commentService.findByImageId(o.getImageId());
+//            o.setComments(commentDto);
+//        });
         return result;
     }
 

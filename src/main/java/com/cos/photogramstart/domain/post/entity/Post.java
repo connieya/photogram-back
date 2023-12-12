@@ -1,7 +1,6 @@
 package com.cos.photogramstart.domain.post.entity;
 
 import com.cos.photogramstart.domain.comment.entity.Comment;
-import com.cos.photogramstart.domain.likes.entity.PostLike;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -24,7 +23,7 @@ public class Post { // N : 1
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private int id;
+    private Long id;
     @Lob
     @Column(name = "post_content")
     private String caption;

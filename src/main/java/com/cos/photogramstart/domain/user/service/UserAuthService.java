@@ -1,11 +1,14 @@
 package com.cos.photogramstart.domain.user.service;
 
+import com.cos.photogramstart.domain.user.dto.SignupRequest;
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.global.config.security.TokenProvider;
 import com.cos.photogramstart.domain.token.RefreshToken;
 import com.cos.photogramstart.domain.token.RefreshTokenRepository;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
+import com.cos.photogramstart.global.error.ErrorCode;
+import com.cos.photogramstart.global.error.exception.EntityAlreadyExistException;
 import com.cos.photogramstart.handler.exception.*;
 import com.cos.photogramstart.domain.user.dto.SignInRequest;
 import com.cos.photogramstart.domain.user.dto.SignInResponse;
@@ -32,16 +35,15 @@ public class UserAuthService {
 
 
     @Transactional
-    public User signup(User user) {
-        if (userRepository.existsByUsername(user.getUsername())) {
-            throw new DuplicateUserNameException("사용중인 아이디 입니다.");
+    public User signup(SignupRequest signupRequest) {
+        if (userRepository.existsByUsername(signupRequest.getUsername())) {
+            throw new EntityAlreadyExistException(ErrorCode.USERNAME_ALREADY_EXIST);
         }
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new DuplicateEmailException("사용중인 이메일 입니다.");
-        }
-        String rawPassword = user.getPassword();
+
+        String rawPassword = signupRequest.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
-        user.setPassword(encPassword);
+        signupRequest.setPassword(encPassword);
+        User user = signupRequest.toEntity();
         return userRepository.save(user);
     }
 

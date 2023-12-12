@@ -5,12 +5,15 @@ import com.cos.photogramstart.global.response.ResponseEnum;
 import com.cos.photogramstart.global.response.SuccessResponse;
 import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.service.UserAuthService;
+import com.cos.photogramstart.global.result.ResultCode;
+import com.cos.photogramstart.global.result.ResultResponse;
 import com.cos.photogramstart.web.dto.RespDto;
 import com.cos.photogramstart.domain.user.dto.SignInRequest;
 import com.cos.photogramstart.domain.user.dto.SignInResponse;
 import com.cos.photogramstart.domain.user.dto.SignupRequest;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,17 +33,18 @@ public class UserAuthController {
 
     private final UserAuthService authService;
 
+    @ApiOperation(value = "회원가입")
     @PostMapping("/auth/signup")
-    public SuccessResponse<User> signup(@Valid @RequestBody SignupRequest signupDto, BindingResult bindingResult) {
-        log.info("회원 가입 = {} ", signupDto);
-        authService.signup(signupDto.toEntity());
-        return new SuccessResponse<>(ResponseEnum.SIGNUP_SUCCESS);
+    public ResponseEntity<ResultResponse> signup(@Valid @RequestBody SignupRequest signupRequest) {
+        authService.signup(signupRequest);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.REGISTER_SUCCESS));
     }
 
+    @ApiOperation(value = "로그인")
     @PostMapping("/auth/signin")
-    public SuccessResponse<?> signin(@RequestBody SignInRequest signInRequest) {
+    public ResponseEntity<ResultResponse> signin(@RequestBody SignInRequest signInRequest) {
         SignInResponse response = authService.signin(signInRequest);
-        return new SuccessResponse<>(ResponseEnum.SIGNIN_SUCCESS, response);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.LOGIN_SUCCESS,response));
     }
 
     @PostMapping("/reissue")
