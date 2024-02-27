@@ -3,22 +3,19 @@ package com.cos.photogramstart.domain.user.service;
 import com.cos.photogramstart.global.common.Image;
 import com.cos.photogramstart.global.util.AuthUtil;
 import com.cos.photogramstart.domain.folllow.repository.FollowRepository;
-import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
-import com.cos.photogramstart.handler.exception.CustomApiException;
-import com.cos.photogramstart.handler.exception.CustomValidationApiException;
-import com.cos.photogramstart.handler.exception.UserNotFoundException;
+import com.cos.photogramstart.global.handler.exception.CustomValidationApiException;
+import com.cos.photogramstart.global.handler.exception.UserNotFoundException;
 import com.cos.photogramstart.global.aws.S3Uploader;
-import com.cos.photogramstart.web.dto.auth.UserInfo;
-import com.cos.photogramstart.web.dto.user.UserProfileDto;
-import com.cos.photogramstart.domain.user.dto.UserProfileResponse;
+import com.cos.photogramstart.domain.user.controller.response.UserInfo;
+import com.cos.photogramstart.domain.user.repository.result.UserProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor

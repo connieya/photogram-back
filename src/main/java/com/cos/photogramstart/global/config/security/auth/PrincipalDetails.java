@@ -1,6 +1,6 @@
 package com.cos.photogramstart.global.config.security.auth;
 
-import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

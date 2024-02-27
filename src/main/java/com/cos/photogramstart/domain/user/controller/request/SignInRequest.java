@@ -1,6 +1,6 @@
-package com.cos.photogramstart.domain.user.dto;
+package com.cos.photogramstart.domain.user.controller.request;
 
-import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

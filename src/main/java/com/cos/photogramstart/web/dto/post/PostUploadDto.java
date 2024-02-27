@@ -1,7 +1,7 @@
 package com.cos.photogramstart.web.dto.post;
 
 import com.cos.photogramstart.domain.post.entity.Post;
-import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

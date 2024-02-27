@@ -1,14 +1,14 @@
 package com.cos.photogramstart.domain.user.controller;
 
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
-import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.User;
 import com.cos.photogramstart.global.result.ResultCode;
 import com.cos.photogramstart.global.result.ResultResponse;
-import com.cos.photogramstart.handler.exception.CustomApiException;
+import com.cos.photogramstart.global.handler.exception.CustomApiException;
 import com.cos.photogramstart.domain.user.service.UserService;
 import com.cos.photogramstart.web.dto.RespDto;
-import com.cos.photogramstart.web.dto.auth.UserInfo;
-import com.cos.photogramstart.domain.user.dto.UserProfileResponse;
+import com.cos.photogramstart.domain.user.controller.response.UserInfo;
+import com.cos.photogramstart.domain.user.repository.result.UserProfileResponse;
 import com.cos.photogramstart.web.dto.user.UserProfileUpdateResponse;
 import com.cos.photogramstart.web.dto.user.UserUpdateDto;
 import io.swagger.annotations.ApiOperation;

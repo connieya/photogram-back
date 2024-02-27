@@ -1,7 +1,7 @@
 package com.cos.photogramstart.domain.post.entity;
 
 import com.cos.photogramstart.domain.comment.entity.Comment;
-import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

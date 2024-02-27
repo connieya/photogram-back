@@ -1,18 +1,17 @@
 package com.cos.photogramstart.domain.user.service;
 
-import com.cos.photogramstart.domain.user.dto.SignupRequest;
+import com.cos.photogramstart.domain.user.service.command.SignUpCommand;
+import com.cos.photogramstart.domain.user.service.result.SignInResult;
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.global.config.security.TokenProvider;
 import com.cos.photogramstart.domain.token.RefreshToken;
 import com.cos.photogramstart.domain.token.RefreshTokenRepository;
-import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
 import com.cos.photogramstart.global.error.ErrorCode;
 import com.cos.photogramstart.global.error.exception.EntityAlreadyExistException;
-import com.cos.photogramstart.handler.exception.*;
-import com.cos.photogramstart.domain.user.dto.SignInRequest;
-import com.cos.photogramstart.domain.user.dto.SignInResponse;
-import com.cos.photogramstart.web.dto.auth.UserInfo;
+import com.cos.photogramstart.global.handler.exception.PasswordMisMatchException;
+import com.cos.photogramstart.domain.user.controller.request.SignInRequest;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,21 +34,20 @@ public class UserAuthService {
 
 
     @Transactional
-    public User signup(SignupRequest signupRequest) {
-        if (userRepository.existsByUsername(signupRequest.getUsername())) {
+    public User signup(SignUpCommand signUpCommand) {
+        if (userRepository.existsByUsername(signUpCommand.getUsername())) {
             throw new EntityAlreadyExistException(ErrorCode.USERNAME_ALREADY_EXIST);
         }
-
-        String rawPassword = signupRequest.getPassword();
+        String rawPassword = signUpCommand.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
-        signupRequest.setPassword(encPassword);
-        User user = signupRequest.toEntity();
+        signUpCommand.encPassword(encPassword);
+        User user = User.create(signUpCommand);
         return userRepository.save(user);
     }
 
 
     @Transactional
-    public SignInResponse signin(SignInRequest signInRequest) {
+    public SignInResult signin(SignInRequest signInRequest) {
         UsernamePasswordAuthenticationToken authenticationToken = signInRequest.toAuthentication();
         Authentication authenticate;
         try {
@@ -60,16 +58,7 @@ public class UserAuthService {
         TokenDto tokenDto = tokenHelper.generateTokenDto(authenticate);
         PrincipalDetails principal = (PrincipalDetails) authenticate.getPrincipal();
         User user = principal.getUser();
-        UserInfo userInfo = UserInfo.builder()
-                .username(user.getUsername())
-                .id(user.getId())
-                .build();
-        return new SignInResponse(tokenDto.getAccessToken(),userInfo);
-//        RefreshToken refreshToken = RefreshToken.builder()
-//                .key(authenticate.getName())
-//                .value(tokenDto.getRefreshToken())
-//                .build();
-//        refreshTokenRepository.save(refreshToken);
+        return SignInResult.create(user, tokenDto.getAccessToken());
 
     }
 

@@ -1,6 +1,7 @@
-package com.cos.photogramstart.domain.user.dto;
+package com.cos.photogramstart.domain.user.controller.request;
 
-import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.User;
+import com.cos.photogramstart.domain.user.service.command.SignUpCommand;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -18,12 +19,15 @@ public class SignupRequest {
     @NotBlank
     private String name;
 
-    public User toEntity(){
-        return User.builder()
+    public SignUpCommand toCommand() {
+        return SignUpCommand
+                .builder()
                 .username(username)
                 .password(password)
                 .email(email)
                 .name(name)
                 .build();
     }
+
+
 }

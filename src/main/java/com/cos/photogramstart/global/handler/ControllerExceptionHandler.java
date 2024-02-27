@@ -1,7 +1,7 @@
-package com.cos.photogramstart.handler;
+package com.cos.photogramstart.global.handler;
 
-import com.cos.photogramstart.handler.exception.CustomApiException;
-import com.cos.photogramstart.handler.exception.CustomValidationApiException;
+import com.cos.photogramstart.global.handler.exception.CustomApiException;
+import com.cos.photogramstart.global.handler.exception.CustomValidationApiException;
 import com.cos.photogramstart.web.dto.RespDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

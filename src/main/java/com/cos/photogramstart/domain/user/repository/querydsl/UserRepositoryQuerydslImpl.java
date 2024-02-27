@@ -1,7 +1,7 @@
 package com.cos.photogramstart.domain.user.repository.querydsl;
 
 import com.cos.photogramstart.domain.user.dto.QUserProfileResponse;
-import com.cos.photogramstart.domain.user.dto.UserProfileResponse;
+import com.cos.photogramstart.domain.user.repository.result.UserProfileResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.cos.photogramstart.domain.user.dto;
+package com.cos.photogramstart.domain.user.repository.result;
 
 import com.cos.photogramstart.global.common.Image;
 import com.querydsl.core.annotations.QueryProjection;

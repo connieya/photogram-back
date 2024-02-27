@@ -1,9 +1,9 @@
 package com.cos.photogramstart.global.config.security;
 
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
-import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
-import com.cos.photogramstart.handler.exception.CustomApiException;
+import com.cos.photogramstart.global.handler.exception.CustomApiException;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import com.cos.photogramstart.web.dto.jwt.ClaimDto;
 import com.fasterxml.jackson.databind.ObjectMapper;

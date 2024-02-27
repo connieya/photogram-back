@@ -2,7 +2,7 @@ package com.cos.photogramstart.domain.post.service;
 
 import com.cos.photogramstart.domain.post.repository.PostLIkeRepository;
 import com.cos.photogramstart.domain.post.repository.PostRepository;
-import com.cos.photogramstart.domain.user.entity.User;
+import com.cos.photogramstart.domain.user.repository.User;
 import com.cos.photogramstart.global.error.ErrorCode;
 import com.cos.photogramstart.global.error.exception.EntityAlreadyExistException;
 import com.cos.photogramstart.global.util.AuthUtil;

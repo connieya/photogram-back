@@ -2,12 +2,13 @@ package com.cos.photogramstart.domain.user.controller;
 
 
 import com.cos.photogramstart.domain.user.service.UserAuthService;
+import com.cos.photogramstart.domain.user.service.result.SignInResult;
 import com.cos.photogramstart.global.result.ResultCode;
 import com.cos.photogramstart.global.result.ResultResponse;
 import com.cos.photogramstart.web.dto.RespDto;
-import com.cos.photogramstart.domain.user.dto.SignInRequest;
-import com.cos.photogramstart.domain.user.dto.SignInResponse;
-import com.cos.photogramstart.domain.user.dto.SignupRequest;
+import com.cos.photogramstart.domain.user.controller.request.SignInRequest;
+import com.cos.photogramstart.domain.user.controller.response.SignInResponse;
+import com.cos.photogramstart.domain.user.controller.request.SignupRequest;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,15 +33,15 @@ public class UserAuthController {
     @ApiOperation(value = "회원가입")
     @PostMapping("/auth/signup")
     public ResponseEntity<ResultResponse> signup(@Valid @RequestBody SignupRequest signupRequest) {
-        authService.signup(signupRequest);
+        authService.signup(signupRequest.toCommand());
         return ResponseEntity.ok(ResultResponse.of(ResultCode.REGISTER_SUCCESS));
     }
 
     @ApiOperation(value = "로그인")
     @PostMapping("/auth/signin")
     public ResponseEntity<ResultResponse> signin(@RequestBody SignInRequest signInRequest) {
-        SignInResponse response = authService.signin(signInRequest);
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.LOGIN_SUCCESS,response));
+       SignInResult result = authService.signin(signInRequest);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.LOGIN_SUCCESS,SignInResponse.from(result)));
     }
 
     @PostMapping("/reissue")

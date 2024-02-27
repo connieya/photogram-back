@@ -1,6 +1,8 @@
-package com.cos.photogramstart.domain.user.entity;
+package com.cos.photogramstart.domain.user.repository;
 
 import com.cos.photogramstart.domain.post.entity.Post;
+import com.cos.photogramstart.domain.user.controller.request.SignupRequest;
+import com.cos.photogramstart.domain.user.service.command.SignUpCommand;
 import com.cos.photogramstart.global.common.Image;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -56,6 +58,16 @@ public class User {
                 .imageUUID("base-UUID")
                 .build();
 
+    }
+
+    public static User create(SignUpCommand signUpCommand) {
+        return User
+                .builder()
+                .username(signUpCommand.getUsername())
+                .password(signUpCommand.getPassword())
+                .email(signUpCommand.getEmail())
+                .name(signUpCommand.getName())
+                .build();
     }
 
 }

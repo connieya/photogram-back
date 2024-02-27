@@ -1,7 +1,7 @@
 package com.cos.photogramstart.global.error;
 
 import com.cos.photogramstart.global.error.exception.BusinessException;
-import com.cos.photogramstart.handler.exception.UserNotFoundException;
+import com.cos.photogramstart.global.handler.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

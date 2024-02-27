@@ -2,7 +2,6 @@ package com.cos.photogramstart.domain.user.repository;
 
 
 
-import com.cos.photogramstart.domain.user.entity.User;
 import com.cos.photogramstart.domain.user.repository.querydsl.UserRepositoryQuerydsl;
 import org.springframework.data.jpa.repository.JpaRepository;
 

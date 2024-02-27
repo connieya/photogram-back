@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.dto.auth;
+package com.cos.photogramstart.domain.user.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
