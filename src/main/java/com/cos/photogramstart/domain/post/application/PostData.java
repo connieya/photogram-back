@@ -2,7 +2,7 @@ package com.cos.photogramstart.domain.post.application;
 
 import com.cos.photogramstart.domain.post.domain.Post;
 
-import com.cos.photogramstart.domain.comment.service.CommentResponseDto;
+import com.cos.photogramstart.domain.comment.application.CommentResponseDto;
 import lombok.Data;
 import java.util.List;
 

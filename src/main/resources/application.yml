@@ -4,6 +4,8 @@ spring:
     url: ${db_url}
     username: ${db_username}
     password: ${db_password}
+  profiles:
+    active: local
   jpa:
     hibernate:
       ddl-auto: create

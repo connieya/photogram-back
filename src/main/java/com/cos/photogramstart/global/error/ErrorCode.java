@@ -16,14 +16,14 @@ public enum ErrorCode {
     JWT_EXPIRED(401, "J002", "만료된 토큰입니다."),
 
     // user
-    USER_NOT_FOUND(400, "U001", "존재 하지 않는 유저입니다."),
+    USER_NOT_FOUND(400, "U001", "존재 하지 않는 유저입 니다."),
     USERNAME_ALREADY_EXIST(400, "U002", "이미 존재 하는 사용자 이름입니다."),
     PASSWORD_MISMATCH(400, "U003", "비밀번호가 일치 하지 않습니다."),
     EMAIL_ALREADY_EXIST(400, "U004", "이미 사용 중인 이메일 입니다."),
 
     // follow
     FOLLOW_ALREADY_EXIST(400, "F001", "이미 팔로우한 유저입니다."),
-    UNFOLLOW_FAIL(400, "F002", "팔로우하지 않은 유저는 언팔로우 할 수 없습니다."),
+    UNFOLLOW_FAIL(400, "F002", "팔로우 하지 않은 유저를 팔로우 취소 할 수 없습니다."),
     FOLLOW_MYSELF_FAIL(400, "F003", "자기 자신을 팔로우 할 수 없습니다."),
     UNFOLLOW_MYSELF_FAIL(400, "F004", "자기 자신을 언팔로우 할 수 없습니다."),
 

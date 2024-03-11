@@ -1,6 +1,6 @@
 package com.cos.photogramstart.domain.user.application.result;
 
-import com.cos.photogramstart.global.common.Image;
+import com.cos.photogramstart.domain.user.domain.Image;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,7 +26,6 @@ public class UserProfileResult {
     private boolean pageOwner;
 
     @QueryProjection
-    @Builder
     public UserProfileResult(String username, String name, String website, Image profileImage, boolean pageOwner) {
         this.username = username;
         this.name = name;

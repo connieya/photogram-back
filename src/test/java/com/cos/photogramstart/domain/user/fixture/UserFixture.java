@@ -6,16 +6,19 @@ import java.time.LocalDateTime;
 
 public class UserFixture {
 
-    public static final User PARK = new User(
+    public static final User PARK =   User.create(
             1L
-            , "박건희"
-            , "1234"
             , "geonhee"
+            , "1234"
+            , "박건희"
             , "gunny6026@naver.com"
-            , "www.naver.com"
-            , "백엔드 개발자 입니다."
-            , null
-            , null
-            , null
+    );
+
+    public static final User CONY =   User.create(
+            2L
+            , "cony"
+            , "1234"
+            , "코니"
+            , "cony6@naver.com"
     );
 }

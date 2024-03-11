@@ -1,6 +1,6 @@
 package com.cos.photogramstart.global.util;
 
-import com.cos.photogramstart.global.common.Image;
+import com.cos.photogramstart.domain.user.domain.Image;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 

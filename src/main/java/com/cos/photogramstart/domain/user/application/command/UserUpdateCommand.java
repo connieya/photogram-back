@@ -7,6 +7,7 @@ import lombok.Getter;
 @Builder
 public class UserUpdateCommand {
 
+    private String name;
     private String username;
     private String website;
     private String bio;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.cos.photogramstart.global.result.ResultCode.*;
 
@@ -47,8 +47,14 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<?> userList() {
-        List<UserInfo> users = userService.selectUsers();
-        return ResponseEntity.ok(ResultResponse.of(USER_LIST_GET_SUCCESS, users));
+        return ResponseEntity.ok(ResultResponse.of(
+                USER_LIST_GET_SUCCESS
+                ,userService.findAll()
+                        .stream()
+                        .map(user-> new UserInfo(user.getId(), user.getUsername()))
+                        .collect(Collectors.toList())
+
+        ));
     }
 
     @PutMapping("/user")

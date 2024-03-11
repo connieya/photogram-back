@@ -3,7 +3,7 @@ package com.cos.photogramstart.global.aws;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.cos.photogramstart.global.common.Image;
+import com.cos.photogramstart.domain.user.domain.Image;
 import com.cos.photogramstart.global.util.ImageUtil;
 import com.cos.photogramstart.global.error.exception.FileConvertFailException;
 import lombok.RequiredArgsConstructor;

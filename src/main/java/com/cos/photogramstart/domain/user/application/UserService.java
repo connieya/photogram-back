@@ -2,21 +2,20 @@ package com.cos.photogramstart.domain.user.application;
 
 import com.cos.photogramstart.domain.user.application.command.UserUpdateCommand;
 import com.cos.photogramstart.domain.user.application.result.UserProfileResult;
-import com.cos.photogramstart.global.common.Image;
+import com.cos.photogramstart.domain.user.domain.Image;
+import com.cos.photogramstart.global.error.exception.EntityAlreadyExistException;
 import com.cos.photogramstart.global.error.exception.EntityNotFoundException;
 import com.cos.photogramstart.global.util.AuthUtil;
-import com.cos.photogramstart.domain.folllow.repository.FollowRepository;
+import com.cos.photogramstart.domain.folllow.infrastructure.FollowRepository;
 import com.cos.photogramstart.domain.user.domain.User;
 import com.cos.photogramstart.domain.user.infrastructure.UserRepository;
 import com.cos.photogramstart.global.aws.S3Uploader;
-import com.cos.photogramstart.domain.user.presentation.response.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.cos.photogramstart.global.error.ErrorCode.*;
 
@@ -30,30 +29,26 @@ public class UserService {
     private final AuthUtil authUtil;
 
     @Transactional(readOnly = true)
-    public List<UserInfo> selectUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
-                .map(user-> new UserInfo(user.getId(),user.getUsername()))
-                .collect(Collectors.toList());
-
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     @Transactional
     public void update(UserUpdateCommand userUpdateCommand) {
-        User loginUser = authUtil.getLoginUser();
-        User user = userRepository.findById(loginUser.getId()).orElseThrow(() ->
-                new EntityNotFoundException(USER_NOT_FOUND)
-        );
+        if (userRepository.existsByUsername(userUpdateCommand.getUsername())){
+            throw new EntityAlreadyExistException(USERNAME_ALREADY_EXIST);
+        }
+        User user = authUtil.getLoginUser();
         user = user.update(userUpdateCommand);
         userRepository.save(user);
-
     }
 
     @Transactional(readOnly = true)
     public UserProfileResult getUserProfile(String username) {
-        final User user = userRepository.findByUsername(username)
+        User user = authUtil.getLoginUser();
+        userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
-        return userRepository.findUserProfile(user.getId(),username);
+        return userRepository.findUserProfile(user.getId() ,username);
     }
 
     @Transactional
@@ -67,7 +62,7 @@ public class UserService {
     @Transactional
     public void deleteProfileImage() {
         User loginUser = authUtil.getLoginUser();
-        s3Uploader.deleteImage(loginUser.getImage(),USER_S3_DIRNAME);
+        s3Uploader.deleteImage(loginUser.getImage(), USER_S3_DIRNAME);
         loginUser.deleteImage();
         userRepository.save(loginUser);
     }

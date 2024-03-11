@@ -1,6 +1,6 @@
 package com.cos.photogramstart.domain.post.domain;
 
-import com.cos.photogramstart.domain.comment.entity.Comment;
+import com.cos.photogramstart.domain.comment.domain.Comment;
 import com.cos.photogramstart.domain.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -46,7 +46,7 @@ public class Post { // N : 1
     @Column(name = "post_upload_date")
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "image")
+    @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 
     @PrePersist // 디비에 INSERT 되기 직전에 실행

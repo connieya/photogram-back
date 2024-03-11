@@ -3,7 +3,7 @@ package com.cos.photogramstart.global.config.security;
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.user.domain.User;
 import com.cos.photogramstart.domain.user.infrastructure.UserRepository;
-import com.cos.photogramstart.global.error.exception.CustomApiException;
+import com.cos.photogramstart.global.error.exception.EntityNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
+
+import static com.cos.photogramstart.global.error.ErrorCode.*;
 
 @Service
 @Slf4j
@@ -67,7 +69,7 @@ public class TokenProvider {
         ObjectMapper mapper = new ObjectMapper();
         ClaimDto claimDto = mapper.convertValue(claims.get(AUTHORITIES_KEY), ClaimDto.class);
         User user = userRepository.findById(claimDto.getId()).orElseThrow(() -> {
-            throw new CustomApiException("존재하지 않는 아이디 입니다.");
+            throw new EntityNotFoundException(USER_NOT_FOUND);
         });
         PrincipalDetails principalDetails = new PrincipalDetails(user);
         return new UsernamePasswordAuthenticationToken(principalDetails,"",principalDetails.getAuthorities());

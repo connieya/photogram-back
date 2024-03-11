@@ -1,6 +1,6 @@
 package com.cos.photogramstart.domain.post.domain;
 
-import com.cos.photogramstart.global.common.Image;
+import com.cos.photogramstart.domain.user.domain.Image;
 import lombok.Getter;
 
 import javax.persistence.*;
