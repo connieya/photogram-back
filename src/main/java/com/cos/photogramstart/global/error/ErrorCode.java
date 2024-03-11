@@ -17,8 +17,9 @@ public enum ErrorCode {
 
     // user
     USER_NOT_FOUND(400, "U001", "존재 하지 않는 유저입니다."),
-    USERNAME_ALREADY_EXIST(400, "U002", "이미 존재하는 사용자 이름입니다."),
+    USERNAME_ALREADY_EXIST(400, "U002", "이미 존재 하는 사용자 이름입니다."),
     PASSWORD_MISMATCH(400, "U003", "비밀번호가 일치 하지 않습니다."),
+    EMAIL_ALREADY_EXIST(400, "U004", "이미 사용 중인 이메일 입니다."),
 
     // follow
     FOLLOW_ALREADY_EXIST(400, "F001", "이미 팔로우한 유저입니다."),

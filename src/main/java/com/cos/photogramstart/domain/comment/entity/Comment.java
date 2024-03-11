@@ -1,7 +1,7 @@
 package com.cos.photogramstart.domain.comment.entity;
 
-import com.cos.photogramstart.domain.post.entity.Post;
-import com.cos.photogramstart.domain.user.repository.User;
+import com.cos.photogramstart.domain.post.domain.Post;
+import com.cos.photogramstart.domain.user.domain.User;
 import lombok.*;
 
 import javax.persistence.*;

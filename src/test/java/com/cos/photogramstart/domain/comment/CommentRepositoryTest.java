@@ -1,7 +1,7 @@
 package com.cos.photogramstart.domain.comment;
 
 import com.cos.photogramstart.domain.comment.repository.CommentRepositoryImpl;
-import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
+import com.cos.photogramstart.domain.comment.service.CommentResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

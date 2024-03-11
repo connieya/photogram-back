@@ -3,7 +3,6 @@ package com.cos.photogramstart.domain.comment.controller;
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.comment.service.CommentService;
 import com.cos.photogramstart.global.result.ResultResponse;
-import com.cos.photogramstart.web.dto.comment.CommentWriteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

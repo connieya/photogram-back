@@ -1,7 +1,7 @@
 package com.cos.photogramstart.domain.post;
 
-import com.cos.photogramstart.domain.post.entity.Post;
-import com.cos.photogramstart.web.dto.post.PostPopularDto;
+import com.cos.photogramstart.domain.post.domain.Post;
+import com.cos.photogramstart.domain.post.presentation.PostPopularDto;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;

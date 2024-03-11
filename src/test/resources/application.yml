@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test_db;MODE=MYSQL
+    username: sa
+  profiles:
+    active: test
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true

@@ -5,8 +5,8 @@ import com.cos.photogramstart.domain.folllow.exception.FollowMyselfFailException
 import com.cos.photogramstart.domain.folllow.exception.UnfollowFailException;
 import com.cos.photogramstart.domain.folllow.exception.UnfollowMyselfFailException;
 import com.cos.photogramstart.domain.folllow.repository.FollowRepository;
-import com.cos.photogramstart.domain.user.repository.User;
-import com.cos.photogramstart.domain.user.repository.UserRepository;
+import com.cos.photogramstart.domain.user.domain.User;
+import com.cos.photogramstart.domain.user.infrastructure.UserRepository;
 import com.cos.photogramstart.global.error.ErrorCode;
 import com.cos.photogramstart.global.error.exception.EntityAlreadyExistException;
 import com.cos.photogramstart.global.error.exception.EntityNotFoundException;

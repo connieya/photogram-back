@@ -1,6 +1,6 @@
 package com.cos.photogramstart.domain.comment.repository;
 
-import com.cos.photogramstart.web.dto.comment.CommentResponseDto;
+import com.cos.photogramstart.domain.comment.service.CommentResponseDto;
 
 import java.util.List;
 

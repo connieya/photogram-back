@@ -1,7 +1,7 @@
 package com.cos.photogramstart.domain.likes;
 
-import com.cos.photogramstart.domain.post.repository.PostLIkeRepository;
-import com.cos.photogramstart.domain.post.service.PostLikeService;
+import com.cos.photogramstart.domain.post.infrastructure.PostLIkeRepository;
+import com.cos.photogramstart.domain.post.application.PostLikeService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
