@@ -1,4 +1,4 @@
-package com.cos.photogramstart.web.dto.follow;
+package com.cos.photogramstart.domain.folllow.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -3,12 +3,13 @@ package com.cos.photogramstart.domain.user.controller.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @Builder
 @AllArgsConstructor
 public class UserInfo {
 
-    private long id;
+    private Long id;
     private String username;
 }

@@ -1,6 +1,6 @@
 package com.cos.photogramstart.domain.folllow.repository.querydsl;
 
-import com.cos.photogramstart.web.dto.follow.FollowDto;
+import com.cos.photogramstart.domain.folllow.service.FollowDto;
 
 import java.util.List;
 

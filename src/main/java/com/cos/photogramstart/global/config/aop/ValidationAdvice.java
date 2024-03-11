@@ -1,6 +1,6 @@
-package com.cos.photogramstart.global.handler.aop;
+package com.cos.photogramstart.global.config.aop;
 
-import com.cos.photogramstart.global.handler.exception.CustomValidationApiException;
+import com.cos.photogramstart.global.error.exception.CustomValidationApiException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

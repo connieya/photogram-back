@@ -1,7 +1,7 @@
 package com.cos.photogramstart.domain.folllow.repository.querydsl;
 
 import com.cos.photogramstart.domain.folllow.QFollow;
-import com.cos.photogramstart.web.dto.follow.FollowDto;
+import com.cos.photogramstart.domain.folllow.service.FollowDto;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;

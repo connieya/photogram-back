@@ -1,12 +1,14 @@
 package com.cos.photogramstart.domain.user.service;
 
+import com.cos.photogramstart.domain.user.controller.request.UserUpdateRequest;
+import com.cos.photogramstart.domain.user.service.command.UserUpdateCommand;
 import com.cos.photogramstart.global.common.Image;
+import com.cos.photogramstart.global.error.exception.EntityNotFoundException;
 import com.cos.photogramstart.global.util.AuthUtil;
 import com.cos.photogramstart.domain.folllow.repository.FollowRepository;
 import com.cos.photogramstart.domain.user.repository.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
-import com.cos.photogramstart.global.handler.exception.CustomValidationApiException;
-import com.cos.photogramstart.global.handler.exception.UserNotFoundException;
+import com.cos.photogramstart.global.error.exception.CustomValidationApiException;
 import com.cos.photogramstart.global.aws.S3Uploader;
 import com.cos.photogramstart.domain.user.controller.response.UserInfo;
 import com.cos.photogramstart.domain.user.repository.result.UserProfileResponse;
@@ -16,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.cos.photogramstart.global.error.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,43 +33,28 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<UserInfo> selectUsers() {
-        return null;
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user-> new UserInfo(user.getId(),user.getUsername()))
+                .collect(Collectors.toList());
 
     }
-
-//    @Transactional(readOnly = true)
-//    public UserProfileDto selectUserProfile(long pageUserId, int principalId) {
-//        User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
-//            throw new CustomApiException("해당 프로필 페이지는 없는 페이지입니다.");
-//        });
-//        int followState = followRepository.followState(principalId, pageUserId);
-//        UserProfileDto dto = UserProfileDto
-//                .builder().bio(userEntity.getBio())
-//                .webSite(userEntity.getWebsite())
-//                .imageCount(userEntity.getImages().size())
-//                .username(userEntity.getUsername())
-//                .followState(followState == 1).build();
-//        return dto;
-//    }
 
     @Transactional
-    public User update(long id, User user) {
-        // 영속화
-        User userEntity = userRepository.findById(id).orElseThrow(() ->
-                new CustomValidationApiException("찾을 수 없는 id 입니다.")
+    public void update(UserUpdateCommand userUpdateCommand) {
+        User loginUser = authUtil.getLoginUser();
+        User user = userRepository.findById(loginUser.getId()).orElseThrow(() ->
+                new EntityNotFoundException(USER_NOT_FOUND)
         );
-        userEntity.setUsername(user.getUsername());
-        userEntity.setBio(user.getBio());
-        userEntity.setWebsite(user.getWebsite());
-        return userEntity;
+        user = user.update(userUpdateCommand);
+        userRepository.save(user);
+
     }
-
-
 
     @Transactional(readOnly = true)
     public UserProfileResponse getUserProfile(String username) {
         final User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("존재 하지 않는 유저입니다."));
+                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
         return userRepository.findUserProfile(user.getId(),username);
     }
 

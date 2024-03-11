@@ -1,4 +1,4 @@
-package com.cos.photogramstart.domain.folllow.entity;
+package com.cos.photogramstart.domain.folllow.repository;
 
 import com.cos.photogramstart.domain.user.repository.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;

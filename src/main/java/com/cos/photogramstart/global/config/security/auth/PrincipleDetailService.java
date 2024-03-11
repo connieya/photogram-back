@@ -2,7 +2,7 @@ package com.cos.photogramstart.global.config.security.auth;
 
 import com.cos.photogramstart.domain.user.repository.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
-import com.cos.photogramstart.global.handler.exception.UserNotFoundException;
+import com.cos.photogramstart.global.error.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

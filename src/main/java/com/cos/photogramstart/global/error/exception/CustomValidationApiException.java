@@ -1,4 +1,4 @@
-package com.cos.photogramstart.global.handler.exception;
+package com.cos.photogramstart.global.error.exception;
 
 import java.util.Map;
 

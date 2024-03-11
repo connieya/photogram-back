@@ -1,6 +1,6 @@
 package com.cos.photogramstart.domain.folllow.service;
 
-import com.cos.photogramstart.domain.folllow.entity.Follow;
+import com.cos.photogramstart.domain.folllow.repository.Follow;
 import com.cos.photogramstart.domain.folllow.exception.FollowMyselfFailException;
 import com.cos.photogramstart.domain.folllow.exception.UnfollowFailException;
 import com.cos.photogramstart.domain.folllow.exception.UnfollowMyselfFailException;
@@ -11,7 +11,6 @@ import com.cos.photogramstart.global.error.ErrorCode;
 import com.cos.photogramstart.global.error.exception.EntityAlreadyExistException;
 import com.cos.photogramstart.global.error.exception.EntityNotFoundException;
 import com.cos.photogramstart.global.util.AuthUtil;
-import com.cos.photogramstart.web.dto.follow.FollowDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

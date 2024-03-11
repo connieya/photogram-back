@@ -3,6 +3,7 @@ package com.cos.photogramstart.domain.user.repository;
 import com.cos.photogramstart.domain.post.entity.Post;
 import com.cos.photogramstart.domain.user.controller.request.SignupRequest;
 import com.cos.photogramstart.domain.user.service.command.SignUpCommand;
+import com.cos.photogramstart.domain.user.service.command.UserUpdateCommand;
 import com.cos.photogramstart.global.common.Image;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -70,4 +71,10 @@ public class User {
                 .build();
     }
 
+    public User update(UserUpdateCommand userUpdateCommand) {
+        this.website = userUpdateCommand.getWebsite();
+        this.username = userUpdateCommand.getUsername();
+        this.bio = userUpdateCommand.getBio();
+        return this;
+    }
 }

@@ -5,7 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.cos.photogramstart.global.common.Image;
 import com.cos.photogramstart.global.util.ImageUtil;
-import com.cos.photogramstart.global.handler.exception.FileConvertFailException;
+import com.cos.photogramstart.global.error.exception.FileConvertFailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

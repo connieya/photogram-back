@@ -2,12 +2,13 @@ package com.cos.photogramstart.domain.post.controller;
 
 import com.cos.photogramstart.global.config.security.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.post.service.PostLikeService;
-import com.cos.photogramstart.web.dto.RespDto;
+import com.cos.photogramstart.global.result.ResultResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import static com.cos.photogramstart.global.result.ResultCode.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,12 +20,12 @@ public class PostLikeController {
     @PostMapping("/likes/{imageId}")
     public ResponseEntity<?> like(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){
         likesService.like(imageId , principalDetails.getUser().getId());
-        return new ResponseEntity<>(new RespDto<>(1,"좋아요 성공",null), HttpStatus.CREATED);
+        return ResponseEntity.ok(ResultResponse.of(LIKE_POST_SUCCESS));
     }
 
     @DeleteMapping("/likes/{imageId}")
     public ResponseEntity<?> unLike(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){
         likesService.unLike(imageId,principalDetails.getUser().getId());
-        return new ResponseEntity<>(new RespDto<>(1,"좋아요 취소 성공",null),HttpStatus.OK);
+        return ResponseEntity.ok(ResultResponse.of(UN_LIKE_POST_SUCCESS));
     }
 }

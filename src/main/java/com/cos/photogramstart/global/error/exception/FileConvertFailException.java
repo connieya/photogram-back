@@ -1,4 +1,4 @@
-package com.cos.photogramstart.global.handler.exception;
+package com.cos.photogramstart.global.error.exception;
 
 public class FileConvertFailException extends RuntimeException {
 

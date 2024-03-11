@@ -10,7 +10,7 @@ import com.cos.photogramstart.domain.user.repository.User;
 import com.cos.photogramstart.domain.user.repository.UserRepository;
 import com.cos.photogramstart.global.error.ErrorCode;
 import com.cos.photogramstart.global.error.exception.EntityAlreadyExistException;
-import com.cos.photogramstart.global.handler.exception.PasswordMisMatchException;
+import com.cos.photogramstart.global.error.exception.PasswordMisMatchException;
 import com.cos.photogramstart.domain.user.controller.request.SignInRequest;
 import com.cos.photogramstart.web.dto.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
@@ -79,14 +79,5 @@ public class UserAuthService {
         return newToken;
     }
 
-    @Transactional
-    public void changePassword(SignInRequest signInRequest) {
-        User user = userRepository.findByUsername(signInRequest.getUsername()).orElse(null);
-        if (user != null) {
-            String newPassword = passwordEncoder.encode(signInRequest.getPassword());
-            user.setPassword(newPassword);
-            userRepository.save(user);
-        }
 
-    }
 }
