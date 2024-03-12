@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter @Setter
 @Entity
-@Table(name = "Member")
+@Table(name = "member")
 public class User {
 
     @Id

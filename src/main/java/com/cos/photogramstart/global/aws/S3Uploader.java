@@ -31,7 +31,7 @@ public class S3Uploader {
     private String bucket;
 
 
-    public Image uploadImage(MultipartFile file, String dirName)  {
+    public Image uploadImage(MultipartFile file, String dirName) {
         Image image = ImageUtil.convertMultipartToImage(file, UUID.randomUUID().toString());
         String filename = convertToFilename(dirName, image);
         File uploadFile = convertMultipartFileToFile(file);
@@ -47,10 +47,15 @@ public class S3Uploader {
     }
 
     private String putS3(File uploadFile, String fileName) {
-        s3Client.putObject(
-                new PutObjectRequest(bucket, fileName, uploadFile)
-                        .withCannedAcl(CannedAccessControlList.PublicRead)    // PublicRead 권한으로 업로드 됨
-        );
+        try {
+
+            s3Client.putObject(
+                    new PutObjectRequest(bucket, fileName, uploadFile)
+                            .withCannedAcl(CannedAccessControlList.PublicRead)    // PublicRead 권한으로 업로드 됨
+            );
+        } catch (Exception e) {
+            log.info("error ",e);
+        }
         return s3Client.getUrl(bucket, fileName).toString();
     }
 
@@ -62,7 +67,7 @@ public class S3Uploader {
         }
     }
 
-    private File convertMultipartFileToFile(MultipartFile multipartFile)  {
+    private File convertMultipartFileToFile(MultipartFile multipartFile) {
         File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         try (FileOutputStream fos = new FileOutputStream(file); InputStream is = multipartFile.getInputStream()) {
             int bytesRead;
@@ -70,23 +75,23 @@ public class S3Uploader {
             while ((bytesRead = is.read(buffer, 0, 8192)) != -1) {
                 fos.write(buffer, 0, bytesRead);
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new FileConvertFailException("변환할 수 없는 파일입니다.");
         }
         return file;
     }
 
-    private String convertToFilename(String dirName, Image image){
-        return dirName + "/" + image.getImageUUID()+"_"+image.getImageName()+"."+image.getImageType();
+    private String convertToFilename(String dirName, Image image) {
+        return dirName + "/" + image.getImageUUID() + "_" + image.getImageName() + "." + image.getImageType();
     }
 
 
     public void deleteImage(Image image, String dirName) {
-        if (image.getImageUUID().equals("base-UUID")){
+        if (image.getImageUUID().equals("base-UUID")) {
             return;
         }
         String filename = convertToFilename(dirName, image);
-        s3Client.deleteObject(bucket,filename);
+        s3Client.deleteObject(bucket, filename);
 
     }
 }

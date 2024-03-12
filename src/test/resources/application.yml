@@ -1,15 +1,14 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:tcp://localhost/~/photogram-test
-    url: jdbc:h2:~/photogram
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test-db?serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
   profiles:
     active: test
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true

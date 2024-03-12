@@ -36,27 +36,22 @@ public class PostController {
     }
 
 
-    @ApiOperation(value = "게시물 업로드" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(value = "게시물 업로드", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PostMapping
-    public ResponseEntity<ResultResponse> uploadPost(@ModelAttribute PostUploadRequest request ) throws IOException {
+    public ResponseEntity<ResultResponse> uploadPost(@ModelAttribute PostUploadRequest request) throws IOException {
         System.out.println("request.getFile() = " + request.getFile());
         MultipartFile file = request.getFile();
-        System.out.println("file.getOriginalFilename() = " + file.getOriginalFilename());
-        System.out.println("file.getName() = " + file.getName());
-        System.out.println("file.getContentType() = " + file.getContentType());
-        System.out.println("file.getInputStream() = " + file.getInputStream());
-        postService.upload(request.toCommand() , request.getFile());
+        postService.upload(request.toCommand(), request.getFile());
         return ResponseEntity.ok(ResultResponse.of(CREATE_POST_SUCCESS));
     }
 
     @ApiOperation(value = "게시물 좋아요")
     @PostMapping("/like")
-    public ResponseEntity<ResultResponse> likePost(@RequestParam Long postId){
+    public ResponseEntity<ResultResponse> likePost(@RequestParam Long postId) {
         postLikeService.like(postId);
         return ResponseEntity.ok(ResultResponse.of(LIKE_POST_SUCCESS));
 
     }
-
 
     @GetMapping("/image/popular")
     public ResponseEntity<?> popular() {

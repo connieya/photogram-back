@@ -68,6 +68,17 @@ public class Post { // N : 1
                 .build();
     }
 
+    public static Post create(Long id , String caption ,String location, User user ,PostImage postImage){
+        return Post
+                .builder()
+                .id(id)
+                .caption(caption)
+                .location(location)
+                .user(user)
+                .postImage(postImage)
+                .build();
+    }
+
     @PrePersist // 디비에 INSERT 되기 직전에 실행
     public void createDate() {
         this.createDate = LocalDateTime.now();

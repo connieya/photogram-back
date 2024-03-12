@@ -17,15 +17,15 @@ public class PostLikeController {
 
     private final PostLikeService likesService;
 
-    @PostMapping("/likes/{imageId}")
-    public ResponseEntity<?> like(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){
-        likesService.like(imageId , principalDetails.getUser().getId());
+    @PostMapping("/likes/{postId}")
+    public ResponseEntity<?> like(@PathVariable Long postId ){
+        likesService.like(postId);
         return ResponseEntity.ok(ResultResponse.of(LIKE_POST_SUCCESS));
     }
 
-    @DeleteMapping("/likes/{imageId}")
-    public ResponseEntity<?> unLike(@PathVariable int imageId , @AuthenticationPrincipal PrincipalDetails principalDetails){
-        likesService.unLike(imageId,principalDetails.getUser().getId());
+    @DeleteMapping("/likes/{postId}")
+    public ResponseEntity<?> unLike(@PathVariable Long postId){
+        likesService.unLike(postId);
         return ResponseEntity.ok(ResultResponse.of(UN_LIKE_POST_SUCCESS));
     }
 }
