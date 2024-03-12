@@ -1,7 +1,6 @@
 package com.cos.photogramstart.domain.post.application;
 
 import com.cos.photogramstart.domain.post.presentation.PostPopularDto;
-import com.cos.photogramstart.domain.post.presentation.PostUploadRequest;
 import com.cos.photogramstart.domain.post.domain.PostImage;
 import com.cos.photogramstart.domain.post.infrastructure.PostImageRepository;
 import com.cos.photogramstart.domain.user.domain.Image;
@@ -18,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,18 +77,14 @@ public class PostService {
     }
 
     @Transactional
-    public void uploadPost(PostUploadRequest request) {
+    public void upload(PostUpload postUpload, MultipartFile file) {
         User loginUser = authUtil.getLoginUser();
-        Image image = s3Uploader.uploadImage(request.getFile(), "post");
+        Image image = s3Uploader.uploadImage(file, "post");
         PostImage postImage = new PostImage(image);
         postImageRepository.save(postImage);
-        Post post = Post.builder().
-                caption(request.getCaption())
-                .location(request.getLocation())
-                .user(loginUser)
-                .postImage(postImage).
-                build();
-        postRepository.save(post);
+        postRepository.save(
+                Post.create(postUpload, loginUser, postImage)
+        );
 
     }
 }

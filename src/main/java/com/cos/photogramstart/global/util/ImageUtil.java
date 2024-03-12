@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class ImageUtil {
 
-    public static Image convertMultipartToImage(MultipartFile file) {
+    public static Image convertMultipartToImage(MultipartFile file , String uuid) {
         String originalFilename = file.getOriginalFilename();
         String name = FilenameUtils.getBaseName(originalFilename);
         assert FilenameUtils.getExtension(originalFilename) != null;
@@ -16,7 +16,7 @@ public class ImageUtil {
 
         return Image.builder()
                 .imageType(type)
-                .imageUUID(UUID.randomUUID().toString())
+                .imageUUID(uuid)
                 .imageName(name)
                 .build();
 

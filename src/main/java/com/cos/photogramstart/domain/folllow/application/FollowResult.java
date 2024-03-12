@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FollowDto {
+public class FollowResult {
     private int id;
     private String username;
     private String profileImageUrl;
     private boolean followState;
-    private boolean equalUserState;
+    private boolean isCurrentUser;
 }

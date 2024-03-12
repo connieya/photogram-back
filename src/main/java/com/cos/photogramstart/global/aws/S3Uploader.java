@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class S3Uploader {
 
 
     public Image uploadImage(MultipartFile file, String dirName)  {
-        Image image = ImageUtil.convertMultipartToImage(file);
+        Image image = ImageUtil.convertMultipartToImage(file, UUID.randomUUID().toString());
         String filename = convertToFilename(dirName, image);
         File uploadFile = convertMultipartFileToFile(file);
         String url = upload(uploadFile, filename);

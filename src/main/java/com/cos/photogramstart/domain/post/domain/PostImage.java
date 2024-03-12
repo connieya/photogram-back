@@ -2,12 +2,14 @@ package com.cos.photogramstart.domain.post.domain;
 
 import com.cos.photogramstart.domain.user.domain.Image;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @Table(name = "post_images")
+@NoArgsConstructor
 public class PostImage {
 
     @Id

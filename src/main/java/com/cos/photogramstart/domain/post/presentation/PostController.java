@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.cos.photogramstart.global.result.ResultCode.*;
@@ -28,7 +30,6 @@ public class PostController {
     private final S3Uploader s3Service;
 
 
-
     @GetMapping("/user/images")
     public List<UserImageResponse> selectUserImages(@RequestParam int userId) {
         return postService.selectUserImages(userId);
@@ -37,8 +38,14 @@ public class PostController {
 
     @ApiOperation(value = "게시물 업로드" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PostMapping
-    public ResponseEntity<ResultResponse> uploadPost(@ModelAttribute PostUploadRequest request ){
-        postService.uploadPost(request);
+    public ResponseEntity<ResultResponse> uploadPost(@ModelAttribute PostUploadRequest request ) throws IOException {
+        System.out.println("request.getFile() = " + request.getFile());
+        MultipartFile file = request.getFile();
+        System.out.println("file.getOriginalFilename() = " + file.getOriginalFilename());
+        System.out.println("file.getName() = " + file.getName());
+        System.out.println("file.getContentType() = " + file.getContentType());
+        System.out.println("file.getInputStream() = " + file.getInputStream());
+        postService.upload(request.toCommand() , request.getFile());
         return ResponseEntity.ok(ResultResponse.of(CREATE_POST_SUCCESS));
     }
 

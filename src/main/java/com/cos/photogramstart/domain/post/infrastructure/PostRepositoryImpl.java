@@ -1,4 +1,4 @@
-package com.cos.photogramstart.domain.post.infrastructure.querydsl;
+package com.cos.photogramstart.domain.post.infrastructure;
 
 import com.cos.photogramstart.domain.post.domain.Post;
 import com.cos.photogramstart.domain.post.presentation.PostPopularDto;
@@ -14,7 +14,7 @@ import static com.cos.photogramstart.domain.folllow.QFollow.*;
 import static com.cos.photogramstart.domain.post.QImage.image;
 import static com.cos.photogramstart.domain.likes.QLikes.likes;
 
-public class PostRepositoryImpl implements PostRepositoryQuertdsl {
+public class PostRepositoryImpl implements PostCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 

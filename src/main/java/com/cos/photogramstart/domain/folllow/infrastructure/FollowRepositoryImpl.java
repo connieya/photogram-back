@@ -1,7 +1,7 @@
-package com.cos.photogramstart.domain.folllow.infrastructure.querydsl;
+package com.cos.photogramstart.domain.folllow.infrastructure;
 
 import com.cos.photogramstart.domain.folllow.QFollow;
-import com.cos.photogramstart.domain.folllow.application.FollowDto;
+import com.cos.photogramstart.domain.folllow.application.FollowResult;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
@@ -14,7 +14,7 @@ import java.util.List;
 import static com.cos.photogramstart.domain.folllow.QFollow.follow;
 import static com.cos.photogramstart.domain.user.QUser.user;
 
-public class FollowRepositoryImpl implements FollowRepositoryQuerydsl {
+public class FollowRepositoryImpl implements FollowCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
@@ -50,10 +50,10 @@ public class FollowRepositoryImpl implements FollowRepositoryQuerydsl {
     }
 
     @Override
-    public List<FollowDto> followingList(int principalId ,int pageUser) {
+    public List<FollowResult> followingList(int principalId , int pageUser) {
         QFollow followSub = new QFollow("followSub");
         return queryFactory
-                .select(Projections.fields(FollowDto.class,
+                .select(Projections.fields(FollowResult.class,
                         user.id, user.username, user.profileImageUrl,
                         ExpressionUtils.as(JPAExpressions.select().from(followSub)
                                 .where(followSub.fromUser.id.eq(principalId).and(followSub.toUser.id.eq(user.id))).exists(), "followState"),
@@ -68,20 +68,20 @@ public class FollowRepositoryImpl implements FollowRepositoryQuerydsl {
     }
 
     @Override
-    public List<FollowDto> followerList(int principalId, int pageUser) {
+    public List<FollowResult> followerList(Long loginUserId, Long pageUser) {
         QFollow followSub = new QFollow("followSub");
         return queryFactory
-                .select(Projections.fields(FollowDto.class,
+                .select(Projections.fields(FollowResult.class,
                         user.id, user.username, user.profileImageUrl,
                         ExpressionUtils.as(JPAExpressions.select().from(followSub)
-                                .where(followSub.fromUser.id.eq(principalId).and(followSub.toUser.id.eq(user.id))).exists(), "followState"),
-                        user.id.eq(principalId).as("equalUserState")
+                                .where(followSub.fromUser.id.eq(Math.toIntExact(loginUserId)).and(followSub.toUser.id.eq(user.id))).exists(), "followState"),
+                        user.id.eq(Math.toIntExact(loginUserId)).as("isCurrentUser")
 
                 ))
                 .from(follow)
                 .innerJoin(user)
                 .on(user.id.eq(follow.fromUser.id))
-                .where(follow.toUser.id.eq(pageUser))
+                .where(follow.toUser.id.eq(Math.toIntExact(pageUser)))
                 .fetch();
     }
 }

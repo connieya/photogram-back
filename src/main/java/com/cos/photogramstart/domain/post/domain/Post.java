@@ -1,6 +1,7 @@
 package com.cos.photogramstart.domain.post.domain;
 
 import com.cos.photogramstart.domain.comment.domain.Comment;
+import com.cos.photogramstart.domain.post.application.PostUpload;
 import com.cos.photogramstart.domain.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -48,6 +49,24 @@ public class Post { // N : 1
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
+
+    @Builder
+    private Post(String caption, String location, User user, PostImage postImage) {
+        this.caption = caption;
+        this.location = location;
+        this.user = user;
+        this.postImage = postImage;
+    }
+
+    public static Post create(PostUpload postUpload, User user , PostImage postImage) {
+        return Post
+                .builder()
+                .caption(postUpload.getCaption())
+                .location(postUpload.getLocation())
+                .user(user)
+                .postImage(postImage)
+                .build();
+    }
 
     @PrePersist // 디비에 INSERT 되기 직전에 실행
     public void createDate() {

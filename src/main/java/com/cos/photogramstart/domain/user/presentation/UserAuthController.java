@@ -32,6 +32,7 @@ public class UserAuthController {
     @ApiOperation(value = "회원가입")
     @PostMapping("/auth/signup")
     public ResponseEntity<ResultResponse> signup(@Valid @RequestBody SignupRequest signupRequest) {
+        log.info("회원 가입 요청");
         authService.signup(signupRequest.toCommand());
         return ResponseEntity.ok(ResultResponse.of(REGISTER_SUCCESS));
     }

@@ -1,16 +1,43 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/photogram-test?serverTimezone=Asia/Seoul
-    username: cos
-    password: cos1234
+    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:tcp://localhost/~/photogram-test
+    url: jdbc:h2:~/photogram
+    username: sa
+    password:
   profiles:
     active: test
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
         format_sql: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 2MB
+      max-request-size: 10MB
+cloud:
+  aws:
+    s3:
+      bucket: ${bucket}
+    credentials:
+      access-key: ${accessKey}
+      secret-key: ${secretKey}
+    region:
+      static: ${region}
+      auto: false
+    stack:
+      auto: false
+
+
+base-url: ${s3-base-url}
+
+jwt:
+  header: Authorization
+  secret: ${jwtSecretKey}

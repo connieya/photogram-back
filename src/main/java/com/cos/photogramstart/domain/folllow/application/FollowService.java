@@ -7,7 +7,6 @@ import com.cos.photogramstart.domain.folllow.exception.UnfollowMyselfFailExcepti
 import com.cos.photogramstart.domain.folllow.infrastructure.FollowRepository;
 import com.cos.photogramstart.domain.user.domain.User;
 import com.cos.photogramstart.domain.user.infrastructure.UserRepository;
-import com.cos.photogramstart.global.error.ErrorCode;
 import com.cos.photogramstart.global.error.exception.EntityAlreadyExistException;
 import com.cos.photogramstart.global.error.exception.EntityNotFoundException;
 import com.cos.photogramstart.global.util.AuthUtil;
@@ -29,18 +28,14 @@ public class FollowService {
     private final AuthUtil authUtil;
     private final EntityManager em;
 
-    // 팔로잉 리스트
     @Transactional(readOnly = true)
-    public List<FollowDto> followingList(int principalId, int pageUserId) {
-        List<FollowDto> followingList = followRepository.followingList(principalId, pageUserId);
-        return followingList;
+    public List<FollowResult> followingList(int principalId, int pageUserId) {
+        return followRepository.followingList(principalId, pageUserId);
     }
 
-    // 팔로워 리스트
     @Transactional(readOnly = true)
-    public List<FollowDto> followerList(int principalId, int pageUserId) {
-        List<FollowDto> followerList = followRepository.followerList(principalId, pageUserId);
-        return followerList;
+    public List<FollowResult> followerList(Long principalId, Long pageUserId) {
+        return followRepository.followerList(principalId, pageUserId);
     }
 
 
