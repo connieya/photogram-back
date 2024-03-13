@@ -28,7 +28,8 @@ public class Comment {
 
 
     @Builder
-    private Comment(String content, User user, Post post) {
+    private Comment(int id ,String content, User user, Post post) {
+        this.id = id;
         this.content = content;
         this.user = user;
         this.post = post;
@@ -42,6 +43,16 @@ public class Comment {
     public static Comment create(String content , Post post , User user){
         return Comment
                 .builder()
+                .content(content)
+                .user(user)
+                .post(post)
+                .build();
+    }
+
+    public static Comment create(int id, String content , Post post , User user){
+        return Comment
+                .builder()
+                .id(id)
                 .content(content)
                 .user(user)
                 .post(post)

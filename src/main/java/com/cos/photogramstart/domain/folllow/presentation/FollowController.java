@@ -38,14 +38,14 @@ public class FollowController {
     @ApiOperation(value = "팔로잉 목록 조회")
     @GetMapping("/following/{username}")
     public ResponseEntity<?> followingList(@PathVariable String username) {
-        followService.getFollowings(username);
-        return ResponseEntity.ok(ResultResponse.of(GET_FOLLOWINGS_SUCCESS));
+        List<FollowResult> followingResult = followService.getFollowingResult(username);
+        return ResponseEntity.ok(ResultResponse.of(GET_FOLLOWINGS_SUCCESS,followingResult));
     }
 
     @ApiOperation(value = "팔로워 목록 조회")
     @GetMapping("/follower/{username}")
     public ResponseEntity<ResultResponse> followerList(@PathVariable String username) {
-        List<FollowResult> followers = followService.getFollowers(username);
+        List<FollowResult> followers = followService.getFollowerResult(username);
         return ResponseEntity.ok(ResultResponse.of(GET_FOLLOWERS_SUCCESS,followers));
     }
 }

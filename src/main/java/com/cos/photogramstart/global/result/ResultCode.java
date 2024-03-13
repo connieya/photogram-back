@@ -35,10 +35,11 @@ public enum ResultCode {
     COMMENT_GET_SUCCESS(200,"C003","댓글 조회에 성공 하였습니다."),
 
     // Feed
-    CREATE_POST_SUCCESS(200, "F001", "게시물 업로드에 성공 하였습니다."),
-    LIKE_POST_SUCCESS(200, "F006", "게시물 좋아요에 성공 하였습니다."),
-    UN_LIKE_POST_SUCCESS(200, "F007", "게시물 좋아요 취소에 성공 하였습니다."),
-    POPULAR_FEED_GET_SUCCESS(200, "F008", "인기 게시물 조회에 성공 하였습니다.");
+    CREATE_POST_SUCCESS(200, "F001", "게시물 업로드에 성공 하였 습니다."),
+    POST_DETAIL_GET_SUCCESS(200, "F002", "게시물 조회에 성공 하였 습니다."),
+    LIKE_POST_SUCCESS(200, "F003", "게시물 좋아요에 성공 하였습니다."),
+    UN_LIKE_POST_SUCCESS(200, "F004", "게시물 좋아요 취소에 성공 하였습니다."),
+    POST_DELETE_SUCCESS(200, "F005", "게시물 삭제에 성공 하였습니다.");
 
     private final int status;
     private final String code;

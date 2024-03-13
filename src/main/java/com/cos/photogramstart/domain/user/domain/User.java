@@ -93,6 +93,7 @@ public class User {
                 .password(password)
                 .name(name)
                 .email(email)
+                .image(Image.init())
                 .build();
     }
 

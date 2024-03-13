@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.cos.photogramstart.global.error.ErrorCode.*;
@@ -28,7 +27,7 @@ public class FollowService {
     private final AuthUtil authUtil;
 
     @Transactional(readOnly = true)
-    public List<FollowResult> getFollowings(String username) {
+    public List<FollowResult> getFollowingResult(String username) {
         User loginUser = authUtil.getLoginUser();
         User pageUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
@@ -36,7 +35,7 @@ public class FollowService {
     }
 
     @Transactional(readOnly = true)
-    public List<FollowResult> getFollowers(String username) {
+    public List<FollowResult> getFollowerResult(String username) {
         User loginUser = authUtil.getLoginUser();
         User pageUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));

@@ -21,4 +21,12 @@ public class UserFixture {
             , "코니"
             , "cony6@naver.com"
     );
+
+    public static final User HONG =   User.create(
+            3L
+            , "hong"
+            , "1234"
+            , "홍길동"
+            , "hong@naver.com"
+    );
 }

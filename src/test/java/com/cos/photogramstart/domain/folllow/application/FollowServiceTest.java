@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.cos.photogramstart.domain.user.fixture.UserFixture.*;
@@ -53,7 +54,7 @@ class FollowServiceTest {
 
     @DisplayName("이미 팔로우 한 유저를 팔로우 할 수 없다.")
     @Test
-    void follow_Fail_AlreadyFollowing(){
+    void follow_Fail_AlreadyFollowing() {
         // given
         given(authUtil.getLoginUser())
                 .willReturn(PARK);
@@ -61,11 +62,11 @@ class FollowServiceTest {
         given(userRepository.findByUsername("cony"))
                 .willReturn(Optional.of(CONY));
 
-        given(followRepository.existsByFromUserIdAndToUserId(PARK.getId(),CONY.getId()))
+        given(followRepository.existsByFromUserIdAndToUserId(PARK.getId(), CONY.getId()))
                 .willReturn(true);
         // when , then
         assertThatThrownBy(
-                ()->    followService.follow("cony")
+                () -> followService.follow("cony")
         ).isInstanceOf(EntityAlreadyExistException.class);
     }
 
@@ -100,6 +101,46 @@ class FollowServiceTest {
         assertThatThrownBy(
                 () -> followService.unfollow("cony")
         ).isInstanceOf(UnfollowFailException.class);
+    }
+
+    @DisplayName("팔로잉 목록을 조회 한다.")
+    @Test
+    void getFollowingResult() {
+        // given
+
+
+        given(authUtil.getLoginUser())
+                .willReturn(PARK);
+        given(userRepository.findByUsername("cony"))
+                .willReturn(Optional.of(CONY));
+        given(followRepository.followingList(PARK.getId(), CONY.getId()))
+                .willReturn(List.of(
+                        FollowResult
+                                .builder()
+                                .username("kim")
+                                .profileImageUrl("src/test")
+                                .followState(true)
+                                .isCurrentUser(false)
+                                .build()
+                        ,
+                        FollowResult
+                                .builder()
+                                .username("park")
+                                .profileImageUrl("src/test")
+                                .followState(false)
+                                .isCurrentUser(true)
+                                .build()
+                ));
+
+        // when
+        List<FollowResult> followingResult = followService.getFollowingResult(CONY.getUsername());
+        //  then
+        assertThat(followingResult).hasSize(2)
+                .extracting("username", "profileImageUrl", "followState", "isCurrentUser")
+                .containsExactlyInAnyOrder(
+                        tuple("kim", "src/test",true, false),
+                        tuple("park", "src/test", false, true)
+                );
     }
 
 }

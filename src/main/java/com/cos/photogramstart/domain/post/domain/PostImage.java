@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "post_images")
-@NoArgsConstructor
 public class PostImage {
 
     @Id
@@ -26,6 +25,10 @@ public class PostImage {
             @AttributeOverride(name = "imageName", column = @Column(name = "post_image_name")),
     })
     private Image image;
+
+    public PostImage() {
+        this.image = Image.init();
+    }
 
     public PostImage(Image image) {
         this.image = image;

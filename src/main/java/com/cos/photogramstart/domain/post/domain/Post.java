@@ -20,7 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "posts")
 @EntityListeners(AuditingEntityListener.class)
-public class Post { // N : 1
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
@@ -35,11 +35,11 @@ public class Post { // N : 1
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "post") // 연관관계의 주인이 아니다.
+    @OneToMany(mappedBy = "post")
     private List<PostLike> postLikes;
 
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "post_image_id")
     private PostImage postImage;
 
@@ -77,6 +77,27 @@ public class Post { // N : 1
                 .user(user)
                 .postImage(postImage)
                 .build();
+    }
+
+
+    public static Post create(Long id , String caption ,String location, User user ,PostImage postImage ,List<Comment> comments){
+        return Post
+                .builder()
+                .id(id)
+                .caption(caption)
+                .location(location)
+                .user(user)
+                .postImage(postImage)
+                .comments(comments)
+                .build();
+    }
+
+    public void deleteComment() {
+        comments.clear();
+    }
+
+    public void deletePostLike() {
+        postLikes.clear();
     }
 
     @PrePersist // 디비에 INSERT 되기 직전에 실행
