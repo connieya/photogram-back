@@ -1,5 +1,6 @@
 package com.cos.photogramstart.domain.comment.presentation;
 
+import com.cos.photogramstart.domain.comment.application.CommentResult;
 import com.cos.photogramstart.domain.comment.presentation.request.CommentRequest;
 import com.cos.photogramstart.domain.comment.application.CommentService;
 import com.cos.photogramstart.global.result.ResultResponse;
@@ -8,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static com.cos.photogramstart.global.result.ResultCode.*;
 
@@ -28,6 +31,12 @@ public class CommentController {
     public ResponseEntity<?> commentDelete(@PathVariable int id) {
         commentService.delete(id);
         return ResponseEntity.ok(ResultResponse.of(COMMENT_DELETE_SUCCESS));
+    }
+
+    @GetMapping("/comment/{postId}")
+    public ResponseEntity<?> getComments(@PathVariable Long postId) {
+        List<CommentResult> results = commentService.findByPostId(postId);
+        return ResponseEntity.ok(ResultResponse.of(COMMENT_GET_SUCCESS,results));
     }
 
 }

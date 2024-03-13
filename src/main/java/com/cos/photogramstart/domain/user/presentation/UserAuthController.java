@@ -41,6 +41,7 @@ public class UserAuthController {
     @PostMapping("/auth/signin")
     public ResponseEntity<ResultResponse> signin(@RequestBody SignInRequest signInRequest) {
        SignInResult result = authService.signin(signInRequest);
+       log.info("로그인 결과 = {} ",result.getAccessToken());
         return ResponseEntity.ok(ResultResponse.of(LOGIN_SUCCESS,SignInResponse.from(result)));
     }
 

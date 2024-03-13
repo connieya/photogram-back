@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface FollowCustomRepository {
 
-    int followState(Long principalId, int pageUserId);
-    int followingCount(int pageUserId);
-    int followerCount(int pageUserId);
-    List<FollowResult> followingList(int principalId , int pageUser);
-    List<FollowResult> followerList(Long principalId , Long pageUser);
+
+    Long followingCount(Long pageUserId);
+    Long followerCount(Long pageUserId);
+    List<FollowResult> followingList(Long loginUserId , Long pageUser);
+    List<FollowResult> followerList(Long loginUserId , Long pageUser);
 }

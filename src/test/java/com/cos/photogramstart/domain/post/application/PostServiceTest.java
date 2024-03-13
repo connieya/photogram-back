@@ -21,16 +21,16 @@ class PostServiceTest {
     @Mock
     private AuthUtil authUtil;
 
-    @DisplayName("게시물을 등록한다. ")
-    @Test
-    void upload(){
-        // given
-        given(authUtil.getLoginUser())
-                .willReturn(PARK);
-        // when
-
-
-        //then
-    }
+//    @DisplayName("게시물을 등록한다. ")
+//    @Test
+//    void upload(){
+//        // given
+//        given(authUtil.getLoginUser())
+//                .willReturn(PARK);
+//        // when
+//
+//
+//        //then
+//    }
 
 }

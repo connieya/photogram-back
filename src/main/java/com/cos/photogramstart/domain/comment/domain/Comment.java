@@ -19,12 +19,9 @@ public class Comment {
 
     private String content;
 
-
-    @JoinColumn(name = "userId")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @JoinColumn(name = "imageId")
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
     private LocalDateTime createDate;

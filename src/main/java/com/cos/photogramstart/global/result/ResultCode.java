@@ -32,6 +32,7 @@ public enum ResultCode {
     // Comment
     COMMENT_POST_SUCCESS(200,"C001","댓글 쓰기에 성공 하였습니다."),
     COMMENT_DELETE_SUCCESS(200,"C002","댓글 삭제에 성공 하였습니다."),
+    COMMENT_GET_SUCCESS(200,"C003","댓글 조회에 성공 하였습니다."),
 
     // Feed
     CREATE_POST_SUCCESS(200, "F001", "게시물 업로드에 성공 하였습니다."),

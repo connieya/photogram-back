@@ -6,10 +6,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @ApiModel("유저 프로필 조회 응답 모델")
 @Getter
-@Builder
+@NoArgsConstructor
 public class UserProfileResult {
 
     @ApiModelProperty(value = "사용자 이름" , example = "cony")
@@ -25,13 +26,15 @@ public class UserProfileResult {
     @ApiModelProperty(value = "본인 여부" ,example = "false")
     private boolean pageOwner;
 
-    @QueryProjection
-    public UserProfileResult(String username, String name, String website, Image profileImage, boolean pageOwner) {
-        this.username = username;
-        this.name = name;
-        this.website = website;
-        this.profileImage = profileImage;
-        this.pageOwner = pageOwner;
+    private Long followerCount;
+    private Long followingCount;
+
+    public void setFollowerCount(Long followerCount) {
+        this.followerCount = followerCount;
+    }
+
+    public void setFollowingCount(Long followingCount) {
+        this.followingCount = followingCount;
     }
 
 }

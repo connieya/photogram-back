@@ -5,7 +5,6 @@ import com.cos.photogramstart.domain.folllow.domain.Follow;
 import com.cos.photogramstart.domain.user.application.command.SignUpCommand;
 import com.cos.photogramstart.domain.user.domain.User;
 import com.cos.photogramstart.domain.user.infrastructure.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -32,9 +30,10 @@ class FollowRepositoryTest {
     User kim;
     User lee;
     User moon;
+
     @BeforeEach
     void beforeEach() {
-        admin  = User.create(
+        admin = User.create(
                 SignUpCommand
                         .builder()
                         .name("admin")
@@ -44,7 +43,7 @@ class FollowRepositoryTest {
                         .build()
         );
 
-         park = User.create(
+        park = User.create(
                 SignUpCommand
                         .builder()
                         .name("park")
@@ -54,7 +53,7 @@ class FollowRepositoryTest {
                         .build()
         );
 
-         kim = User.create(
+        kim = User.create(
                 SignUpCommand
                         .builder()
                         .name("kim")
@@ -64,7 +63,7 @@ class FollowRepositoryTest {
                         .build()
         );
 
-         lee = User.create(
+        lee = User.create(
                 SignUpCommand
                         .builder()
                         .name("lee")
@@ -74,7 +73,7 @@ class FollowRepositoryTest {
                         .build()
         );
 
-         moon = User.create(
+        moon = User.create(
                 SignUpCommand
                         .builder()
                         .name("moon")
@@ -84,21 +83,65 @@ class FollowRepositoryTest {
                         .build()
         );
 
-        userRepository.saveAll(List.of(admin,park,kim,lee,moon));
-        followRepository.save(new Follow(park,kim));
-        followRepository.save(new Follow(lee,kim));
-        followRepository.save(new Follow(moon,kim));
-        followRepository.save(new Follow(admin,lee));
-        followRepository.save(new Follow(admin,park));
+        userRepository.saveAll(List.of(admin, park, kim, lee, moon));
+        followRepository.save(new Follow(park, kim));
+        followRepository.save(new Follow(lee, kim));
+        followRepository.save(new Follow(lee, park));
+        followRepository.save(new Follow(lee, admin));
+        followRepository.save(new Follow(moon, kim));
+        followRepository.save(new Follow(admin, lee));
+        followRepository.save(new Follow(admin, park));
+        followRepository.save(new Follow(admin, kim));
     }
 
     @DisplayName("팔로워 목록을 조회 한다. ")
     @Test
-    void followerList(){
+    void followerList() {
         // given
         List<FollowResult> followResults = followRepository.followerList(admin.getId(), kim.getId());
         // when , then
-        assertThat(followResults).hasSize(3);
+        assertThat(followResults).hasSize(4)
+                .extracting("username", "followState", "isCurrentUser")
+                .containsExactlyInAnyOrder(
+                        tuple("park", true, false),
+                        tuple("lee", true, false),
+                        tuple("moon", false, false),
+                        tuple("admin", false, true)
+                );
+        ;
+    }
+
+    @DisplayName("팔로잉 목록을 조회 한다.")
+    @Test
+    void followingList(){
+        // given
+        List<FollowResult> followResults = followRepository.followingList(admin.getId(), lee.getId());
+        // when , then
+        assertThat(followResults).hasSize(3)
+                .extracting("username", "followState", "isCurrentUser")
+                .containsExactlyInAnyOrder(
+                        tuple("park", true, false),
+                        tuple("kim", true, false),
+                        tuple("admin", false, true)
+                );
+    }
+
+    @DisplayName("팔로잉 하는 숫자")
+    @Test
+    void followingCount(){
+        // given   when
+        Long followingCount = followRepository.followingCount(admin.getId());
+        //then
+        assertThat(followingCount).isEqualTo(3);
+    }
+
+    @DisplayName("팔로워 숫자")
+    @Test
+    void followerCount(){
+        // given ,when
+        Long followerCount = followRepository.followerCount(admin.getId());
+        //then
+        assertThat(followerCount).isEqualTo(1);
     }
 
 }

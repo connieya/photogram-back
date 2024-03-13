@@ -1,18 +1,22 @@
 package com.cos.photogramstart.domain.folllow.application;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.querydsl.core.annotations.QueryProjection;
+import lombok.*;
 
-@Data
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class FollowResult {
-    private int id;
     private String username;
     private String profileImageUrl;
     private boolean followState;
     private boolean isCurrentUser;
+
+    @QueryProjection
+    public FollowResult(String username, String profileImageUrl, boolean followState, boolean isCurrentUser) {
+        this.username = username;
+        this.profileImageUrl = profileImageUrl;
+        this.followState = followState;
+        this.isCurrentUser = isCurrentUser;
+    }
 }

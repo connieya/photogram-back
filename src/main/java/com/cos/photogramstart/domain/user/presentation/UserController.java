@@ -7,6 +7,7 @@ import com.cos.photogramstart.domain.user.presentation.response.UserInfo;
 import com.cos.photogramstart.domain.user.presentation.request.UserUpdateRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ import static com.cos.photogramstart.global.result.ResultCode.*;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api/accounts")
 public class UserController {
 
@@ -27,6 +29,7 @@ public class UserController {
     @ApiOperation(value = "유저 프로필 조회")
     @GetMapping("/{username}")
     public ResponseEntity<ResultResponse> getUserProfile(@PathVariable("username") String username) {
+        log.info("유저 프로필 조회");
         UserProfileResult response = userService.getUserProfile(username);
         return ResponseEntity.ok(ResultResponse.of(USER_GET_SUCCESS, response));
     }
@@ -49,9 +52,9 @@ public class UserController {
     public ResponseEntity<?> userList() {
         return ResponseEntity.ok(ResultResponse.of(
                 USER_LIST_GET_SUCCESS
-                ,userService.findAll()
+                , userService.findAll()
                         .stream()
-                        .map(user-> new UserInfo(user.getId(), user.getUsername()))
+                        .map(user -> new UserInfo(user.getId(), user.getUsername()))
                         .collect(Collectors.toList())
 
         ));

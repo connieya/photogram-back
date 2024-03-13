@@ -1,5 +1,6 @@
 package com.cos.photogramstart.domain.folllow.presentation;
 
+import com.cos.photogramstart.domain.folllow.application.FollowResult;
 import com.cos.photogramstart.domain.folllow.application.FollowService;
 import com.cos.photogramstart.global.result.ResultResponse;
 import io.swagger.annotations.Api;
@@ -7,6 +8,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.cos.photogramstart.global.result.ResultCode.*;
 
@@ -42,6 +45,7 @@ public class FollowController {
     @ApiOperation(value = "팔로워 목록 조회")
     @GetMapping("/follower/{username}")
     public ResponseEntity<ResultResponse> followerList(@PathVariable String username) {
-        return ResponseEntity.ok(ResultResponse.of(GET_FOLLOWERS_SUCCESS));
+        List<FollowResult> followers = followService.getFollowers(username);
+        return ResponseEntity.ok(ResultResponse.of(GET_FOLLOWERS_SUCCESS,followers));
     }
 }

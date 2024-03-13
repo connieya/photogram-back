@@ -2,7 +2,7 @@ package com.cos.photogramstart.domain.post.application;
 
 import com.cos.photogramstart.domain.post.domain.Post;
 
-import com.cos.photogramstart.domain.comment.application.CommentResponseDto;
+import com.cos.photogramstart.domain.comment.application.CommentResult;
 import lombok.Data;
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class PostData {
     private Long imageId;
     private boolean likeState;
     private int likeCount;
-    private List<CommentResponseDto> comments;
+    private List<CommentResult> comments;
 
     public PostData(Post image){
         this.userId = image.getUser().getId();

@@ -26,16 +26,21 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
     private final AuthUtil authUtil;
-    private final EntityManager em;
 
     @Transactional(readOnly = true)
-    public List<FollowResult> followingList(int principalId, int pageUserId) {
-        return followRepository.followingList(principalId, pageUserId);
+    public List<FollowResult> getFollowings(String username) {
+        User loginUser = authUtil.getLoginUser();
+        User pageUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
+        return followRepository.followingList(loginUser.getId(),pageUser.getId());
     }
 
     @Transactional(readOnly = true)
-    public List<FollowResult> followerList(Long principalId, Long pageUserId) {
-        return followRepository.followerList(principalId, pageUserId);
+    public List<FollowResult> getFollowers(String username) {
+        User loginUser = authUtil.getLoginUser();
+        User pageUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
+        return followRepository.followerList(loginUser.getId(), pageUser.getId());
     }
 
 
@@ -69,8 +74,5 @@ public class FollowService {
         followRepository.delete(follow);
     }
 
-    @Transactional(readOnly = true)
-    public void getFollowings(String username) {
-        User loginUser = authUtil.getLoginUser();
-    }
+
 }

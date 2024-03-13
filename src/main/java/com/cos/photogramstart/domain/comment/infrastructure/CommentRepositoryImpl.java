@@ -1,17 +1,21 @@
 package com.cos.photogramstart.domain.comment.infrastructure;
 
-import com.cos.photogramstart.domain.comment.application.CommentResponseDto;
-import com.querydsl.core.types.Projections;
+import com.cos.photogramstart.domain.comment.application.CommentResult;
+import com.cos.photogramstart.domain.comment.application.QCommentResult;
+import com.cos.photogramstart.domain.comment.domain.QComment;
+import com.cos.photogramstart.domain.user.domain.QUser;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.cos.photogramstart.domain.comment.QComment.*;
-import static com.cos.photogramstart.domain.user.QUser.*;
+import static com.cos.photogramstart.domain.comment.domain.QComment.*;
 
-public class CommentRepositoryImpl implements CommentRepositoryCustom{
+
+@Repository
+public class CommentRepositoryImpl implements CommentRepositoryCustom {
 
     private final JPQLQueryFactory queryFactory;
 
@@ -20,14 +24,17 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
     }
 
     @Override
-    public List<CommentResponseDto> findByImageId(int imageId) {
+    public List<CommentResult> findByPostId(Long postId) {
         return queryFactory
-                .select(Projections.fields(CommentResponseDto.class,
-                        comment.id.as("contentId"),comment.content,user.id.as("userId"),user.username))
+                .select(new QCommentResult(
+                        comment.id,
+                        comment.content,
+                        comment.user.id,
+                        comment.user.username
+                ))
                 .from(comment)
-                .join(user)
-                .on(comment.user.id.eq(user.id))
-                .where(comment.image.id.eq(imageId))
+                .where(comment.post.id.eq(postId))
                 .fetch();
+
     }
 }

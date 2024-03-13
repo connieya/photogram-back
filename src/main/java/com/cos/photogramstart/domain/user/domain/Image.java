@@ -24,4 +24,14 @@ public class Image {
     public void setImageUrl(String baseUrl) {
         this.imageUrl = baseUrl;
     }
+
+
+    public static Image init() {
+        return  Image.builder()
+                .imageName("base")
+                .imageType("PNG")
+                .imageUrl("base-url")
+                .imageUUID("base-UUID")
+                .build();
+    }
 }

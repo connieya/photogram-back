@@ -29,6 +29,7 @@ class UserTest {
         assertThat(user.getUsername()).isEqualTo("cony");
         assertThat(user.getName()).isEqualTo("박건희");
         assertThat(user.getPassword()).isEqualTo("1234");
+        assertThat(user.getImage().getImageUUID()).isEqualTo("base-UUID");
     }
 
     @DisplayName("회원 정보를 수정 한다.")

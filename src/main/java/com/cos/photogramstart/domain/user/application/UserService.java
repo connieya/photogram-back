@@ -46,9 +46,12 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserProfileResult getUserProfile(String username) {
         User user = authUtil.getLoginUser();
-        userRepository.findByUsername(username)
+        User pageUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
-        return userRepository.findUserProfile(user.getId() ,username);
+        UserProfileResult userProfile = userRepository.findUserProfile(user, username);
+        userProfile.setFollowerCount(followRepository.followerCount(pageUser.getId()));
+        userProfile.setFollowingCount(followRepository.followingCount(pageUser.getId()));
+        return userProfile;
     }
 
     @Transactional

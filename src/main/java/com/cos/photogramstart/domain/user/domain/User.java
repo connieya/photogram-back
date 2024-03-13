@@ -12,7 +12,8 @@ import java.util.List;
 
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 @Table(name = "member")
 public class User {
@@ -39,7 +40,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<Post> images;
+    private List<Post> posts;
 
     private LocalDateTime createDate;
 
@@ -59,7 +60,7 @@ public class User {
         this.website = website;
         this.bio = bio;
         this.image = image;
-        this.images = images;
+        this.posts = images;
         this.createDate = createDate;
     }
 
@@ -80,10 +81,11 @@ public class User {
                 .password(signUpCommand.getPassword())
                 .email(signUpCommand.getEmail())
                 .name(signUpCommand.getName())
+                .image(Image.init())
                 .build();
     }
 
-    public static User create(Long id, String username , String password , String name ,String email) {
+    public static User create(Long id, String username, String password, String name, String email) {
         return User
                 .builder()
                 .id(id)

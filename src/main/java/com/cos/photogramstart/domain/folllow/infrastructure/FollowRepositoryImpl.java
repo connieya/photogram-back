@@ -1,19 +1,23 @@
 package com.cos.photogramstart.domain.folllow.infrastructure;
 
-import com.cos.photogramstart.domain.folllow.QFollow;
 import com.cos.photogramstart.domain.folllow.application.FollowResult;
+import com.cos.photogramstart.domain.folllow.domain.QFollow;
+import com.cos.photogramstart.domain.user.domain.QUser;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 
 import java.util.List;
 
-import static com.cos.photogramstart.domain.folllow.QFollow.follow;
-import static com.cos.photogramstart.domain.user.QUser.user;
+import static com.cos.photogramstart.domain.folllow.domain.QFollow.*;
+import static com.cos.photogramstart.domain.user.domain.QUser.*;
 
+
+@Repository
 public class FollowRepositoryImpl implements FollowCustomRepository {
 
     private final JPAQueryFactory queryFactory;
@@ -24,40 +28,34 @@ public class FollowRepositoryImpl implements FollowCustomRepository {
 
 
     @Override
-    public int followState(Long principalId, int pageUserId) {
-        return (int)queryFactory
-                .select()
-                .from(follow)
-                .where(follow.fromUser.id.eq(Math.toIntExact(principalId)).and(follow.toUser.id.eq(pageUserId))).fetchCount();
-    }
-
-    @Override
-    public int followingCount(int pageUserId) {
-        return (int) queryFactory.
+    public Long followingCount(Long pageUserId) {
+        return queryFactory.
                 select()
                 .from(follow)
                 .where(follow.fromUser.id.eq(pageUserId))
                 .fetchCount();
+
     }
 
     @Override
-    public int followerCount(int pageUserId) {
-        return (int) queryFactory.
+    public Long followerCount(Long pageUserId) {
+        return queryFactory.
                 select()
                 .from(follow)
                 .where(follow.toUser.id.eq(pageUserId))
                 .fetchCount();
+
     }
 
     @Override
-    public List<FollowResult> followingList(int principalId , int pageUser) {
+    public List<FollowResult> followingList(Long loginUserId, Long pageUser) {
         QFollow followSub = new QFollow("followSub");
         return queryFactory
                 .select(Projections.fields(FollowResult.class,
-                        user.id, user.username, user.profileImageUrl,
+                        user.username, user.image.imageUrl,
                         ExpressionUtils.as(JPAExpressions.select().from(followSub)
-                                .where(followSub.fromUser.id.eq(principalId).and(followSub.toUser.id.eq(user.id))).exists(), "followState"),
-                        user.id.eq(principalId).as("equalUserState")
+                                .where(followSub.fromUser.id.eq(loginUserId).and(followSub.toUser.id.eq(user.id))).exists(), "followState"),
+                        user.id.eq(loginUserId).as("isCurrentUser")
 
                 ))
                 .from(follow)
@@ -71,17 +69,18 @@ public class FollowRepositoryImpl implements FollowCustomRepository {
     public List<FollowResult> followerList(Long loginUserId, Long pageUser) {
         QFollow followSub = new QFollow("followSub");
         return queryFactory
-                .select(Projections.fields(FollowResult.class,
-                        user.id, user.username, user.profileImageUrl,
-                        ExpressionUtils.as(JPAExpressions.select().from(followSub)
-                                .where(followSub.fromUser.id.eq(Math.toIntExact(loginUserId)).and(followSub.toUser.id.eq(user.id))).exists(), "followState"),
-                        user.id.eq(Math.toIntExact(loginUserId)).as("isCurrentUser")
+                .select(
+                        Projections.fields(FollowResult.class,
+                                user.username, user.image.imageUrl,
+                                ExpressionUtils.as(JPAExpressions.select().from(followSub)
+                                        .where(followSub.fromUser.id.eq(loginUserId).and(followSub.toUser.id.eq(user.id))).exists(), "followState"),
+                                user.id.eq(loginUserId).as("isCurrentUser")
 
-                ))
+                        ))
                 .from(follow)
                 .innerJoin(user)
                 .on(user.id.eq(follow.fromUser.id))
-                .where(follow.toUser.id.eq(Math.toIntExact(pageUser)))
+                .where(follow.toUser.id.eq(pageUser))
                 .fetch();
     }
 }
